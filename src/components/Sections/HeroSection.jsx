@@ -1,5 +1,77 @@
 import React, { useEffect, useRef, useState } from "react";
-import Preloader from "../Preloader"; // Upewnij się, że ścieżka jest poprawna!
+
+const HeroPreloader = ({ progress, fadeOut }) => (
+  <div
+    style={{
+      position: "absolute",
+      inset: 0,
+      background: "rgba(10,15,30,0.96)",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      zIndex: 99,
+      opacity: fadeOut ? 0 : 1,
+      pointerEvents: fadeOut ? "none" : "all",
+      transition: "opacity 0.5s cubic-bezier(.4,1,.3,1)",
+    }}
+  >
+    <div style={{ textAlign: "center" }}>
+      <div
+        style={{
+          width: 54,
+          height: 54,
+          margin: "0 auto 16px auto",
+          border: "6px solid #1a3e53",
+          borderTop: "6px solid #08ffe6",
+          borderRadius: "50%",
+          animation: "spin 1s linear infinite",
+        }}
+      />
+      <div
+        style={{
+          fontSize: "1.3rem",
+          color: "#08ffe6",
+          fontWeight: 700,
+          marginBottom: 10,
+          marginTop: 10,
+          letterSpacing: "1px",
+        }}
+      >
+        Ładowanie wideo...
+      </div>
+      <div
+        style={{
+          width: 220,
+          height: 10,
+          background: "#2c3d4a",
+          borderRadius: 8,
+          margin: "0 auto",
+          overflow: "hidden",
+          marginBottom: 12,
+        }}
+      >
+        <div
+          style={{
+            width: `${progress}%`,
+            height: "100%",
+            background: "linear-gradient(90deg, #08ffe6 40%, #2c9cfa 100%)",
+            borderRadius: 8,
+            transition: "width 0.3s cubic-bezier(.39,1.77,.71,.86)",
+          }}
+        />
+      </div>
+      <div style={{ color: "#08ffe6", fontWeight: 600, fontSize: 16 }}>
+        {progress}% załadowano
+      </div>
+    </div>
+    <style>{`
+      @keyframes spin {
+        0% { transform: rotate(0deg);}
+        100% { transform: rotate(360deg);}
+      }
+    `}</style>
+  </div>
+);
 
 const VIDEO_URL =
   "https://ipdz3z5kzmmwbq5p.public.blob.vercel-storage.com/Video-uCRcJm1Zqjvs0EGNQQ428Hnmj2anGH.mp4";
@@ -9,56 +81,40 @@ const HeroSection = ({ isMobile, lang, t }) => {
   const subRef = useRef();
   const videoRef = useRef(null);
 
-  // Loader/progres video
   const [showPreloader, setShowPreloader] = useState(true);
   const [fadeOut, setFadeOut] = useState(false);
   const [progress, setProgress] = useState(0);
 
+  // Płynny fake-progress (do 85%)
   useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    let wasReady = false;
-
-    // Co 100ms sprawdzamy stan video – to jest najpewniejsze na localhost/blob
+    if (!showPreloader) return;
+    let val = 0;
     const interval = setInterval(() => {
-      try {
-        const b = video.buffered;
-        const d = video.duration;
-        let percent = 0;
-        if (d && b.length > 0) {
-          let buffered = 0;
-          for (let i = 0; i < b.length; i++) buffered = b.end(i);
-          percent = Math.round((buffered / d) * 100);
-          percent = Math.max(0, Math.min(100, percent));
-        }
-        setProgress(percent);
+      val += Math.random() * 7 + 3;
+      if (val < 85) setProgress(Math.floor(val));
+      else clearInterval(interval);
+    }, 50);
+    return () => clearInterval(interval);
+  }, [showPreloader]);
 
-        // Sprawdzamy gotowość video (readyState === 4 = HAVE_ENOUGH_DATA)
-        if (!wasReady && video.readyState >= 4) {
-          wasReady = true;
-          setProgress(100);
-          setFadeOut(true);
-          setTimeout(() => setShowPreloader(false), 350);
-        }
-      } catch (e) {
-        setProgress(0);
-      }
-    }, 100);
+  // Znikaj loadera na onCanPlay lub onPlaying
+  const handleVideoReady = () => {
+    setProgress(100);
+    setFadeOut(true);
+    setTimeout(() => setShowPreloader(false), 400);
+  };
 
-    // Dodatkowe zabezpieczenie: backup timeout (10s)
-    const backupTimeout = setTimeout(() => {
+  // Fallback timeout (7s max)
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setProgress(100);
       setFadeOut(true);
-      setTimeout(() => setShowPreloader(false), 350);
-    }, 10000);
-
-    return () => {
-      clearInterval(interval);
-      clearTimeout(backupTimeout);
-    };
+      setTimeout(() => setShowPreloader(false), 400);
+    }, 7000);
+    return () => clearTimeout(timeout);
   }, []);
 
-  // Animacje wejścia nagłówków
+  // Animacja nagłówków
   useEffect(() => {
     if (headerRef.current) {
       headerRef.current.style.opacity = 0;
@@ -95,7 +151,6 @@ const HeroSection = ({ isMobile, lang, t }) => {
         background: "transparent",
       }}
     >
-      {/* Tło video */}
       <video
         ref={videoRef}
         autoPlay
@@ -116,15 +171,11 @@ const HeroSection = ({ isMobile, lang, t }) => {
           pointerEvents: "none",
         }}
         src={VIDEO_URL}
+        onCanPlay={handleVideoReady}
+        onPlaying={handleVideoReady}
       />
 
-      {showPreloader && (
-        <Preloader
-          progress={progress}
-          fadeOut={fadeOut}
-          onFadeOutEnd={() => setShowPreloader(false)}
-        />
-      )}
+      {showPreloader && <HeroPreloader progress={progress} fadeOut={fadeOut} />}
 
       {/* Tekst w dolnej części hero */}
       <div

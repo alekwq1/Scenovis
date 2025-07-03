@@ -1,5 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
-import Preloader from "./components/Preloader";
+import React, { useEffect, useState } from "react";
 import NavigationBar from "./components/NavigationBar";
 import SectionProgressBar from "./components/SectionProgressBar";
 import HeroSection from "./components/Sections/HeroSection";
@@ -14,17 +13,8 @@ import { Environment } from "@react-three/drei";
 
 const App = () => {
   const [lang, setLang] = useState("pl");
-
-  useEffect(() => {
-    console.log("APP mounted");
-    return () => console.log("APP UNmounted");
-  }, []);
-
-  const [showPreloader, setShowPreloader] = useState(true);
-  const [preloaderFade, setPreloaderFade] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [showFixedNav, setShowFixedNav] = useState(true);
-  const preloaderEnded = useRef(false);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -39,25 +29,8 @@ const App = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const handlePreloaderDone = () => {
-    if (preloaderEnded.current) return;
-    preloaderEnded.current = true;
-    setPreloaderFade(true);
-  };
-
-  const handleFadeOutEnd = () => setShowPreloader(false);
-
   return (
     <>
-      {/* Preloader */}
-      {showPreloader && (
-        <Preloader
-          onComplete={handlePreloaderDone}
-          fadeOut={preloaderFade}
-          onFadeOutEnd={handleFadeOutEnd}
-        />
-      )}
-
       <NavigationBar
         showFixedNav={showFixedNav}
         lang={lang}
@@ -66,7 +39,6 @@ const App = () => {
       />
       <SectionProgressBar />
 
-      {/* Canvas 3D */}
       <Canvas
         orthographic
         camera={{ zoom: isMobile ? 60 : 80 }}
@@ -98,7 +70,6 @@ const App = () => {
         <Environment preset="city" />
       </Canvas>
 
-      {/* Główna treść */}
       <main
         style={{
           position: "relative",
