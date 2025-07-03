@@ -1,0 +1,225 @@
+html {
+  scroll-behavior: smooth;
+  background: transparent !important;
+}
+
+body {
+  margin: 0;
+  overflow-x: hidden;
+  color: #fff;
+  font-family: "Inter", sans-serif;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE, Edge */
+}
+
+body::-webkit-scrollbar {
+  width: 0 !important; /* Chrome, Safari, Opera */
+  background: transparent;
+}
+
+/* Ukryj każdy scrollbar w całej aplikacji */
+html,
+body,
+main,
+#root,
+#app,
+* {
+  scrollbar-width: none !important; /* Firefox */
+  -ms-overflow-style: none !important; /* IE, Edge */
+}
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+main::-webkit-scrollbar,
+#root::-webkit-scrollbar,
+#app::-webkit-scrollbar,
+*::-webkit-scrollbar {
+  width: 0 !important;
+  background: transparent !important;
+  display: none !important;
+}
+
+/* Przezroczyste tła globalnie */
+html,
+body,
+#root,
+main {
+  background: transparent !important;
+}
+
+/* ---------  SEKCYJNY LAYOUT  --------- */
+
+/* HERO na pełny ekran, wyśrodkowany */
+main > section#hero {
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+  background: transparent;
+}
+
+/* POZOSTAŁE SEKCJE: oddech i centrowanie pionowe, przesunięcie środka sekcji w dół */
+main > section:not(#hero) {
+  min-height: 100vh;
+  width: 100vw;
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 2;
+  /* GŁÓWNE: Przesuń środek sekcji w dół o 6vh */
+  transform: translateY(6vh);
+  /* Górny i dolny padding na zawartość */
+  padding-top: 7rem;
+  padding-bottom: 4rem;
+  /* Możesz dodać więcej, jeśli chcesz większy oddech */
+}
+
+@media (max-width: 900px) {
+  main > section:not(#hero) {
+    padding-top: 5rem;
+    padding-bottom: 2.5rem;
+    max-width: 98vw;
+    transform: translateY(3vh);
+  }
+}
+
+/* ZAWARTOŚĆ o ładnym boksie: tło, radius, cień – do użycia np. dla AboutSection3D */
+.about-content {
+  width: 100%;
+  max-width: 900px;
+  min-height: 560px;
+  background: rgba(8, 20, 32, 0.89);
+  border-radius: 28px;
+  box-shadow: 0 8px 46px #00e6ff22;
+  padding: 2.4rem 2.4rem 2.2rem 2.4rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  scroll-margin-top: 90px;
+  margin-top: 18px; /* delikatny oddech od góry */
+}
+
+@media (max-width: 600px) {
+  .about-content {
+    padding: 1.4rem 0.7rem;
+    min-height: 400px;
+    margin-top: 8px;
+    border-radius: 18px;
+  }
+}
+
+/* Boks na model i panel info – responsywnie obok siebie lub pod sobą */
+.about-3d-model-box {
+  display: flex;
+  flex-direction: row;
+  gap: 32px;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  min-height: 420px;
+}
+@media (max-width: 700px) {
+  .about-3d-model-box {
+    flex-direction: column;
+    gap: 22px;
+    min-height: 320px;
+  }
+}
+
+/* Panel 3D – możesz nadpisać style bezpośrednio w JSX, ale tu daję na CSS */
+.about-3d-model-box > div:first-child {
+  flex: 1.5;
+  min-width: 260px;
+  max-width: 430px;
+  height: 320px;
+  background: rgba(24, 48, 64, 0.33);
+  border-radius: 20px;
+  box-shadow: 0 0 24px #00e6ff22;
+  overflow: hidden;
+  position: relative;
+}
+@media (max-width: 700px) {
+  .about-3d-model-box > div:first-child {
+    min-width: 210px;
+    max-width: 340px;
+    height: 220px;
+    margin-bottom: 10px;
+  }
+}
+
+/* Przykładowy styl dla panelu informacyjnego (HotspotInfoPanel) */
+.hotspot-info-panel {
+  position: relative;
+  max-width: 380px;
+  min-width: 320px;
+  box-shadow: 0 0 38px #00e6ff66;
+  border-radius: 20px;
+  z-index: 1000;
+  margin-left: 24px;
+}
+@media (max-width: 700px) {
+  .hotspot-info-panel {
+    max-width: 330px;
+    min-width: 215px;
+    margin-left: 0;
+    margin-top: 14px;
+  }
+}
+
+/* 3D Hotspot Button – możesz wyciągnąć do CSS jeśli chcesz! */
+.hotspot-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #122a38, #00e6ff 70%);
+  border: 2px solid #00e6ff;
+  box-shadow: 0 0 8px #00e6ff44;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: #fff;
+  font-weight: 700;
+  transition: all 0.2s;
+}
+
+.hotspot-btn.active {
+  background: radial-gradient(circle, #0ffcff, #00e6ff);
+  border: 3px solid #fff;
+  box-shadow: 0 0 20px #00e6ff88;
+}
+
+/* Menu nawigacyjne */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 70px;
+  z-index: 200;
+  pointer-events: none;
+}
+
+.navbar .logo-box {
+  pointer-events: auto;
+  opacity: 1;
+  transition: opacity 0.45s cubic-bezier(0.5, 0, 0.5, 1);
+}
+
+/* Itd... (reszta stylów nawigacji możesz zostawić inline jeśli masz dużo JS logic) */
+
+/* Możesz dodać własne media queries pod swoje potrzeby! */
