@@ -1,9 +1,64 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import Preloader from "../Preloader"; // Upewnij się, że ścieżka jest poprawna!
 
-const HeroSection = ({ isMobile }) => {
+const VIDEO_URL =
+  "https://ipdz3z5kzmmwbq5p.public.blob.vercel-storage.com/Video-uCRcJm1Zqjvs0EGNQQ428Hnmj2anGH.mp4";
+
+const HeroSection = ({ isMobile, lang, t }) => {
   const headerRef = useRef();
   const subRef = useRef();
+  const videoRef = useRef(null);
 
+  // Loader/progres video
+  const [showPreloader, setShowPreloader] = useState(true);
+  const [fadeOut, setFadeOut] = useState(false);
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    let wasReady = false;
+
+    // Co 100ms sprawdzamy stan video – to jest najpewniejsze na localhost/blob
+    const interval = setInterval(() => {
+      try {
+        const b = video.buffered;
+        const d = video.duration;
+        let percent = 0;
+        if (d && b.length > 0) {
+          let buffered = 0;
+          for (let i = 0; i < b.length; i++) buffered = b.end(i);
+          percent = Math.round((buffered / d) * 100);
+          percent = Math.max(0, Math.min(100, percent));
+        }
+        setProgress(percent);
+
+        // Sprawdzamy gotowość video (readyState === 4 = HAVE_ENOUGH_DATA)
+        if (!wasReady && video.readyState >= 4) {
+          wasReady = true;
+          setProgress(100);
+          setFadeOut(true);
+          setTimeout(() => setShowPreloader(false), 350);
+        }
+      } catch (e) {
+        setProgress(0);
+      }
+    }, 100);
+
+    // Dodatkowe zabezpieczenie: backup timeout (10s)
+    const backupTimeout = setTimeout(() => {
+      setFadeOut(true);
+      setTimeout(() => setShowPreloader(false), 350);
+    }, 10000);
+
+    return () => {
+      clearInterval(interval);
+      clearTimeout(backupTimeout);
+    };
+  }, []);
+
+  // Animacje wejścia nagłówków
   useEffect(() => {
     if (headerRef.current) {
       headerRef.current.style.opacity = 0;
@@ -42,6 +97,7 @@ const HeroSection = ({ isMobile }) => {
     >
       {/* Tło video */}
       <video
+        ref={videoRef}
         autoPlay
         loop
         muted
@@ -59,8 +115,16 @@ const HeroSection = ({ isMobile }) => {
           filter: "brightness(0.85)",
           pointerEvents: "none",
         }}
-        src="/Video.mp4"
+        src={VIDEO_URL}
       />
+
+      {showPreloader && (
+        <Preloader
+          progress={progress}
+          fadeOut={fadeOut}
+          onFadeOutEnd={() => setShowPreloader(false)}
+        />
+      )}
 
       {/* Tekst w dolnej części hero */}
       <div
@@ -89,8 +153,12 @@ const HeroSection = ({ isMobile }) => {
             letterSpacing: "-2px",
           }}
         >
-          See Your Construction Site <br />
-          <span style={{ color: "#00e6ff" }}>in a New Light</span>
+          {t.heroTitle.split("\n").map((line, i) => (
+            <React.Fragment key={i}>
+              {line}
+              <br />
+            </React.Fragment>
+          ))}
         </h1>
         <h2
           ref={subRef}
@@ -104,7 +172,7 @@ const HeroSection = ({ isMobile }) => {
             lineHeight: 1.2,
           }}
         >
-          Interactive digital twins for smart, safe, and successful building.
+          {t.heroSub}
         </h2>
         <div style={{ marginTop: "2rem" }}>
           <button
@@ -132,7 +200,7 @@ const HeroSection = ({ isMobile }) => {
               transition: "transform 0.1s",
             }}
           >
-            Explore your project
+            {t.exploreBtn}
           </button>
         </div>
       </div>

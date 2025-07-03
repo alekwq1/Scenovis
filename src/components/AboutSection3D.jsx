@@ -3,9 +3,7 @@ import * as THREE from "three";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Html, useGLTF } from "@react-three/drei";
 
-const NEON_BLUE = "#00e6ff";
-
-// FUNKCJA: płynna animacja kamery OrbitControls
+// Funkcja animacji kamery
 function animateCameraTo(orbitControls, position, target, duration = 1.0) {
   if (!orbitControls) return;
   const controls = orbitControls.object;
@@ -27,73 +25,24 @@ function animateCameraTo(orbitControls, position, target, duration = 1.0) {
   requestAnimationFrame(animate);
 }
 
-const DIGITAL_TWIN_INFO = {
-  id: "twin-intro",
-  label: "Cyfrowy Bliźniak",
-  desc: `
-    <b>Cyfrowy bliźniak</b> to zaawansowana, interaktywna wizualizacja rzeczywistego obiektu.<br><br>
-    Pozwala śledzić parametry na żywo, przewidywać awarie i testować scenariusze w bezpiecznym środowisku.<br><br>
-    <ul style="margin: 8px 0 0 18px; padding: 0; color: #b3fdff; font-size: 15px;">
-      <li>Klikaj <span style="font-size:20px;">+</span> na modelu, by zobaczyć szczegóły.</li>
-      <li>Obracaj i przybliżaj, by eksplorować każdy element.</li>
-      <li>Analizuj statusy, odczyty i historię inspekcji.</li>
-    </ul>
-    <br><b style="color:#0ffcff">Odkryj możliwości cyfrowego bliźniaka!</b>
-  `,
-  image: "/digitaltwin_intro.png",
-  extra: {},
-};
+const NEON_BLUE = "#00e6ff";
 
-const HOTSPOTS = [
-  {
-    id: "prod_center",
-    label: "Linia produkcyjna",
-    desc: "Główna linia montażowa – monitorowanie przebiegu procesu. <br>Status: <b style='color:#ffdf50'>W eksploatacji</b>.",
-    image: "/hotspot_center.png",
-    extra: {
-      status: "W eksploatacji",
-      lastInspection: "2025-07-03",
-      kpi: "Liczba cykli: 1245",
-    },
-    position: [-1, 2.5, -3.2],
-    camera: { position: [25, 20, 15], target: [-1, 2.5, -3.2] },
-  },
-  {
-    id: "prod_right_top",
-    label: "Kontrola jakości",
-    desc: "Strefa końcowej kontroli jakości produktów. <br>Status: <b style='color:#00ffba'>Bez uwag</b>.",
-    image: "/hotspot_right.png",
-    extra: {
-      status: "Bez uwag",
-      lastInspection: "2025-07-02",
-      kpi: "Błędy: 0 / 1000 szt.",
-    },
-    position: [4.5, 0.7, -2.5],
-    camera: { position: [20, 20, 20], target: [4.5, 0.7, -2.5] },
-  },
-  {
-    id: "prod_left",
-    label: "Strefa załadunku surowców",
-    desc: "Punkt załadunku komponentów do produkcji. <br>Status: <b style='color:#00ffba'>Aktywny</b>.",
-    image: "/hotspot_left.png",
-    extra: {
-      status: "Aktywny",
-      lastInspection: "2025-07-03",
-      kpi: "Waga surowca: 350 kg",
-    },
-    position: [10, 4.6, -4],
-    camera: { position: [50, 30, 5], target: [10, 4.6, -4] },
-  },
-];
+const AboutSection3D = ({ lang, t }) => {
+  const DIGITAL_TWIN_INFO = t.digitalTwinInfo;
+  const HOTSPOTS = t.hotspots;
 
-const AboutSection3D = () => {
   const [selectedHotspot, setSelectedHotspot] = useState(DIGITAL_TWIN_INFO);
   const [infoPanelOpen, setInfoPanelOpen] = useState(true);
   const orbitRef = useRef();
   const wrapperRef = useRef();
   const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
 
-  // Styl boxu 3D
+  // <--- DODAJ TEN useEffect! --->
+  useEffect(() => {
+    setSelectedHotspot(t.digitalTwinInfo);
+    setInfoPanelOpen(true);
+  }, [t, lang]);
+
   const modelBoxStyles = {
     flex: infoPanelOpen ? 1.5 : 2,
     minWidth: isMobile ? 364 : 462,
@@ -125,7 +74,6 @@ const AboutSection3D = () => {
     transition: "max-width 0.3s, min-width 0.3s",
   };
 
-  // Klik w hotspot – animacja kamery!
   const onHotspotClick = (hotspot) => {
     setSelectedHotspot(hotspot);
     setInfoPanelOpen(true);
@@ -138,15 +86,13 @@ const AboutSection3D = () => {
     }
   };
 
-  // Zamknij panel
   const handleCloseInfo = () => setInfoPanelOpen(false);
 
-  // Smooth scroll do #about przez linki
   useEffect(() => {
     const handler = (e) => {
       if (e.target.getAttribute("href") === "#about" && wrapperRef.current) {
         e.preventDefault();
-        const NAVBAR_HEIGHT = 92; // dostosuj do własnego navbara!
+        const NAVBAR_HEIGHT = 92;
         const sectionTop =
           wrapperRef.current.getBoundingClientRect().top + window.scrollY;
         const targetY = sectionTop - NAVBAR_HEIGHT;
@@ -162,7 +108,6 @@ const AboutSection3D = () => {
         .forEach((a) => a.removeEventListener("click", handler));
   }, []);
 
-  // ---- RENDER ----
   return (
     <section
       id="about"
@@ -214,7 +159,7 @@ const AboutSection3D = () => {
             lineHeight: 1.08,
           }}
         >
-          INTERAKTYWNY DIGITAL TWIN 3D
+          {t.about3dTitle}
         </h1>
         <div
           className="about-3d-model-box"
@@ -277,6 +222,8 @@ const AboutSection3D = () => {
               onClose={handleCloseInfo}
               isMobile={isMobile}
               style={infoPanelStyles}
+              lang={lang}
+              t={t}
             />
           )}
         </div>
@@ -287,9 +234,7 @@ const AboutSection3D = () => {
 
 export default AboutSection3D;
 
-// ===============================
-// Model z hotspotami
-
+// --- Model 3D z hotspotami ---
 function AboutModelWithHotspots({ hotspots, onHotspotClick, selectedHotspot }) {
   const { scene, animations } = useGLTF("/model.glb");
   const mixer = useRef();
@@ -323,7 +268,6 @@ function AboutModelWithHotspots({ hotspots, onHotspotClick, selectedHotspot }) {
   );
 }
 
-// Hotspot - plusik na modelu
 function Hotspot({ data, onClick, isActive }) {
   return (
     <mesh position={data.position}>
@@ -362,11 +306,12 @@ function Hotspot({ data, onClick, isActive }) {
   );
 }
 
-// ===============================
-// Panel informacyjny – wszystko lokalnie!
-
-function HotspotInfoPanel({ open, hotspot, onClose, isMobile }) {
+// --- Panel informacyjny ---
+function HotspotInfoPanel({ open, hotspot, onClose, isMobile, lang, t }) {
   if (!open || !hotspot) return null;
+
+  const translateStatus = (status) =>
+    (t.statuses && t.statuses[status]) || status;
 
   return (
     <div
@@ -397,7 +342,7 @@ function HotspotInfoPanel({ open, hotspot, onClose, isMobile }) {
           cursor: "pointer",
           zIndex: 10,
         }}
-        title="Zamknij panel"
+        title={lang === "pl" ? "Zamknij panel" : "Close panel"}
       >
         ×
       </button>
@@ -464,13 +409,15 @@ function HotspotInfoPanel({ open, hotspot, onClose, isMobile }) {
           }}
         >
           <div>
-            <strong>Status:</strong> {hotspot.extra.status}
+            <strong>{t.statusLabel}:</strong>{" "}
+            {translateStatus(hotspot.extra.status)}
           </div>
           <div>
-            <strong>Ostatnia inspekcja:</strong> {hotspot.extra.lastInspection}
+            <strong>{t.lastInspectionLabel}:</strong>{" "}
+            {hotspot.extra.lastInspection}
           </div>
           <div>
-            <strong>Parametry:</strong> {hotspot.extra.kpi}
+            <strong>{t.parametersLabel}:</strong> {hotspot.extra.kpi}
           </div>
         </div>
       )}

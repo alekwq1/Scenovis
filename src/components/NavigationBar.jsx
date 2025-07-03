@@ -1,44 +1,35 @@
 import React from "react";
 
 const navLinks = [
-  { id: "about", label: "About" },
-  { id: "services", label: "Services" },
-  { id: "resources", label: "Resources" },
+  { id: "about", label: { pl: "O nas", en: "About" } },
+  { id: "services", label: { pl: "Usługi", en: "Services" } },
+  { id: "resources", label: { pl: "Materiały", en: "Resources" } },
 ];
 
 const LOGO_SRC = "/logo-scenovis.png";
-const NAVBAR_HEIGHT = 70; // Wysokość navbara
+const NAVBAR_HEIGHT = 70;
 
-// Funkcja scrollująca sekcję do środka okna
+// Scroll do sekcji na środek ekranu (uwzględnia navbar)
 function scrollSectionToCenter(id) {
   const el = document.getElementById(id);
   if (!el) return;
-
-  // Odległość od górnej krawędzi dokumentu
   const rect = el.getBoundingClientRect();
   const scrollTop = window.scrollY || document.documentElement.scrollTop;
-  // Wysokość sekcji i okna
   const elHeight = rect.height;
   const winHeight = window.innerHeight;
-  // Pozycja sekcji względem okna
   let top = rect.top + scrollTop;
-
-  // Wyliczamy tak, by środek sekcji był na środku ekranu,
-  // ale bierzemy pod uwagę navbar wysokości NAVBAR_HEIGHT
   top = top - (winHeight / 2 - elHeight / 2) - NAVBAR_HEIGHT / 2;
-
   window.scrollTo({
     top: top,
     behavior: "smooth",
   });
 }
 
-const NavigationBar = ({ showFixedNav = true }) => {
+const NavigationBar = ({ showFixedNav = true, lang, setLang, t }) => {
   const handleNavClick = (e, id) => {
     e.preventDefault();
     scrollSectionToCenter(id);
   };
-
   const handleContactClick = (e) => {
     e.preventDefault();
     scrollSectionToCenter("contact");
@@ -150,11 +141,11 @@ const NavigationBar = ({ showFixedNav = true }) => {
               e.currentTarget.style.color = "rgba(255,255,255,0.93)";
             }}
           >
-            {link.label}
+            {link.label[lang]}
           </a>
         ))}
       </div>
-      {/* Contact Us po prawej */}
+      {/* Contact Us + Język po prawej */}
       <div
         style={{
           position: "absolute",
@@ -164,6 +155,27 @@ const NavigationBar = ({ showFixedNav = true }) => {
           pointerEvents: "auto",
         }}
       >
+        {/* Przełącznik języka */}
+        <button
+          onClick={() => setLang(lang === "pl" ? "en" : "pl")}
+          style={{
+            fontWeight: 700,
+            background: "none",
+            color: "#00e6ff",
+            border: "none",
+            fontSize: 18,
+            cursor: "pointer",
+            marginRight: 8,
+            padding: "0.3rem 0.7rem",
+            borderRadius: 8,
+            outline: "none",
+            transition: "background 0.2s",
+          }}
+          title={lang === "pl" ? "English" : "Polski"}
+        >
+          {lang === "pl" ? "EN" : "PL"}
+        </button>
+        {/* Contact Us */}
         <a
           href="#contact"
           style={{
@@ -194,7 +206,7 @@ const NavigationBar = ({ showFixedNav = true }) => {
             e.currentTarget.style.boxShadow = "0 2px 12px 0 #00e6ff20";
           }}
         >
-          Contact Us
+          {t.contactUs || "Contact Us"}
           <span style={{ fontSize: "1.15em", marginLeft: "3px" }}>↗</span>
         </a>
       </div>

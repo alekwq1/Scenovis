@@ -1,15 +1,13 @@
 import React, { useState } from "react";
 import { createPortal } from "react-dom";
 
-// Zamień na swoją ścieżkę do zdjęcia!
-const MY_PHOTO = "/aleks.png";
+// const MY_PHOTO = "/aleks.png";
 
-const CTASection = ({ isMobile }) => {
+const CTASection = ({ isMobile, lang, t }) => {
   const [modal, setModal] = useState(null); // null | 'demo' | 'photo'
   const [sent, setSent] = useState(false);
 
   const handleSubmit = (e) => {
-    // NIE dawaj e.preventDefault()!
     setSent(true);
     setTimeout(() => {
       setModal(null);
@@ -38,7 +36,7 @@ const CTASection = ({ isMobile }) => {
           textShadow: "0 2px 32px #00e6ff55",
         }}
       >
-        Ready to Transform Your Business?
+        {t.ctaTitle}
       </h1>
       <p
         style={{
@@ -51,7 +49,7 @@ const CTASection = ({ isMobile }) => {
           color: "#8eeeff",
         }}
       >
-        Let's discuss how I can help you implement digital twin solutions.
+        {t.ctaDesc}
       </p>
 
       {/* FOTO + PODPIS */}
@@ -68,8 +66,8 @@ const CTASection = ({ isMobile }) => {
         className="cta-photo-simple"
       >
         <img
-          src={MY_PHOTO}
-          alt="Aleks from Scenovis"
+          src={t.ctaPhoto || "/aleks.png"}
+          alt={t.ctaPhotoAlt || "Aleks from Scenovis"}
           className="cta-photo-img"
           loading="lazy"
           style={{
@@ -86,7 +84,7 @@ const CTASection = ({ isMobile }) => {
             cursor: "pointer",
           }}
           onClick={() => setModal("photo")}
-          title="Click for Aleks's unique angle"
+          title={t.ctaPhotoTitle || "Click for unique angle"}
         />
         <div
           style={{
@@ -110,7 +108,7 @@ const CTASection = ({ isMobile }) => {
               letterSpacing: ".01em",
             }}
           >
-            Digital Twin Leader
+            {t.ctaRole || "Digital Twin Leader"}
           </div>
         </div>
         <style>{`
@@ -159,7 +157,7 @@ const CTASection = ({ isMobile }) => {
           }}
           onClick={() => setModal("demo")}
         >
-          Contact Me
+          {t.ctaButton}
         </button>
       </div>
 
@@ -236,8 +234,7 @@ const CTASection = ({ isMobile }) => {
                   width: "100%",
                 }}
               >
-                My Unique Angle{" "}
-                <span style={{ fontSize: 15, color: "#00ffd8" }}></span>
+                {t.ctaModalTitle}
               </div>
               <div
                 style={{
@@ -250,20 +247,20 @@ const CTASection = ({ isMobile }) => {
                 }}
               >
                 <SectionBlock
-                  title="Kim jestem?"
-                  desc="Entuzjasta nowych technologii, z pasją do wdrażania cyfrowych rozwiązań, które mają realny wpływ na firmy i ludzi."
+                  title={t.ctaModal1.title}
+                  desc={t.ctaModal1.desc}
                 />
                 <SectionBlock
-                  title="Dlaczego warto mi zaufać?"
-                  desc="Pracowałem z największymi zespołami i korporacjami w Polsce i Europie, ale zawsze najważniejsze były dla mnie relacje i konkretne efekty dla użytkowników."
+                  title={t.ctaModal2.title}
+                  desc={t.ctaModal2.desc}
                 />
                 <SectionBlock
-                  title="Co mnie napędza?"
-                  desc="Lubię, gdy technologia naprawdę służy ludziom i biznesowi. Fascynuje mnie, jak Digital Twin usprawnia życie, pracę i bezpieczeństwo — nie tylko jest „fajny”, ale rozwiązuje prawdziwe problemy."
+                  title={t.ctaModal3.title}
+                  desc={t.ctaModal3.desc}
                 />
                 <SectionBlock
-                  title="Co zrobię dla Ciebie?"
-                  desc="Pomogę wdrożyć cyfrowego bliźniaka w Twojej firmie, uproszczę procesy, pokażę potencjał technologii i przełożę cyfrowe pomysły na wymierne korzyści."
+                  title={t.ctaModal4.title}
+                  desc={t.ctaModal4.desc}
                 />
               </div>
             </div>
@@ -345,7 +342,7 @@ const CTASection = ({ isMobile }) => {
                   fontWeight: 800,
                 }}
               >
-                Schedule a Demo
+                {t.ctaDemoTitle}
               </h2>
               {sent ? (
                 <div
@@ -356,8 +353,7 @@ const CTASection = ({ isMobile }) => {
                     padding: "1.2rem 0",
                   }}
                 >
-                  Thank you! <br />
-                  We’ll get back to you soon.
+                  {t.ctaDemoThanks}
                 </div>
               ) : (
                 <form
@@ -371,19 +367,19 @@ const CTASection = ({ isMobile }) => {
                   <input type="hidden" name="form-name" value="demo" />
                   <div style={{ marginBottom: 16 }}>
                     <label htmlFor="name" style={{ fontWeight: 600 }}>
-                      Your Name:
+                      {t.ctaFormName}
                     </label>
                     <input
                       required
                       id="name"
                       name="name"
                       style={inputStyle}
-                      placeholder="Enter your name"
+                      placeholder={t.ctaFormNamePh}
                     />
                   </div>
                   <div style={{ marginBottom: 16 }}>
                     <label htmlFor="email" style={{ fontWeight: 600 }}>
-                      Your Email:
+                      {t.ctaFormEmail}
                     </label>
                     <input
                       required
@@ -391,12 +387,12 @@ const CTASection = ({ isMobile }) => {
                       name="email"
                       type="email"
                       style={inputStyle}
-                      placeholder="Enter your email"
+                      placeholder={t.ctaFormEmailPh}
                     />
                   </div>
                   <div style={{ marginBottom: 18 }}>
                     <label htmlFor="msg" style={{ fontWeight: 600 }}>
-                      Describe your needs:
+                      {t.ctaFormMsg}
                     </label>
                     <textarea
                       required
@@ -408,7 +404,7 @@ const CTASection = ({ isMobile }) => {
                         minHeight: 70,
                         resize: "vertical",
                       }}
-                      placeholder="How can I help you?"
+                      placeholder={t.ctaFormMsgPh}
                     />
                   </div>
                   <button
@@ -427,7 +423,7 @@ const CTASection = ({ isMobile }) => {
                       marginTop: 10,
                     }}
                   >
-                    Send Request
+                    {t.ctaSendBtn}
                   </button>
                   <div
                     style={{
@@ -437,9 +433,7 @@ const CTASection = ({ isMobile }) => {
                       fontSize: 14,
                     }}
                   >
-                    <span style={{ opacity: 0.7 }}>
-                      Your message will go to Scenovis team!
-                    </span>
+                    <span style={{ opacity: 0.7 }}>{t.ctaFormNote}</span>
                   </div>
                 </form>
               )}
@@ -459,7 +453,7 @@ const CTASection = ({ isMobile }) => {
   );
 };
 
-// Czytelna sekcja tekstowa
+// Blok sekcji modalowej
 function SectionBlock({ title, desc }) {
   return (
     <div style={{ marginBottom: 24 }}>

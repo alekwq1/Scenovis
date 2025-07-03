@@ -1,26 +1,37 @@
 import React, { useState } from "react";
 
-// Poprawione na format EMBED (dla iframe):
+// Pełne zasoby video + opcjonalny krótki opis PL/EN w t
 const resources = [
   {
     name: "TWINZO 3D Digital Twin",
     video: "https://www.youtube.com/embed/XPsCax4ADKY",
+    yt: "XPsCax4ADKY",
+    key: "twinzo",
   },
   {
     name: "NVIDIA Omniverse Factory",
     video: "https://www.youtube.com/embed/6-DaWgg4zF8",
+    yt: "6-DaWgg4zF8",
+    key: "omniverse",
   },
   {
     name: "Treedis Digital Twins",
     video: "https://www.youtube.com/embed/zWki7R8pqk4",
+    yt: "zWki7R8pqk4",
+    key: "treedis",
   },
   {
     name: "Autodesk Tandem",
     video: "https://www.youtube.com/embed/6Tillp1k5UM",
+    yt: "6Tillp1k5UM",
+    key: "tandem",
   },
 ];
 
-const VideoResourcesSection = ({ isMobile }) => {
+const getYoutubeThumb = (ytId) =>
+  `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
+
+const VideoResourcesSection = ({ isMobile, lang, t }) => {
   const [opened, setOpened] = useState(null);
 
   // Modal video box
@@ -56,7 +67,7 @@ const VideoResourcesSection = ({ isMobile }) => {
         onClick={(e) => e.stopPropagation()}
       >
         <button
-          aria-label="Zamknij"
+          aria-label={lang === "pl" ? "Zamknij" : "Close"}
           style={{
             position: "absolute",
             right: 10,
@@ -123,7 +134,7 @@ const VideoResourcesSection = ({ isMobile }) => {
           color: "#00e6ff",
         }}
       >
-        Digital Twins in Action
+        {t?.resourcesTitle || "Digital Twins in Action"}
       </h1>
       <p
         style={{
@@ -133,8 +144,8 @@ const VideoResourcesSection = ({ isMobile }) => {
           maxWidth: "800px",
         }}
       >
-        Explore these curated examples to see how digital twins are transforming
-        industries:
+        {t?.resourcesDesc ||
+          "Explore these curated examples to see how digital twins are transforming industries:"}
       </p>
       <div
         style={{
@@ -150,35 +161,77 @@ const VideoResourcesSection = ({ isMobile }) => {
               display: "flex",
               alignItems: "center",
               padding: "1.2rem",
-              border: "1px solid rgba(255,255,255,0.12)",
-              borderRadius: "12px",
-              transition: "all 0.3s ease",
+              border:
+                opened === i
+                  ? "2px solid #00e6ff"
+                  : "1px solid rgba(255,255,255,0.13)",
+              borderRadius: "14px",
+              transition: "all 0.3s cubic-bezier(.55,1.3,.44,.9)",
               textDecoration: "none",
               color: "#e0f7ff",
-              background: "rgba(255,255,255,0.03)",
+              background:
+                opened === i
+                  ? "linear-gradient(110deg, #03111c 60%, #043c51 120%)"
+                  : "rgba(255,255,255,0.03)",
               gap: "1.25rem",
               position: "relative",
               cursor: "pointer",
-              boxShadow: opened === i ? "0 0 18px #00e6ff77" : undefined,
+              boxShadow:
+                opened === i ? "0 0 28px #00e6ff88" : "0 1px 6px #00e6ff17",
+              minHeight: 110,
+              outline: "none",
             }}
+            tabIndex={0}
             onClick={() => setOpened(i)}
+            onKeyDown={(e) =>
+              (e.key === "Enter" || e.key === " ") && setOpened(i)
+            }
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.transform = "scale(1.035)")
+            }
+            onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
           >
             <div
               style={{
-                width: "46px",
-                height: "46px",
-                background: "rgba(0, 230, 255, 0.14)",
-                borderRadius: "14px",
+                width: isMobile ? 90 : 120,
+                height: isMobile ? 64 : 76,
+                background: "#011b29",
+                borderRadius: "10px",
+                overflow: "hidden",
+                flexShrink: 0,
+                boxShadow: "0 2px 16px #00e6ff33",
+                border: opened === i ? "2px solid #00e6ff" : "none",
+                transition: "border 0.2s",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                flexShrink: 0,
-                transition: "background 0.25s",
-                boxShadow: opened === i ? "0 0 14px #00e6ff77" : undefined,
-                fontSize: "1.62rem",
+                position: "relative",
               }}
             >
-              <svg width="26" height="26" viewBox="0 0 26 26">
+              <img
+                src={getYoutubeThumb(item.yt)}
+                alt={item.name}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  display: "block",
+                  borderRadius: "10px",
+                  opacity: 0.98,
+                }}
+              />
+              <svg
+                style={{
+                  position: "absolute",
+                  bottom: 8,
+                  right: 9,
+                  width: 29,
+                  height: 29,
+                  filter: "drop-shadow(0 2px 7px #00e6ff55)",
+                  opacity: 0.88,
+                }}
+                viewBox="0 0 26 26"
+              >
                 <circle
                   cx="13"
                   cy="13"
@@ -190,11 +243,30 @@ const VideoResourcesSection = ({ isMobile }) => {
                 <polygon points="10.5,8.2 18,13 10.5,17.8" fill="#00e6ff" />
               </svg>
             </div>
-            <span
-              style={{ fontSize: "1.14rem", fontWeight: 600, color: "#b3fdff" }}
-            >
-              {item.name}
-            </span>
+            <div style={{ flex: 1 }}>
+              <div
+                style={{
+                  fontSize: "1.14rem",
+                  fontWeight: 600,
+                  color: "#b3fdff",
+                  marginBottom: 5,
+                }}
+              >
+                {item.name}
+              </div>
+              <div
+                style={{
+                  color: "#8defff",
+                  fontSize: ".98rem",
+                  fontWeight: 500,
+                  opacity: 0.92,
+                  minHeight: 19,
+                }}
+              >
+                {/* Krótki opis z tłumaczeń */}
+                {t?.resourcesShort?.[item.key] || ""}
+              </div>
+            </div>
           </div>
         ))}
       </div>

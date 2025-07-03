@@ -1,7 +1,8 @@
 import React from "react";
 
-const YT_URL = "https://www.youtube.com/@AlekscanUE"; // ← podmień na Twój YouTube
-const LN_URL = "https://www.linkedin.com/in/aleks-malyshka/"; // ← podmień na Twój LinkedIn
+// Social media links
+const YT_URL = "https://www.youtube.com/@AlekscanUE";
+const LN_URL = "https://www.linkedin.com/in/aleks-malyshka/";
 
 const iconStyle = {
   width: 34,
@@ -25,8 +26,22 @@ const iconHoverStyle = {
   border: "1.6px solid #00e6ff88",
 };
 
-const FooterSection = () => {
+// Przekaż: lang, t={translations[lang]}
+const FooterSection = ({ lang, t }) => {
   const [hovered, setHovered] = React.useState("");
+
+  // Domyślne tłumaczenia dla linków i stopki
+  const links = [
+    { href: "#", label: t.footerBlog || "Blog" },
+    { href: "#about", label: t.footerAbout || "About" },
+    { href: "#services", label: t.footerServices || "Services" },
+    { href: "#resources", label: t.footerCases || "Case Studies" },
+
+    { href: "#contact", label: t.footerContact || "Contact" },
+  ];
+  const copyright =
+    t.footerCopy ||
+    "© 2023 Scenovis Digital Solutions. All rights reserved. Transforming industries through digital twin technology.";
 
   return (
     <footer
@@ -110,27 +125,15 @@ const FooterSection = () => {
           flexWrap: "wrap",
         }}
       >
-        <a href="#about" style={{ color: "inherit", textDecoration: "none" }}>
-          About
-        </a>
-        <a
-          href="#services"
-          style={{ color: "inherit", textDecoration: "none" }}
-        >
-          Services
-        </a>
-        <a
-          href="#resources"
-          style={{ color: "inherit", textDecoration: "none" }}
-        >
-          Case Studies
-        </a>
-        <a href="#" style={{ color: "inherit", textDecoration: "none" }}>
-          Blog
-        </a>
-        <a href="#contact" style={{ color: "inherit", textDecoration: "none" }}>
-          Contact
-        </a>
+        {links.map((l) => (
+          <a
+            key={l.href}
+            href={l.href}
+            style={{ color: "inherit", textDecoration: "none" }}
+          >
+            {l.label}
+          </a>
+        ))}
       </div>
       {/* Copy */}
       <div
@@ -142,8 +145,7 @@ const FooterSection = () => {
           padding: "0 1rem",
         }}
       >
-        © 2023 Scenovis Digital Solutions. All rights reserved. Transforming
-        industries through digital twin technology.
+        {copyright}
       </div>
     </footer>
   );

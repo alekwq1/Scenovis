@@ -8,10 +8,13 @@ import ServicesSection from "./components/Sections/ServicesSection";
 import VideoResourcesSection from "./components/Sections/VideoResourcesSection";
 import CTASection from "./components/Sections/CTASection";
 import FooterSection from "./components/Sections/FooterSection";
+import translations from "./translations";
 import { Canvas } from "@react-three/fiber";
 import { Environment } from "@react-three/drei";
 
 const App = () => {
+  const [lang, setLang] = useState("pl");
+
   useEffect(() => {
     console.log("APP mounted");
     return () => console.log("APP UNmounted");
@@ -46,28 +49,6 @@ const App = () => {
 
   return (
     <>
-      {/* FULLSCREEN VIDEO background na spodzie */}
-      <video
-        autoPlay
-        loop
-        muted
-        playsInline
-        style={{
-          position: "fixed",
-          left: 0,
-          top: 0,
-          width: "100vw",
-          height: "100vh",
-          objectFit: "cover",
-          objectPosition: "center",
-          zIndex: 0,
-          opacity: 1,
-          filter: "brightness(0.85)",
-          pointerEvents: "none",
-        }}
-        src="/Video.mp4" // <-- NAZWA pliku video w public!
-      />
-
       {/* Preloader */}
       {showPreloader && (
         <Preloader
@@ -77,7 +58,12 @@ const App = () => {
         />
       )}
 
-      <NavigationBar showFixedNav={showFixedNav} />
+      <NavigationBar
+        showFixedNav={showFixedNav}
+        lang={lang}
+        setLang={setLang}
+        t={translations[lang]}
+      />
       <SectionProgressBar />
 
       {/* Canvas 3D */}
@@ -123,12 +109,20 @@ const App = () => {
           flexDirection: "column",
         }}
       >
-        <HeroSection isMobile={isMobile} />
-        <AboutSection3D />
-        <ServicesSection isMobile={isMobile} />
-        <VideoResourcesSection isMobile={isMobile} />
-        <CTASection isMobile={isMobile} />
-        <FooterSection />
+        <HeroSection isMobile={isMobile} lang={lang} t={translations[lang]} />
+        <AboutSection3D lang={lang} t={translations[lang]} />
+        <ServicesSection
+          isMobile={isMobile}
+          lang={lang}
+          t={translations[lang]}
+        />
+        <VideoResourcesSection
+          isMobile={isMobile}
+          lang={lang}
+          t={translations[lang]}
+        />
+        <CTASection isMobile={isMobile} lang={lang} t={translations[lang]} />
+        <FooterSection lang={lang} t={translations[lang]} />
       </main>
     </>
   );
