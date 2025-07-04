@@ -10,7 +10,6 @@ const translations = {
     resourcesTitle: "Cyfrowe bliźniaki w praktyce",
     resourcesDesc: "Poznaj przykłady, jak digital twin zmienia przemysł:",
 
-    // MINI OPISY VIDEO (pod miniaturami)
     resourcesShort: {
       twinzo: "Przemysłowa platforma digital twin do monitorowania zakładów.",
       omniverse: "Symulacje fabryk i procesów z użyciem Omniverse od NVIDIA.",
@@ -18,7 +17,6 @@ const translations = {
       tandem: "Cyfrowy bliźniak od Autodesk – BIM w praktyce.",
     },
 
-    // CTA SECTION
     ctaTitle: "Gotowy na cyfrową rewolucję?",
     ctaDesc:
       "Porozmawiajmy o tym, jak mogę pomóc wdrożyć cyfrowe bliźniaki w Twojej firmie.",
@@ -27,7 +25,6 @@ const translations = {
     ctaPhotoAlt: "Aleks ze Scenovis",
     ctaRole: "Lider Digital Twin",
 
-    // CTA MODAL - "My Unique Angle"
     ctaModalTitle: "Moje unikalne spojrzenie",
     ctaModal1: {
       title: "Kim jestem?",
@@ -46,7 +43,6 @@ const translations = {
       desc: "Pomogę wdrożyć cyfrowego bliźniaka w Twojej firmie, uproszczę procesy, pokażę potencjał technologii i przełożę cyfrowe pomysły na wymierne korzyści.",
     },
 
-    // CTA FORMULARZ - MODAL DEMO
     ctaDemoTitle: "Umów się na demo",
     ctaDemoThanks: "Dziękuję! Skontaktujemy się wkrótce.",
     ctaFormName: "Twoje imię:",
@@ -58,7 +54,6 @@ const translations = {
     ctaSendBtn: "Wyślij zgłoszenie",
     ctaFormNote: "Twoja wiadomość trafi do zespołu Scenovis!",
 
-    // ABOUT 3D (digital twin)
     digitalTwinInfo: {
       id: "twin-intro",
       label: "Cyfrowy Bliźniak",
@@ -122,7 +117,6 @@ const translations = {
       "Bez uwag": "Bez uwag",
       Aktywny: "Aktywny",
     },
-    // FOOTER NAV
     footerAbout: "O nas",
     footerServices: "Usługi",
     footerCases: "Przykłady",
@@ -131,57 +125,75 @@ const translations = {
     footerCopy:
       "© 2023 Scenovis Digital Solutions. Wszelkie prawa zastrzeżone. Transformujemy przemysł dzięki technologii digital twin.",
 
-    // SERVICES SECTION
     servicesSectionTitle: "Usługi Digital Twin & BIM",
     services: [
       {
         title: "Modelowanie 3D na podstawie dokumentacji 2D",
-        desc: "Modele 3D na podstawie rysunków DWG/PDF lub skanów chmury punktów.<br /><span style='color:#2ef9e8;font-weight:700'>Szacowana cena od 18 zł/m²</span>",
-        img: "/services/visualization.png",
+        desc: "Modele 3D na podstawie rysunków DWG/PDF lub skanów chmury punktów.<br /><span style='color:#2ef9e8;font-weight:700'>Szacowana cena od 2 zł/m²</span>",
+        video: "/services/visualization.mp4",
         link: "/zamow-modelowanie-3d",
         cta: "Zamów model 3D",
       },
       {
         title: "Wizualizacja i spacery 3D (Expo, VR/AR, makiety cyfrowe)",
-        desc: "Prezentacje 3D do targów, na stronę lub do metaversum. Interaktywny spacer online lub w VR/AR. Skanowanie istniejących budynków z szybkim dostępem w chmurze.<br /><span style='color:#2ef9e8;font-weight:700'>Szacowana cena od 25 zł/m²</span>",
-        img: "/services/walkthrough.png",
+        desc: "Prezentacje 3D do targów, na stronę lub do metaversum. Interaktywny spacer online lub w VR/AR. Skanowanie istniejących budynków z szybkim dostępem w chmurze.<br /><span style='color:#2ef9e8;font-weight:700'>Szacowana cena od 1 zł/m²</span>",
+        video: "/services/walkthrough.mp4",
         link: "/zamow-wizualizacje",
         cta: "Zamów wizualizację",
       },
       {
         title: "Facility Management & Lean Digital Twin",
-        desc: "Cyfrowy bliźniak istniejącego obiektu z analizą Lean.<br />Monitoring postępów, awarii, alarmów – integracja z Power BI.<br />Wirtualne zarządzanie obiektem, raporty i powiadomienia.<br /><span style='color:#2ef9e8;font-weight:700'>Szacowana cena od 19 zł/m²</span>",
-        img: "/services/fm_dtw.png",
+        desc: "Cyfrowy bliźniak istniejącego obiektu z analizą Lean.<br />Monitoring postępów, awarii, alarmów – integracja z Power BI.<br />Wirtualne zarządzanie obiektem, raporty i powiadomienia.<br /><span style='color:#2ef9e8;font-weight:700'>Szacowana cena od 4 zł/m²</span>",
+        video: "/services/fm_dtw.mp4",
         link: "/zamow-fm-twin",
         cta: "Zamów Digital Twin FM",
       },
       {
         title: "Cyfrowy Bliźniak Budowy + Analiza Power BI",
-        desc: "Digital twin inwestycji w trakcie budowy.<br />Analiza postępu prac, integracja z Power BI, analiza kosztów Lean.<br />Interaktywny raport i widok 3D postępu online.<br /><span style='color:#2ef9e8;font-weight:700'>Szacowana cena od 22 zł/m²</span>",
-        img: "/services/construction_twin.png",
+        desc: "Digital twin inwestycji w trakcie budowy.<br />Analiza postępu prac, integracja z Power BI, analiza kosztów Lean.<br />Interaktywny raport i widok 3D postępu online.<br /><span style='color:#2ef9e8;font-weight:700'>Szacowana cena od 2 zł/m²</span>",
+        video: "/services/construction_twin.mp4",
         link: "/zamow-twin-budowy",
         cta: "Zamów Digital Twin Budowy",
       },
       {
         title: "Opracowanie standardów EIR, BEP, wdrożenie",
-        desc: "Kompleksowe opracowanie i wdrożenie standardów EIR, BEP oraz procesów cyfrowych zgodnych z ISO 19650.<br /><span style='color:#2ef9e8;font-weight:700'>Szacowana cena od 3 500 zł (projekt)</span>",
-        img: "/services/bim_4d5d.png",
+        desc: "Kompleksowe opracowanie i wdrożenie standardów EIR, BEP oraz procesów cyfrowych.<br /><span style='color:#2ef9e8;font-weight:700'>Szacowana cena od 3 500 zł (projekt)</span>",
+        video: "/services/bim_4d5d.mp4",
         link: "/zamow-bep-eir",
         cta: "Zamów wdrożenie EIR/BEP",
       },
       {
         title: "Szkolenia z modelowania, zarządzania CDE/BIM",
         desc: "Szkolenia online i stacjonarne z modelowania 3D, BIM, zarządzania CDE.<br />Wdrożenie platform do zarządzania dokumentacją. Personalizowane warsztaty dla zespołów.<br /><span style='color:#2ef9e8;font-weight:700'>Szacowana cena od 950 zł (szkolenie)</span>",
-        img: "/services/training.png",
+        video: "/services/training.mp4",
         link: "/zamow-szkolenie",
         cta: "Zamów szkolenie",
       },
       {
         title: "Kosztorysowanie oraz BIM 4D/5D",
-        desc: "Przygotowanie kosztorysów na podstawie modeli BIM (4D/5D), analiza kosztów i harmonogramów, integracja z Power BI lub Excel.<br /><span style='color:#2ef9e8;font-weight:700'>Szacowana cena od 1 900 zł (projekt)</span>",
-        img: "/services/costing.png",
+        desc: "Przygotowanie kosztorysów na podstawie modeli BIM (4D/5D), analiza kosztów i harmonogramów, integracja z Power BI lub Excel.<br /><span style='color:#2ef9e8;font-weight:700'>Szacowana cena od 2 zł/m²</span>",
+        video: "/services/costing.mp4",
         link: "/zamow-bim4d5d",
         cta: "Zamów kosztorysowanie/BIM 4D/5D",
+      },
+      {
+        title:
+          "Cykliczne Porównanie postępu prac na budowie przez stronę PZPB z opcją zmiany statusów szkoleń BHP",
+        desc: `
+          <b>Monitoruj i porównuj postępy prac na budowie</b> – cyklicznie, przez dedykowaną stronę internetową PZPB budowy.<br>
+          Usługa umożliwia wygodne śledzenie harmonogramu, szybkie generowanie raportów oraz elastyczną zmianę statusów szkoleń BHP dla wszystkich pracowników w jednym miejscu.<br>
+          Dostęp do zaawansowanych narzędzi porównawczych oraz archiwum historii zmian.<br>
+          Idealne rozwiązanie dla kierowników budów i działów HR.
+          <ul style="margin:0 0 8px 24px; padding:0; color:#b2f6fa;">
+            <li>Podgląd porównania postępu z poprzednimi okresami</li>
+            <li>Eksport raportów PDF/CSV</li>
+            <li>Zarządzanie szkoleniami BHP</li>
+          </ul>
+        `,
+        img: "/img/pzpb-comparison.png",
+        video: "",
+        link: "https://pzpb-budowy.pl",
+        cta: "Zobacz demo",
       },
     ],
   },
@@ -197,7 +209,6 @@ const translations = {
     resourcesDesc:
       "Explore these curated examples to see how digital twins are transforming industries:",
 
-    // MINI DESCRIPTIONS VIDEO (under thumbnails)
     resourcesShort: {
       twinzo: "Industrial digital twin platform for plant monitoring.",
       omniverse: "Factory and process simulation with NVIDIA Omniverse.",
@@ -205,7 +216,6 @@ const translations = {
       tandem: "Autodesk's digital twin – BIM in action.",
     },
 
-    // CTA SECTION
     ctaTitle: "Ready to Transform Your Business?",
     ctaDesc:
       "Let's discuss how I can help you implement digital twin solutions.",
@@ -214,7 +224,6 @@ const translations = {
     ctaPhotoAlt: "Aleks from Scenovis",
     ctaRole: "Digital Twin Leader",
 
-    // CTA MODAL - "My Unique Angle"
     ctaModalTitle: "My Unique Angle",
     ctaModal1: {
       title: "Who am I?",
@@ -233,7 +242,6 @@ const translations = {
       desc: "I'll help you implement a digital twin in your company, simplify processes, show the potential of the technology, and turn digital ideas into measurable benefits.",
     },
 
-    // CTA FORM - DEMO MODAL
     ctaDemoTitle: "Schedule a Demo",
     ctaDemoThanks: "Thank you! We’ll get back to you soon.",
     ctaFormName: "Your Name:",
@@ -245,7 +253,6 @@ const translations = {
     ctaSendBtn: "Send Request",
     ctaFormNote: "Your message will go to the Scenovis team!",
 
-    // ABOUT 3D (digital twin)
     digitalTwinInfo: {
       id: "twin-intro",
       label: "Digital Twin",
@@ -309,7 +316,6 @@ const translations = {
       "No issues": "No issues",
       Active: "Active",
     },
-    // FOOTER NAV
     footerAbout: "About",
     footerServices: "Services",
     footerCases: "Case Studies",
@@ -318,7 +324,6 @@ const translations = {
     footerCopy:
       "© 2023 Scenovis Digital Solutions. All rights reserved. Transforming industries through digital twin technology.",
 
-    // SERVICES SECTION
     servicesSectionTitle: "Digital Twin & BIM Services",
     services: [
       {
@@ -338,7 +343,7 @@ const translations = {
       {
         title: "Facility Management & Lean Digital Twin",
         desc: "Digital twin of an existing facility with Lean analysis.<br />Progress, failure, and alarm monitoring – Power BI integration.<br />Virtual facility management, reports and notifications.<br /><span style='color:#2ef9e8;font-weight:700'>Estimated price from 19 PLN/m²</span>",
-        img: "/services/fm_dtw.png",
+        img: "/services/fm_dtw.mp4",
         link: "/order-fm-twin",
         cta: "Order FM Digital Twin",
       },
@@ -369,6 +374,25 @@ const translations = {
         img: "/services/costing.png",
         link: "/order-bim4d5d",
         cta: "Order Costing/BIM 4D/5D",
+      },
+      {
+        title:
+          "Cyclical Construction Progress Comparison via PZPB Site with BHP Training Status Control",
+        desc: `
+          <b>Monitor and compare construction progress</b> – cyclically, via a dedicated PZPB site.<br>
+          The service allows convenient schedule tracking, fast report generation, and flexible management of BHP (health & safety) training statuses for all employees in one place.<br>
+          Access advanced comparison tools and a full change history archive.<br>
+          Perfect for construction managers and HR teams.
+          <ul style="margin:0 0 8px 24px; padding:0; color:#b2f6fa;">
+            <li>View progress comparison with previous periods</li>
+            <li>Export reports to PDF/CSV</li>
+            <li>BHP training management</li>
+          </ul>
+        `,
+        img: "/img/pzpb-comparison.png",
+        video: "",
+        link: "https://pzpb-budowy.pl",
+        cta: "See demo",
       },
     ],
   },

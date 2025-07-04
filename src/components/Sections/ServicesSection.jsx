@@ -21,12 +21,12 @@ const ServicesSection = ({ isMobile, t }) => {
         position: "relative",
       }}
     >
-      {/* LEFT COLUMN – IMAGE */}
+      {/* LEWA KOLUMNA: OBRAZ LUB VIDEO */}
       <div
         style={{
           position: isMobile ? "relative" : "sticky",
           top: isMobile ? "auto" : "7.5rem",
-          height: isMobile ? 200 : 350,
+          height: isMobile ? 200 : 550,
           minHeight: isMobile ? 0 : 270,
           width: "100%",
           background: "#101925",
@@ -38,32 +38,61 @@ const ServicesSection = ({ isMobile, t }) => {
           justifyContent: "center",
         }}
       >
-        {t.services.map((srv, idx) => (
-          <img
-            key={srv.img}
-            src={srv.img}
-            alt={srv.title}
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              position: "absolute",
-              top: 0,
-              left: 0,
-              opacity: idx === active ? 1 : 0,
-              transition: "opacity 0.44s cubic-bezier(.5,1.5,.5,1.05)",
-              zIndex: idx === active ? 2 : 0,
-              filter:
-                idx === active ? "drop-shadow(0 0 24px #00e6ff55)" : "none",
-              borderRadius: 20,
-              pointerEvents: "none",
-              userSelect: "none",
-            }}
-            draggable={false}
-          />
-        ))}
+        {t.services.map((srv, idx) => {
+          if (idx !== active) return null;
+          if (srv.video) {
+            return (
+              <video
+                key={srv.video}
+                src={srv.video}
+                autoPlay
+                loop
+                muted
+                playsInline
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "contain",
+                  borderRadius: 20,
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  zIndex: 2,
+                  transition: "opacity 0.44s cubic-bezier(.5,1.5,.5,1.05)",
+                  boxShadow: "0 0 24px #00e6ff55",
+                  pointerEvents: "none",
+                  userSelect: "none",
+                }}
+                draggable={false}
+              />
+            );
+          }
+          return (
+            <img
+              key={srv.img}
+              src={srv.img}
+              alt={srv.title}
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "contain",
+                position: "absolute",
+                top: 0,
+                left: 0,
+                opacity: 1,
+                transition: "opacity 0.44s cubic-bezier(.5,1.5,.5,1.05)",
+                zIndex: 2,
+                filter: "drop-shadow(0 0 24px #00e6ff55)",
+                borderRadius: 20,
+                pointerEvents: "none",
+                userSelect: "none",
+              }}
+              draggable={false}
+            />
+          );
+        })}
       </div>
-      {/* RIGHT COLUMN – SERVICES LIST */}
+      {/* PRAWA KOLUMNA: LISTA USŁUG */}
       <div style={{ width: "100%", minWidth: 0 }}>
         <h1
           style={{
