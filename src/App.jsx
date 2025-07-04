@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import NavigationBar from "./components/NavigationBar";
 import SectionProgressBar from "./components/SectionProgressBar";
 import HeroSection from "./components/Sections/HeroSection";
@@ -18,52 +18,20 @@ const App = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [showFixedNav, setShowFixedNav] = useState(true);
 
-  // Preloader
+  // Prosty loader z logo – znika po ok. 2 sekundach (możesz wydłużyć/skracać)
   const [loading, setLoading] = useState(true);
-  const [progress, setProgress] = useState(0);
-  const videoPreloadRef = useRef(null);
 
-  // Ukryty preloader video do zliczania progresu
   useEffect(() => {
-    if (!loading) return;
-    const video = document.createElement("video");
-    video.src = VIDEO_URL;
-    video.preload = "auto";
-    video.muted = true;
+    // Loader minimum 1.3s, max 3s (zależnie jak szybko zrenderuje się strona)
+    const minTimeout = setTimeout(() => setLoading(false), 1800);
+    // Jakby coś się stało – fallback na 5s
+    const maxTimeout = setTimeout(() => setLoading(false), 5000);
 
-    // Progres
-    const updateProgress = () => {
-      if (video.buffered.length > 0 && video.duration > 0) {
-        const bufferedEnd = video.buffered.end(video.buffered.length - 1);
-        const percent = Math.min(
-          100,
-          Math.round((bufferedEnd / video.duration) * 100)
-        );
-        setProgress(percent);
-      }
-    };
-
-    video.addEventListener("progress", updateProgress);
-    video.addEventListener("canplaythrough", () => {
-      setProgress(100);
-      setTimeout(() => setLoading(false), 300);
-    });
-
-    // fallback - jakby video było bardzo krótkie i event się nie wywołał
-    const fallbackTimeout = setTimeout(() => {
-      setLoading(false);
-    }, 5000);
-
-    // Start ładowania
-    video.load();
-
-    // Clean up
     return () => {
-      clearTimeout(fallbackTimeout);
-      video.removeEventListener("progress", updateProgress);
-      video.remove();
+      clearTimeout(minTimeout);
+      clearTimeout(maxTimeout);
     };
-  }, [loading]);
+  }, []);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -91,70 +59,85 @@ const App = () => {
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            transition: "opacity 0.5s",
+            transition: "opacity 0.7s",
             opacity: loading ? 1 : 0,
           }}
         >
-          <div style={{ textAlign: "center" }}>
-            <div
+          {/* Logo ze świecącą animacją */}
+          <div style={{ position: "relative" }}>
+            <img
+              src="/scenovis-logo.png"
+              alt="Scenovis Logo"
               style={{
-                width: 64,
-                height: 64,
-                margin: "0 auto 18px auto",
-                border: "6px solid #1a3e53",
-                borderTop: "6px solid #08ffe6",
-                borderRadius: "50%",
-                animation: "spin 1s linear infinite",
+                width: 220,
+                height: "auto",
+                filter: "drop-shadow(0 0 16px #08ffe666)",
+                animation: "logo-pulse 1.6s infinite alternate",
+                zIndex: 2,
+                position: "relative",
               }}
             />
+            {/* Glow za logiem */}
             <div
               style={{
-                fontSize: "1.5rem",
-                color: "#08ffe6",
-                fontWeight: 700,
-                marginBottom: 10,
-                letterSpacing: "1px",
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%,-50%)",
+                width: 320,
+                height: 120,
+                background: "rgba(0,198,255,0.26)",
+                borderRadius: 50,
+                filter: "blur(38px)",
+                zIndex: 1,
+                animation: "glow-pulse 2.1s infinite alternate",
+                pointerEvents: "none",
               }}
-            >
-              Ładowanie zasobów...
-            </div>
-            <div
-              style={{
-                width: 260,
-                height: 12,
-                background: "#2c3d4a",
-                borderRadius: 8,
-                margin: "0 auto 14px auto",
-                overflow: "hidden",
-                boxShadow: "0 2px 8px rgba(33,255,230,0.08)",
-              }}
-            >
-              <div
-                style={{
-                  width: `${progress}%`,
-                  height: "100%",
-                  background:
-                    "linear-gradient(90deg, #08ffe6 40%, #2c9cfa 100%)",
-                  borderRadius: 8,
-                  transition: "width 0.4s cubic-bezier(.39,1.77,.71,.86)",
-                }}
-              />
-            </div>
-            <div style={{ color: "#08ffe6", fontWeight: 600, fontSize: 18 }}>
-              {progress}% załadowano
-            </div>
+            ></div>
           </div>
+          <div
+            style={{
+              marginTop: 44,
+              fontSize: "1.6rem",
+              fontWeight: 700,
+              color: "#08ffe6",
+              textShadow: "0 0 10px #08ffe633",
+              letterSpacing: "1.5px",
+              fontFamily: "inherit",
+            }}
+          >
+            Loading...
+          </div>
+          {/* Fancy spinner na dole */}
+          <div
+            style={{
+              marginTop: 36,
+              width: 56,
+              height: 56,
+              border: "6px solid #1a3e53",
+              borderTop: "6px solid #08ffe6",
+              borderRadius: "50%",
+              animation: "spin 1.2s linear infinite",
+            }}
+          ></div>
           <style>{`
             @keyframes spin {
               0% { transform: rotate(0deg);}
               100% { transform: rotate(360deg);}
             }
+            @keyframes logo-pulse {
+              0% { filter: drop-shadow(0 0 6px #08ffe622);}
+              100% { filter: drop-shadow(0 0 36px #08ffe699);}
+            }
+            @keyframes glow-pulse {
+              0% { opacity: 0.25;}
+              100% { opacity: 0.6;}
+            }
           `}</style>
         </div>
       )}
 
-      {/* Reszta strony widoczna po załadowaniu */}
-      <div style={{ opacity: loading ? 0 : 1, transition: "opacity 0.6s" }}>
+      <div style={{ opacity: loading ? 0 : 1, transition: "opacity 0.8s" }}>
         <NavigationBar
           showFixedNav={showFixedNav}
           lang={lang}
