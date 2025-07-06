@@ -12,7 +12,7 @@ const ServicesSection = ({ isMobile, t }) => {
       style={{
         marginBottom: "4.2rem",
         maxWidth: 1200,
-        margin: "0 auto 6rem auto",
+        margin: "0 auto 1rem auto",
         display: "grid",
         gridTemplateColumns: isMobile ? "1fr" : "420px 1fr",
         gap: isMobile ? "2.5rem" : "3.5rem",

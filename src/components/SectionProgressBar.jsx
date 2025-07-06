@@ -9,11 +9,24 @@ const SECTIONS = [
   { id: "contact" }, // CTASection
 ];
 
+// Musi być taki sam jak w NavigationBar!
+const NAVBAR_HEIGHT = 70 - 80; // 70px navbar + 12px odstępu
+
+// Uniwersalna funkcja scrollująca sekcję pod navbar
+function scrollSectionToTop(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const scrollTop = window.scrollY || document.documentElement.scrollTop;
+  const rect = el.getBoundingClientRect();
+  const top = rect.top + scrollTop - NAVBAR_HEIGHT;
+  window.scrollTo({
+    top,
+    behavior: "smooth",
+  });
+}
+
 const SectionProgressBar = () => {
   const [active, setActive] = useState(0);
-
-  // Ustaw wysokość navbara tutaj:
-  const NAVBAR_HEIGHT = 0; // <-- DOPASUJ do rzeczywistej wysokości navbara!
 
   // Funkcja do pobierania pozycji sekcji (lepsza niż offsetTop)
   const getSectionPositions = () => {
@@ -39,11 +52,7 @@ const SectionProgressBar = () => {
   }, []);
 
   const handleClick = (idx) => {
-    const el = document.getElementById(SECTIONS[idx].id);
-    if (el) {
-      const y = el.getBoundingClientRect().top + window.scrollY - NAVBAR_HEIGHT;
-      window.scrollTo({ top: y, behavior: "smooth" });
-    }
+    scrollSectionToTop(SECTIONS[idx].id);
   };
 
   return (

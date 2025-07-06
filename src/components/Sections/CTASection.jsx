@@ -199,6 +199,8 @@ const CTASection = ({ isMobile, lang, t }) => {
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
+                maxHeight: "90vh", // NOWA LINIA!
+                overflowY: "auto", // NOWA LINIA!
               }}
               onClick={(e) => e.stopPropagation()}
             >
@@ -228,7 +230,7 @@ const CTASection = ({ isMobile, lang, t }) => {
                   color: "#00e6ff",
                   fontWeight: 800,
                   fontSize: 22,
-                  marginBottom: "1.1rem",
+                  marginBottom: "0rem",
                   textShadow: "0 2px 16px #00e6ff77",
                   textAlign: "center",
                   width: "100%",

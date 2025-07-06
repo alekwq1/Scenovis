@@ -1,10 +1,10 @@
 const translations = {
   pl: {
     // HERO / NAV / FOOTER / SEKCJE
-    heroTitle: "Zobacz swoją budowę w nowym świetle",
+    heroTitle: "Zobacz swój projekt w nowym świetle",
     heroSub:
-      "Interaktywne cyfrowe bliźniaki dla inteligentnego, bezpiecznego i efektywnego budowania.",
-    exploreBtn: "Eksploruj projekt",
+      "Interaktywne cyfrowe bliźniaki dla inteligentnego, bezpiecznego i efektywnego zarządzania.",
+    exploreBtn: "Zobacz projekt",
     contactUs: "Kontakt",
     about3dTitle: "INTERAKTYWNY DIGITAL TWIN 3D",
     resourcesTitle: "Cyfrowe bliźniaki w praktyce",
@@ -17,7 +17,7 @@ const translations = {
       tandem: "Cyfrowy bliźniak od Autodesk – BIM w praktyce.",
     },
 
-    ctaTitle: "Gotowy na cyfrową rewolucję?",
+    ctaTitle: "Czas na cyfrową transformację Twojej firmy!",
     ctaDesc:
       "Porozmawiajmy o tym, jak mogę pomóc wdrożyć cyfrowe bliźniaki w Twojej firmie.",
     ctaButton: "Napisz do mnie",
@@ -25,22 +25,22 @@ const translations = {
     ctaPhotoAlt: "Aleks ze Scenovis",
     ctaRole: "Lider Digital Twin",
 
-    ctaModalTitle: "Moje unikalne spojrzenie",
+    ctaModalTitle: "O mnie",
     ctaModal1: {
       title: "Kim jestem?",
-      desc: "Entuzjasta nowych technologii, z pasją do wdrażania cyfrowych rozwiązań, które mają realny wpływ na firmy i ludzi.",
+      desc: "Nowe technologie to moja codzienność i pasja. Uwielbiam wprowadzać rozwiązania, które naprawdę zmieniają sposób działania firm i ułatwiają życie ludziom.",
     },
     ctaModal2: {
       title: "Dlaczego warto mi zaufać?",
-      desc: "Na co dzień pracuję z największymi zespołami i korporacjami w Polsce i Europie, ale zawsze najważniejsze były dla mnie relacje i konkretne efekty dla użytkowników",
+      desc: "Na co dzień współpracuję z dużymi zespołami i korporacjami w Polsce oraz w Europie, ale zawsze najważniejsze są dla mnie relacje i realne efekty, które widzą użytkownicy moich rozwiązań.",
     },
     ctaModal3: {
       title: "Co mnie napędza?",
-      desc: "Lubię, gdy technologia naprawdę służy ludziom i biznesowi. Fascynuje mnie, jak Digital Twin usprawnia życie, pracę i bezpieczeństwo — nie tylko jest „fajny”, ale rozwiązuje prawdziwe problemy.",
+      desc: "Technologia powinna służyć ludziom, a nie odwrotnie. Największą satysfakcję daje mi to, że Digital Twin nie tylko jest efektowną nowością, ale faktycznie rozwiązuje codzienne problemy i poprawia bezpieczeństwo oraz komfort pracy.",
     },
     ctaModal4: {
-      title: "Co zrobię dla Ciebie?",
-      desc: "Pomogę wdrożyć cyfrowego bliźniaka w Twojej firmie, uproszczę procesy, pokażę potencjał technologii i przełożę cyfrowe pomysły na wymierne korzyści.",
+      title: "Co mogę zrobić dla Ciebie?",
+      desc: "Chętnie pokażę Ci, jak wykorzystać cyfrowego bliźniaka w Twojej firmie. Pomogę usprawnić procesy, odkryć nowe możliwości i przełożyć cyfrowe pomysły na realne korzyści dla Twojego biznesu.",
     },
 
     ctaDemoTitle: "Umów się na demo",
@@ -117,7 +117,7 @@ const translations = {
       "Bez uwag": "Bez uwag",
       Aktywny: "Aktywny",
     },
-    footerAbout: "O nas",
+    footerAbout: "Blog",
     footerServices: "Usługi",
     footerCases: "Przykłady",
     footerBlog: "Blog",
@@ -131,77 +131,77 @@ const translations = {
         title: "Modelowanie 3D na podstawie dokumentacji 2D",
         desc: "Modele 3D na podstawie rysunków DWG/PDF lub skanów chmury punktów.<br /><span style='color:#2ef9e8;font-weight:700'>Szacowana cena od 2 zł/m²</span>",
         video: "/services/visualization.mp4",
-        link: "/zamow-modelowanie-3d",
-        cta: "Zamów model 3D",
+        link: "https://www.linkedin.com/in/aleks-malyshka/",
+        cta: "Zamów wycenę",
       },
       {
-        title: "Wizualizacja i spacery 3D (Expo, VR/AR, makiety cyfrowe)",
-        desc: "Prezentacje 3D do targów, na stronę lub do metaversum. Interaktywny spacer online lub w VR/AR. Skanowanie istniejących budynków z szybkim dostępem w chmurze.<br /><span style='color:#2ef9e8;font-weight:700'>Szacowana cena od 1 zł/m²</span>",
+        title: "Wizualizacja i spacery 3D (Expo, VR/AR)",
+        desc: "Prezentacje 3D do targów, na stronę lub do metaversum. Interaktywny spacer online lub w VR/AR. Skanowanie istniejących budynków z szybkim dostępem w chmurze.<br /><span style='color:#2ef9e8;font-weight:700'>Szacowana cena od 8 zł/m²</span>",
         video: "/services/walkthrough.mp4",
-        link: "/zamow-wizualizacje",
+        link: "https://www.linkedin.com/in/aleks-malyshka/",
         cta: "Zamów wizualizację",
       },
       {
         title: "Facility Management & Lean Digital Twin",
-        desc: "Cyfrowy bliźniak istniejącego obiektu z analizą Lean.<br />Monitoring postępów, awarii, alarmów – integracja z Power BI.<br />Wirtualne zarządzanie obiektem, raporty i powiadomienia.<br /><span style='color:#2ef9e8;font-weight:700'>Szacowana cena od 4 zł/m²</span>",
+        desc: "Cyfrowy bliźniak istniejącego obiektu z analizą Lean.<br />Monitoring postępów, awarii, alarmów.<br />Wirtualne zarządzanie obiektem, raporty i powiadomienia.<br /><span style='color:#2ef9e8;font-weight:700'>Szacowana cena od 4 zł/m²</span>",
         video: "/services/fm_dtw.mp4",
-        link: "/zamow-fm-twin",
+        link: "https://www.linkedin.com/in/aleks-malyshka/",
         cta: "Zamów Digital Twin FM",
       },
       {
         title: "Cyfrowy Bliźniak Budowy + Analiza Power BI",
         desc: "Digital twin inwestycji w trakcie budowy.<br />Analiza postępu prac, integracja z Power BI, analiza kosztów Lean.<br />Interaktywny raport i widok 3D postępu online.<br /><span style='color:#2ef9e8;font-weight:700'>Szacowana cena od 2 zł/m²</span>",
         video: "/services/construction_twin.mp4",
-        link: "/zamow-twin-budowy",
+        link: "https://www.linkedin.com/in/aleks-malyshka/",
         cta: "Zamów Digital Twin Budowy",
       },
       {
         title: "Opracowanie standardów EIR, BEP, wdrożenie",
         desc: "Kompleksowe opracowanie i wdrożenie standardów EIR, BEP oraz procesów cyfrowych.<br /><span style='color:#2ef9e8;font-weight:700'>Szacowana cena od 3 500 zł (projekt)</span>",
         video: "/services/bim_4d5d.mp4",
-        link: "/zamow-bep-eir",
-        cta: "Zamów wdrożenie EIR/BEP",
+        link: "https://www.linkedin.com/in/aleks-malyshka/",
+        cta: "Zamów wdrożenie, EIR/BEP",
       },
       {
         title: "Szkolenia z modelowania, zarządzania CDE/BIM",
         desc: "Szkolenia online i stacjonarne z modelowania 3D, BIM, zarządzania CDE.<br />Wdrożenie platform do zarządzania dokumentacją. Personalizowane warsztaty dla zespołów.<br /><span style='color:#2ef9e8;font-weight:700'>Szacowana cena od 950 zł (szkolenie)</span>",
         video: "/services/training.mp4",
-        link: "/zamow-szkolenie",
+        link: "https://www.linkedin.com/in/aleks-malyshka/",
         cta: "Zamów szkolenie",
       },
       {
         title: "Kosztorysowanie oraz BIM 4D/5D",
         desc: "Przygotowanie kosztorysów na podstawie modeli BIM (4D/5D), analiza kosztów i harmonogramów, integracja z Power BI lub Excel.<br /><span style='color:#2ef9e8;font-weight:700'>Szacowana cena od 2 zł/m²</span>",
         video: "/services/costing.mp4",
-        link: "/zamow-bim4d5d",
+        link: "https://www.linkedin.com/in/aleks-malyshka/",
         cta: "Zamów kosztorysowanie/BIM 4D/5D",
       },
       {
-        title:
-          "Cykliczne Porównanie postępu prac na budowie przez stronę PZPB z opcją zmiany statusów szkoleń BHP",
+        title: "Porównanie postępu prac na budowie PZPB, BHP",
         desc: `
-          <b>Monitoruj i porównuj postępy prac na budowie</b> – cyklicznie, przez dedykowaną stronę internetową PZPB budowy.<br>
-          Usługa umożliwia wygodne śledzenie harmonogramu, szybkie generowanie raportów oraz elastyczną zmianę statusów szkoleń BHP dla wszystkich pracowników w jednym miejscu.<br>
-          Dostęp do zaawansowanych narzędzi porównawczych oraz archiwum historii zmian.<br>
-          Idealne rozwiązanie dla kierowników budów i działów HR.
+          <b>Monitorowanie i porównanie postępy prac na budowie</b> – cyklicznie, przez dedykowaną stronę internetową PZPB budowy.<br>
+                    Dostęp do zaawansowanych narzędzi porównawczych oraz archiwum historii zmian.<br>
+          
+          Idealne rozwiązanie dla kierowników budów i działów BHP.
           <ul style="margin:0 0 8px 24px; padding:0; color:#b2f6fa;">
             <li>Podgląd porównania postępu z poprzednimi okresami</li>
-            <li>Eksport raportów PDF/CSV</li>
-            <li>Zarządzanie szkoleniami BHP</li>
+            
+            <li>PZPB budowy ze szkoleniami BHP<br>
+            <span style='color:#2ef9e8;font-weight:700'>Szacowana cena od 500 zł</span>
           </ul>
         `,
         img: "/img/pzpb-comparison.png",
-        video: "",
-        link: "https://pzpb-budowy.pl",
-        cta: "Zobacz demo",
+        video: "/services/pzpb.mp4",
+        link: "https://www.linkedin.com/in/aleks-malyshka/",
+        cta: "Zamów usługę",
       },
     ],
   },
 
   en: {
-    heroTitle: "See Your Construction Site in a New Light",
+    heroTitle: "See Your Project in a New Light",
     heroSub:
-      "Interactive digital twins for smart, safe, and successful building.",
+      "Interactive digital twins for smart, safe, and efficient management.",
     exploreBtn: "Explore your project",
     contactUs: "Contact Me",
     about3dTitle: "INTERACTIVE DIGITAL TWIN 3D",
@@ -220,26 +220,26 @@ const translations = {
     ctaDesc:
       "Let's discuss how I can help you implement digital twin solutions.",
     ctaButton: "Contact Me",
-    ctaPhotoTitle: "Click for Aleks's unique angle",
+    ctaPhotoTitle: "Click to see more",
     ctaPhotoAlt: "Aleks from Scenovis",
     ctaRole: "Digital Twin Leader",
 
-    ctaModalTitle: "My Unique Angle",
+    ctaModalTitle: "About Me",
     ctaModal1: {
       title: "Who am I?",
-      desc: "A technology enthusiast passionate about implementing digital solutions that make a real difference for companies and people.",
+      desc: "Technology is my passion and part of my everyday life. I love bringing in solutions that truly change the way companies operate and make people’s lives easier.",
     },
     ctaModal2: {
       title: "Why trust me?",
-      desc: "I work every day with the largest teams and corporations in Poland and Europe, but building relationships and delivering real value to users always comes first.",
+      desc: "Every day, I work with large teams and corporations across Poland and Europe, but for me, the most important thing has always been building relationships and delivering real, tangible results for the people who use my solutions.",
     },
     ctaModal3: {
       title: "What drives me?",
-      desc: "I love when technology truly serves people and business. I'm fascinated by how Digital Twins improve life, work, and safety — not just 'cool', but solving real problems.",
+      desc: "Technology should serve people, not the other way around. What gives me the most satisfaction is seeing how digital twins are not just a flashy innovation, but actually solve real, everyday problems and make work safer and more comfortable.",
     },
     ctaModal4: {
       title: "What can I do for you?",
-      desc: "I'll help you implement a digital twin in your company, simplify processes, show the potential of the technology, and turn digital ideas into measurable benefits.",
+      desc: "I’d love to show you how to use digital twins in your business. I’ll help you streamline your processes, discover new opportunities, and turn digital ideas into real benefits for your company.",
     },
 
     ctaDemoTitle: "Schedule a Demo",
@@ -316,7 +316,7 @@ const translations = {
       "No issues": "No issues",
       Active: "Active",
     },
-    footerAbout: "About",
+    footerAbout: "Blog",
     footerServices: "Services",
     footerCases: "Case Studies",
     footerBlog: "Blog",
@@ -328,70 +328,69 @@ const translations = {
     services: [
       {
         title: "3D Modeling from 2D Documentation",
-        desc: "3D models based on DWG/PDF drawings or point cloud scans.<br /><span style='color:#2ef9e8;font-weight:700'>Estimated price from 18 PLN/m²</span>",
-        img: "/services/visualization.png",
-        link: "/order-3d-modeling",
+        desc: "3D models based on DWG/PDF drawings or point cloud scans.<br /><span style='color:#2ef9e8;font-weight:700'>Estimated price from 0,5 USD/m²</span>",
+        video: "/services/visualization.mp4",
+
+        link: "https://www.linkedin.com/in/aleks-malyshka/",
         cta: "Order 3D Model",
       },
       {
         title: "Visualization & 3D Tours (Expo, VR/AR, Digital Models)",
-        desc: "3D presentations for trade shows, website, or metaverse. Interactive tours online or in VR/AR. Scanning of existing buildings with fast cloud access.<br /><span style='color:#2ef9e8;font-weight:700'>Estimated price from 25 PLN/m²</span>",
-        img: "/services/walkthrough.png",
-        link: "/order-visualization",
+        desc: "3D presentations for trade shows, websites, or the metaverse. Interactive tours online or in VR/AR. Scanning of existing buildings with fast cloud access.<br /><span style='color:#2ef9e8;font-weight:700'>Estimated price from 2 USD/m²</span>",
+        video: "/services/walkthrough.mp4",
+        link: "https://www.linkedin.com/in/aleks-malyshka/",
         cta: "Order Visualization",
       },
       {
         title: "Facility Management & Lean Digital Twin",
-        desc: "Digital twin of an existing facility with Lean analysis.<br />Progress, failure, and alarm monitoring – Power BI integration.<br />Virtual facility management, reports and notifications.<br /><span style='color:#2ef9e8;font-weight:700'>Estimated price from 19 PLN/m²</span>",
-        img: "/services/fm_dtw.mp4",
-        link: "/order-fm-twin",
+        desc: "Digital twin of an existing facility with Lean analysis.<br />Progress, failure, and alarm monitoring.<br />Virtual facility management, reports, and notifications.<br /><span style='color:#2ef9e8;font-weight:700'>Estimated price from 1 USD/m²</span>",
+        video: "/services/fm_dtw.mp4",
+        link: "https://www.linkedin.com/in/aleks-malyshka/",
         cta: "Order FM Digital Twin",
       },
       {
         title: "Construction Digital Twin + Power BI Analysis",
-        desc: "Digital twin for projects under construction.<br />Progress analysis, Power BI integration, Lean cost analysis.<br />Interactive report and 3D live progress view.<br /><span style='color:#2ef9e8;font-weight:700'>Estimated price from 22 PLN/m²</span>",
-        img: "/services/construction_twin.png",
-        link: "/order-construction-twin",
+        desc: "Digital twin for construction projects.<br />Progress analysis, Power BI integration, Lean cost analysis.<br />Interactive reporting and 3D online progress view.<br /><span style='color:#2ef9e8;font-weight:700'>Estimated price from 0,5 USD/m²</span>",
+        video: "/services/construction_twin.mp4",
+        link: "https://www.linkedin.com/in/aleks-malyshka/",
         cta: "Order Construction Digital Twin",
       },
       {
         title: "EIR/BEP Standards Development & Implementation",
-        desc: "Comprehensive development and implementation of EIR, BEP and digital processes according to ISO 19650.<br /><span style='color:#2ef9e8;font-weight:700'>Estimated price from 3,500 PLN (project)</span>",
+        desc: "Comprehensive development and implementation of EIR, BEP, and digital processes.<br /><span style='color:#2ef9e8;font-weight:700'>Estimated price from 900 USD (project)</span>",
         img: "/services/bim_4d5d.png",
-        link: "/order-bep-eir",
+        link: "https://www.linkedin.com/in/aleks-malyshka/",
         cta: "Order EIR/BEP Implementation",
       },
       {
         title: "3D/BIM Modeling & CDE Management Training",
-        desc: "Online and onsite training in 3D modeling, BIM, and CDE management.<br />Implementation of documentation management platforms. Personalized team workshops.<br /><span style='color:#2ef9e8;font-weight:700'>Estimated price from 950 PLN (training)</span>",
-        img: "/services/training.png",
-        link: "/order-training",
+        desc: "Online and onsite training in 3D modeling, BIM, and CDE management.<br />Implementation of document management platforms. Personalized workshops for teams.<br /><span style='color:#2ef9e8;font-weight:700'>Estimated price from 250 USD (training)</span>",
+        video: "/services/training.mp4",
+        link: "https://www.linkedin.com/in/aleks-malyshka/",
         cta: "Order Training",
       },
       {
         title: "Cost Estimation & BIM 4D/5D",
-        desc: "Cost estimates based on BIM models (4D/5D), cost & schedule analysis, Power BI or Excel integration.<br /><span style='color:#2ef9e8;font-weight:700'>Estimated price from 1,900 PLN (project)</span>",
-        img: "/services/costing.png",
-        link: "/order-bim4d5d",
+        desc: "Preparation of cost estimates based on BIM models (4D/5D), cost and schedule analysis, integration with Power BI or Excel.<br /><span style='color:#2ef9e8;font-weight:700'>Estimated price from 0,5 USD/m²</span>",
+        video: "/services/costing.mp4",
+        link: "https://www.linkedin.com/in/aleks-malyshka/",
         cta: "Order Costing/BIM 4D/5D",
       },
       {
-        title:
-          "Cyclical Construction Progress Comparison via PZPB Site with BHP Training Status Control",
+        title: "Construction Progress Comparison (SDP, HSE)",
         desc: `
-          <b>Monitor and compare construction progress</b> – cyclically, via a dedicated PZPB site.<br>
-          The service allows convenient schedule tracking, fast report generation, and flexible management of BHP (health & safety) training statuses for all employees in one place.<br>
-          Access advanced comparison tools and a full change history archive.<br>
-          Perfect for construction managers and HR teams.
-          <ul style="margin:0 0 8px 24px; padding:0; color:#b2f6fa;">
-            <li>View progress comparison with previous periods</li>
-            <li>Export reports to PDF/CSV</li>
-            <li>BHP training management</li>
-          </ul>
+          <b>Monitor and compare construction progress</b> cyclically through a dedicated SDP project website.<br>
+  Gain access to advanced comparison tools and a full history of changes.<br>
+  An ideal solution for site managers and HSE teams.
+  <ul style="margin:0 0 8px 24px; padding:0; color:#b2f6fa;">
+    <li>Compare progress with previous periods</li>
+    <li>SDP site with integrated HSE training management</li>
+    <li><span style='color:#2ef9e8;font-weight:700'>Estimated price from 130 USD</span></li>
+  </ul>
         `,
         img: "/img/pzpb-comparison.png",
-        video: "",
-        link: "https://pzpb-budowy.pl",
+        video: "/services/pzpb.mp4",
+        link: "https://www.linkedin.com/in/aleks-malyshka/",
         cta: "See demo",
       },
     ],

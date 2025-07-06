@@ -126,7 +126,7 @@ const VideoResourcesSection = ({ isMobile, lang, t }) => {
   );
 
   return (
-    <section id="resources" style={{ marginBottom: "3rem" }}>
+    <section id="resources" style={{ marginBottom: "0rem" }}>
       <h1
         style={{
           fontSize: isMobile ? "2.2rem" : "2.7rem",

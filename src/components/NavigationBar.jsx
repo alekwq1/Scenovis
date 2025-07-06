@@ -1,7 +1,7 @@
 import React from "react";
 
 const navLinks = [
-  { id: "about", label: { pl: "O nas", en: "About" } },
+  { id: "about", label: { pl: "Blog", en: "Blog" } },
   { id: "services", label: { pl: "Usługi", en: "Services" } },
   { id: "resources", label: { pl: "Materiały", en: "Resources" } },
 ];
@@ -9,18 +9,16 @@ const navLinks = [
 const LOGO_SRC = "/logo-scenovis.png";
 const NAVBAR_HEIGHT = 70;
 
-// Scroll do sekcji na środek ekranu (uwzględnia navbar)
-function scrollSectionToCenter(id) {
+// --- NOWA FUNKCJA: Scroll sekcji tuż pod navbar ---
+function scrollSectionToTop(id) {
   const el = document.getElementById(id);
   if (!el) return;
-  const rect = el.getBoundingClientRect();
   const scrollTop = window.scrollY || document.documentElement.scrollTop;
-  const elHeight = rect.height;
-  const winHeight = window.innerHeight;
-  let top = rect.top + scrollTop;
-  top = top - (winHeight / 2 - elHeight / 2) - NAVBAR_HEIGHT / 2;
+  const rect = el.getBoundingClientRect();
+  const navbarOffset = NAVBAR_HEIGHT - 80; // +12px odstępu od navbaru
+  const top = rect.top + scrollTop - navbarOffset;
   window.scrollTo({
-    top: top,
+    top,
     behavior: "smooth",
   });
 }
@@ -28,11 +26,11 @@ function scrollSectionToCenter(id) {
 const NavigationBar = ({ showFixedNav = true, lang, setLang, t }) => {
   const handleNavClick = (e, id) => {
     e.preventDefault();
-    scrollSectionToCenter(id);
+    scrollSectionToTop(id);
   };
   const handleContactClick = (e) => {
     e.preventDefault();
-    scrollSectionToCenter("contact");
+    scrollSectionToTop("contact");
   };
 
   return (

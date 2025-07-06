@@ -32,7 +32,6 @@ const FooterSection = ({ lang, t }) => {
 
   // Domyślne tłumaczenia dla linków i stopki
   const links = [
-    { href: "#", label: t.footerBlog || "Blog" },
     { href: "#about", label: t.footerAbout || "About" },
     { href: "#services", label: t.footerServices || "Services" },
     { href: "#resources", label: t.footerCases || "Case Studies" },
