@@ -26,6 +26,15 @@
   <body>
     <noscript> You need to enable JavaScript to run this app. </noscript>
     <div id="root"></div>
+
+    <!-- HIDDEN NETLIFY FORM – UMOŻLIWIA DETEKCJĘ FORMULARZA SPA -->
+    <form name="demo" data-netlify="true" netlify hidden>
+      <input type="text" name="name" />
+      <input type="email" name="email" />
+      <textarea name="msg"></textarea>
+    </form>
+    <!-- KONIEC DODATKU -->
+
     <!-- Dla Vite/CRA: -->
     <script type="module" src="/src/index.jsx"></script>
   </body>
