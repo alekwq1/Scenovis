@@ -8,11 +8,15 @@ const CTASection = ({ isMobile, lang, t }) => {
   const [sent, setSent] = useState(false);
 
   const handleSubmit = (e) => {
-    setSent(true);
-    setTimeout(() => {
-      setModal(null);
-      setSent(false);
-    }, 1800);
+    e.preventDefault();
+    const form = e.target;
+    fetch("/", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams(new FormData(form)).toString(),
+    })
+      .then(() => setSent(true))
+      .catch((error) => alert(error));
   };
 
   return (
