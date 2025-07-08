@@ -202,7 +202,7 @@ const translations = {
     heroTitle: "See Your Project in a New Light",
     heroSub:
       "Interactive digital twins for smart, safe, and efficient management.",
-    exploreBtn: "Explore your project",
+    exploreBtn: "Explore project",
     contactUs: "Contact Me",
     about3dTitle: "INTERACTIVE DIGITAL TWIN 3D",
     resourcesTitle: "Digital Twins in Action",

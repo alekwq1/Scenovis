@@ -26,7 +26,6 @@ const HeroSection = ({ isMobile, lang, t }) => {
     }
   }, []);
 
-  // --- MOBILE: tekst na ciemnym, centralnie w pionie
   if (isMobile) {
     return (
       <section
@@ -52,31 +51,34 @@ const HeroSection = ({ isMobile, lang, t }) => {
             width: "100vw",
             background: "rgba(10, 22, 33, 0.98)",
             zIndex: 2,
-            padding: "36px 6vw 26px 6vw",
+            padding: "22px 4vw 16px 5vw",
             color: "#fff",
             textAlign: "left",
             boxSizing: "border-box",
-            borderBottomLeftRadius: 20,
-            borderBottomRightRadius: 20,
+            borderBottomLeftRadius: 16,
+            borderBottomRightRadius: 16,
+            boxShadow: "0 8px 24px #001e3336",
             display: "flex",
             flexDirection: "column",
-            alignItems: "flex-start", // left align, but block is centered
+            alignItems: "flex-start",
             justifyContent: "center",
+            minHeight: "unset",
           }}
         >
           <h1
             ref={headerRef}
             style={{
-              fontSize: "1.45rem",
+              fontSize: "1.12rem", // MNIEJSZY
               fontWeight: 900,
-              background: "linear-gradient(to right, #f5f8fa, #37ecff 85%)",
+              background: "linear-gradient(to right, #f5f8fa, #37ecff 90%)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               margin: 0,
-              lineHeight: 1.13,
-              textShadow: "0 1px 10px #0098bb33",
-              letterSpacing: "-0.7px",
-              marginBottom: "10px",
+              lineHeight: 1.17,
+              textShadow: "0 1px 10px #00c9ff33",
+              letterSpacing: "-0.6px",
+              marginBottom: "7px",
+              fontFamily: "'Inter', 'Segoe UI', Arial, sans-serif",
             }}
           >
             {t.heroTitle.split("\n").map((line, i) => (
@@ -89,20 +91,20 @@ const HeroSection = ({ isMobile, lang, t }) => {
           <h2
             ref={subRef}
             style={{
-              fontSize: "1.01rem",
+              fontSize: "0.93rem", // MNIEJSZY
               fontWeight: 400,
-              margin: "0 0 0.98em 0",
+              margin: "0 0 0.7em 0",
               color: "#c7f6ff",
-              textShadow: "0 1px 8px #003e4a33",
-              maxWidth: "97vw",
-              lineHeight: 1.23,
+              textShadow: "0 1px 8px #003e4a22",
+              maxWidth: "96vw",
+              lineHeight: 1.21,
             }}
           >
             {t.heroSub}
           </h2>
           <div
             style={{
-              marginTop: "0.8em",
+              marginTop: "0.55em",
               width: "100%",
               display: "flex",
               justifyContent: "flex-start",
@@ -121,13 +123,13 @@ const HeroSection = ({ isMobile, lang, t }) => {
                 }
               }}
               style={{
-                fontSize: "1.01rem",
+                fontSize: "0.97rem", // MNIEJSZY
                 fontWeight: 700,
                 background: "linear-gradient(to right, #00e6ff, #0072ff)",
                 color: "#fff",
                 border: "none",
                 borderRadius: "999px",
-                padding: "0.7rem 1.7rem",
+                padding: "0.58rem 1.3rem",
                 cursor: "pointer",
                 boxShadow: "0 4px 30px #0072ff55",
                 transition: "transform 0.1s",
@@ -141,13 +143,14 @@ const HeroSection = ({ isMobile, lang, t }) => {
         <div
           style={{
             width: "100vw",
-            height: "46vw",
-            minHeight: 200,
-            maxHeight: 360,
+            height: "45vw",
+            minHeight: 130,
+            maxHeight: 230,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            background: "#111",
+            background: "#0c192a",
+            borderRadius: 12,
           }}
         >
           <video
@@ -161,10 +164,10 @@ const HeroSection = ({ isMobile, lang, t }) => {
               objectFit: "contain",
               objectPosition: "center",
               zIndex: 1,
-              filter: "brightness(0.88)",
-              background: "#111",
-              borderRadius: 16,
-              boxShadow: "0 8px 28px #111c",
+              filter: "brightness(0.89)",
+              background: "#0c192a",
+              borderRadius: 12,
+              boxShadow: "0 10px 32px #00243633",
             }}
             src={VIDEO_URL}
           />
@@ -173,7 +176,7 @@ const HeroSection = ({ isMobile, lang, t }) => {
     );
   }
 
-  // --- DESKTOP: klasyka
+  // --- DESKTOP: klasyka (bez zmian)
   return (
     <section
       id="hero"
