@@ -3,7 +3,9 @@ import * as THREE from "three";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Html, useGLTF } from "@react-three/drei";
 
-// Funkcja animacji kamery
+const NEON_BLUE = "#00e6ff";
+
+// Animacja kamery na hotspot
 function animateCameraTo(orbitControls, position, target, duration = 1.0) {
   if (!orbitControls) return;
   const controls = orbitControls.object;
@@ -25,8 +27,6 @@ function animateCameraTo(orbitControls, position, target, duration = 1.0) {
   requestAnimationFrame(animate);
 }
 
-const NEON_BLUE = "#00e6ff";
-
 const AboutSection3D = ({ lang, t }) => {
   const DIGITAL_TWIN_INFO = t.digitalTwinInfo;
   const HOTSPOTS = t.hotspots;
@@ -35,9 +35,17 @@ const AboutSection3D = ({ lang, t }) => {
   const [infoPanelOpen, setInfoPanelOpen] = useState(true);
   const orbitRef = useRef();
   const wrapperRef = useRef();
-  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
 
-  // <--- DODAJ TEN useEffect! --->
+  // Mobile detection (uniwersalna dla ssr/client)
+  const [isMobile, setIsMobile] = useState(
+    typeof window !== "undefined" && window.innerWidth < 768
+  );
+  useEffect(() => {
+    const handler = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", handler);
+    return () => window.removeEventListener("resize", handler);
+  }, []);
+
   useEffect(() => {
     setSelectedHotspot(t.digitalTwinInfo);
     setInfoPanelOpen(true);
@@ -45,33 +53,40 @@ const AboutSection3D = ({ lang, t }) => {
 
   const modelBoxStyles = {
     flex: infoPanelOpen ? 1.5 : 2,
-    minWidth: isMobile ? 364 : 462,
-    maxWidth: isMobile ? 476 : 602,
-    height: isMobile ? 364 : 448,
+    minWidth: isMobile ? 250 : 350,
+    maxWidth: isMobile ? 380 : 460,
+    height: isMobile ? 230 : 340,
     background: "rgba(24,48,64,0.33)",
     borderRadius: 20,
     boxShadow: "0 0 24px #00e6ff22",
     overflow: "hidden",
     position: "relative",
     marginBottom: isMobile ? 10 : 0,
-    transition:
-      "flex 0.3s, width 0.3s, max-width 0.3s, min-width 0.3s, height 0.3s",
+    margin: "0 auto",
+    transition: "all 0.3s",
   };
 
   const infoPanelStyles = {
-    position: "relative",
-    right: "auto",
-    left: "auto",
-    top: "auto",
-    transform: "none",
-    maxWidth: isMobile ? 462 : 532,
-    minWidth: isMobile ? 301 : 448,
+    position: isMobile ? "fixed" : "relative",
+    bottom: isMobile ? 0 : "auto",
+    left: isMobile ? 0 : "auto",
+    right: isMobile ? 0 : "auto",
+    width: isMobile ? "98vw" : "auto",
+    maxWidth: isMobile ? 370 : 390,
+    minWidth: isMobile ? 190 : 320,
     boxShadow: "0 0 38px #00e6ff66",
-    borderRadius: 20,
-    zIndex: 1000,
+    borderRadius: isMobile ? "18px 18px 0 0" : 20,
+    zIndex: 2001,
     marginLeft: isMobile ? 0 : 24,
-    marginTop: isMobile ? 14 : 0,
-    transition: "max-width 0.3s, min-width 0.3s",
+    marginTop: isMobile ? 0 : 0,
+    background: "rgba(10, 25, 40, 0.98)",
+    border: "1px solid #00e6ff44",
+    padding: isMobile ? "18px 12px 18px 12px" : "22px 18px",
+    minHeight: isMobile ? 120 : 160,
+    maxHeight: isMobile ? "62vh" : 340,
+    overflowY: "auto",
+    transition: "all 0.3s",
+    color: "#c0e0ff",
   };
 
   const onHotspotClick = (hotspot) => {
@@ -133,11 +148,11 @@ const AboutSection3D = ({ lang, t }) => {
         style={{
           width: "100%",
           maxWidth: 1125,
-          minHeight: isMobile ? 560 : 640,
+          minHeight: isMobile ? 480 : 580,
           background: "rgba(8,20,32,0.89)",
-          borderRadius: 28,
+          borderRadius: isMobile ? 18 : 28,
           boxShadow: "0 8px 46px #00e6ff22",
-          padding: isMobile ? "1.4rem 0.7rem" : "2.4rem 2.4rem 2.2rem 2.4rem",
+          padding: isMobile ? "1.2rem 0.3rem" : "2.4rem 2.4rem 2.2rem 2.4rem",
           position: "relative",
           display: "flex",
           flexDirection: "column",
@@ -148,12 +163,12 @@ const AboutSection3D = ({ lang, t }) => {
       >
         <h1
           style={{
-            fontSize: isMobile ? "2.1rem" : "3.2rem",
+            fontSize: isMobile ? "1.5rem" : "2.6rem",
             color: NEON_BLUE,
             fontWeight: 900,
             textAlign: "center",
-            marginBottom: isMobile ? "0.9rem" : "1.1rem",
-            marginTop: isMobile ? "0.2rem" : "0.2rem",
+            marginBottom: isMobile ? "0.7rem" : "1.1rem",
+            marginTop: "0.2rem",
             letterSpacing: 2,
             textShadow: "0 0 32px #00e6ff77, 0 2px 6px #000b",
             lineHeight: 1.08,
@@ -166,15 +181,15 @@ const AboutSection3D = ({ lang, t }) => {
           style={{
             display: "flex",
             flexDirection: isMobile ? "column" : "row",
-            gap: isMobile ? 22 : 32,
+            gap: isMobile ? 12 : 32,
             width: "100%",
             alignItems: "center",
             justifyContent: "center",
             position: "relative",
-            minHeight: isMobile ? 370 : 420,
+            minHeight: isMobile ? 220 : 380,
           }}
         >
-          {/* Box z 3D */}
+          {/* --- Box z 3D --- */}
           <div style={modelBoxStyles}>
             <Canvas
               camera={{
@@ -189,7 +204,7 @@ const AboutSection3D = ({ lang, t }) => {
             >
               <ambientLight intensity={0.9} />
               <directionalLight position={[2, 3, 4]} intensity={1.2} />
-              <group scale={isMobile ? 1.2 : 1.5}>
+              <group scale={isMobile ? 1.24 : 1.5}>
                 <AboutModelWithHotspots
                   hotspots={HOTSPOTS}
                   onHotspotClick={onHotspotClick}
@@ -214,19 +229,43 @@ const AboutSection3D = ({ lang, t }) => {
               />
             </Canvas>
           </div>
-          {/* Panel informacyjny */}
-          {infoPanelOpen && (
+
+          {/* --- InfoPanel (desktop obok 3D, mobile: bottom-sheet) --- */}
+          {infoPanelOpen && !isMobile && (
             <HotspotInfoPanel
               open={!!selectedHotspot}
               hotspot={selectedHotspot}
               onClose={handleCloseInfo}
-              isMobile={isMobile}
-              style={infoPanelStyles}
+              isMobile={false}
               lang={lang}
               t={t}
+              style={infoPanelStyles}
             />
           )}
         </div>
+        {/* --- Mobile: infoPanel na dole (bottom-sheet) --- */}
+        {infoPanelOpen && isMobile && (
+          <div
+            style={{
+              ...infoPanelStyles,
+              left: 0,
+              right: 0,
+              margin: "0 auto",
+              position: "fixed",
+              bottom: 0,
+            }}
+          >
+            <HotspotInfoPanel
+              open={!!selectedHotspot}
+              hotspot={selectedHotspot}
+              onClose={handleCloseInfo}
+              isMobile={true}
+              lang={lang}
+              t={t}
+              style={{ background: "rgba(10,25,40,0.97)" }}
+            />
+          </div>
+        )}
       </div>
     </section>
   );
@@ -234,7 +273,7 @@ const AboutSection3D = ({ lang, t }) => {
 
 export default AboutSection3D;
 
-// --- Model 3D z hotspotami ---
+// --- Model 3D z Hotspotami ---
 function AboutModelWithHotspots({ hotspots, onHotspotClick, selectedHotspot }) {
   const { scene, animations } = useGLTF("/model.glb");
   const mixer = useRef();
@@ -306,7 +345,7 @@ function Hotspot({ data, onClick, isActive }) {
   );
 }
 
-// --- Panel informacyjny ---
+// --- InfoPanel do Hotspotu ---
 function HotspotInfoPanel({ open, hotspot, onClose, isMobile, lang, t }) {
   if (!open || !hotspot) return null;
 

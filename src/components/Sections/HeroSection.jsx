@@ -51,12 +51,11 @@ const HeroSection = ({ isMobile, lang, t }) => {
         style={{
           position: "absolute",
           left: 0,
-          top: isMobile ? "5cm" : 0,
-          width: "100%",
-          height: "100%",
+          top: 0,
+          width: "100vw",
+          height: isMobile ? "70vh" : "100vh", // <- na mobile krótsze wideo
           minWidth: "100vw",
-          minHeight: "100vh",
-          objectFit: isMobile ? "contain" : "cover",
+          objectFit: isMobile ? "contain" : "cover", // mobile: całe wideo widoczne
           objectPosition: isMobile ? "center top" : "center",
           zIndex: 0,
           opacity: 1,
@@ -73,7 +72,8 @@ const HeroSection = ({ isMobile, lang, t }) => {
         style={{
           position: "absolute",
           left: isMobile ? "4vw" : "7vw",
-          bottom: isMobile ? "12vw" : "7vw",
+          top: isMobile ? "13vw" : undefined, // na mobile przesunięcie w górę!
+          bottom: isMobile ? undefined : "7vw",
           zIndex: 2,
           maxWidth: isMobile ? "92vw" : "900px",
           color: "#fff",
