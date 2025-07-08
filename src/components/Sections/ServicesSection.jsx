@@ -13,85 +13,87 @@ const ServicesSection = ({ isMobile, t }) => {
         marginBottom: "4.2rem",
         maxWidth: 1200,
         margin: "0 auto 1rem auto",
-        display: "grid",
-        gridTemplateColumns: isMobile ? "1fr" : "420px 1fr",
-        gap: isMobile ? "2.5rem" : "3.5rem",
+        display: isMobile ? "block" : "grid",
+        gridTemplateColumns: isMobile ? undefined : "420px 1fr",
+        gap: isMobile ? undefined : "3.5rem",
         alignItems: "flex-start",
         minHeight: isMobile ? 340 : 470,
         position: "relative",
       }}
     >
-      {/* LEWA KOLUMNA: OBRAZ LUB VIDEO */}
-      <div
-        style={{
-          position: isMobile ? "relative" : "sticky",
-          top: isMobile ? "auto" : "7.5rem",
-          height: isMobile ? 200 : 550,
-          minHeight: isMobile ? 0 : 270,
-          width: "100%",
-          background: "#101925",
-          borderRadius: 20,
-          boxShadow: `0 6px 36px 0 ${NEON}14`,
-          overflow: "hidden",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        {t.services.map((srv, idx) => {
-          if (idx !== active) return null;
-          if (srv.video) {
+      {/* LEWA KOLUMNA: OBRAZ/WIDEO (desktop) */}
+      {!isMobile && (
+        <div
+          style={{
+            position: "sticky",
+            top: "7.5rem",
+            height: 550,
+            minHeight: 270,
+            width: "100%",
+            background: "#101925",
+            borderRadius: 20,
+            boxShadow: `0 6px 36px 0 ${NEON}14`,
+            overflow: "hidden",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          {t.services.map((srv, idx) => {
+            if (idx !== active) return null;
+            if (srv.video) {
+              return (
+                <video
+                  key={srv.video}
+                  src={srv.video}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "contain",
+                    borderRadius: 20,
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    zIndex: 2,
+                    transition: "opacity 0.44s cubic-bezier(.5,1.5,.5,1.05)",
+                    boxShadow: "0 0 24px #00e6ff55",
+                    pointerEvents: "none",
+                    userSelect: "none",
+                  }}
+                  draggable={false}
+                />
+              );
+            }
             return (
-              <video
-                key={srv.video}
-                src={srv.video}
-                autoPlay
-                loop
-                muted
-                playsInline
+              <img
+                key={srv.img}
+                src={srv.img}
+                alt={srv.title}
                 style={{
                   width: "100%",
                   height: "100%",
                   objectFit: "contain",
-                  borderRadius: 20,
                   position: "absolute",
                   top: 0,
                   left: 0,
-                  zIndex: 2,
+                  opacity: 1,
                   transition: "opacity 0.44s cubic-bezier(.5,1.5,.5,1.05)",
-                  boxShadow: "0 0 24px #00e6ff55",
+                  zIndex: 2,
+                  filter: "drop-shadow(0 0 24px #00e6ff55)",
+                  borderRadius: 20,
                   pointerEvents: "none",
                   userSelect: "none",
                 }}
                 draggable={false}
               />
             );
-          }
-          return (
-            <img
-              key={srv.img}
-              src={srv.img}
-              alt={srv.title}
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "contain",
-                position: "absolute",
-                top: 0,
-                left: 0,
-                opacity: 1,
-                transition: "opacity 0.44s cubic-bezier(.5,1.5,.5,1.05)",
-                zIndex: 2,
-                filter: "drop-shadow(0 0 24px #00e6ff55)",
-                borderRadius: 20,
-                pointerEvents: "none",
-                userSelect: "none",
-              }}
-              draggable={false}
-            />
-          );
-        })}
-      </div>
+          })}
+        </div>
+      )}
       {/* PRAWA KOLUMNA: LISTA USŁUG */}
       <div style={{ width: "100%", minWidth: 0 }}>
         <h1
@@ -247,6 +249,62 @@ const ServicesSection = ({ isMobile, t }) => {
                   >
                     {srv.cta}
                   </a>
+                  {/* --- MEDIA NA MOBILE POD TĄ KARTĄ --- */}
+                  {isMobile && expanded && (
+                    <div
+                      style={{
+                        width: "100%",
+                        margin: "1.2rem 0 0 0",
+                        background: "#101925",
+                        borderRadius: 16,
+                        boxShadow: `0 6px 36px 0 ${NEON}14`,
+                        minHeight: 140,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        position: "relative",
+                        overflow: "hidden",
+                      }}
+                    >
+                      {srv.video ? (
+                        <video
+                          src={srv.video}
+                          autoPlay
+                          loop
+                          muted
+                          playsInline
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "contain",
+                            borderRadius: 16,
+                            background: "#000",
+                            maxHeight: 210,
+                            pointerEvents: "none",
+                            userSelect: "none",
+                          }}
+                          draggable={false}
+                        />
+                      ) : (
+                        <img
+                          src={srv.img}
+                          alt={srv.title}
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "contain",
+                            borderRadius: 16,
+                            background: "#000",
+                            maxHeight: 210,
+                            filter: "drop-shadow(0 0 18px #00e6ff44)",
+                            pointerEvents: "none",
+                            userSelect: "none",
+                          }}
+                          draggable={false}
+                        />
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
             );
