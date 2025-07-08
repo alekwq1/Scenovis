@@ -26,6 +26,14 @@ function animateCameraTo(orbitControls, position, target, duration = 1.0) {
 
 const NEON_BLUE = "#00e6ff";
 
+const PULSE_ANIMATION = `
+@keyframes pulse-interact-btn {
+  0% { box-shadow: 0 0 0 0 #00e6ff77, 0 0 10px #00e6ff44; transform: scale(1);}
+  60% { box-shadow: 0 0 24px 13px #00e6ff00, 0 0 14px #00e6ffbb; transform: scale(1.09);}
+  100% { box-shadow: 0 0 0 0 #00e6ff00, 0 0 10px #00e6ff44; transform: scale(1);}
+}
+`;
+
 const AboutSection3D = ({ lang, t }) => {
   const DIGITAL_TWIN_INFO = t.digitalTwinInfo;
   const HOTSPOTS = t.hotspots;
@@ -117,6 +125,8 @@ const AboutSection3D = ({ lang, t }) => {
         zIndex: 2,
       }}
     >
+      {/* Pulsujący styl w <style> tylko raz */}
+      <style>{PULSE_ANIMATION}</style>
       <div
         className="about-content"
         style={{
@@ -170,7 +180,6 @@ const AboutSection3D = ({ lang, t }) => {
               minWidth: isMobile ? 280 : 462,
               maxWidth: isMobile ? 375 : 602,
               height: `${modelHeight}px`,
-
               background: "rgba(24,48,64,0.33)",
               borderRadius: 20,
               boxShadow: "0 0 24px #00e6ff22",
@@ -195,7 +204,7 @@ const AboutSection3D = ({ lang, t }) => {
                 }}
               />
             )}
-            {/* Przycisk interakcji */}
+            {/* Przycisk interakcji – tu animacja */}
             <button
               style={{
                 position: "absolute",
@@ -221,6 +230,11 @@ const AboutSection3D = ({ lang, t }) => {
                 outline: "none",
                 fontFamily: "inherit",
                 pointerEvents: "auto",
+                // ANIMACJA PULSOWANIA, tylko jeśli NIE aktywny!
+                animation: !controlsEnabled
+                  ? "pulse-interact-btn 1.25s infinite"
+                  : "none",
+                willChange: "transform, box-shadow",
               }}
               onClick={(e) => {
                 e.stopPropagation();
@@ -231,7 +245,7 @@ const AboutSection3D = ({ lang, t }) => {
                   ? lang === "pl"
                     ? "Zablokuj model"
                     : "Lock model"
-                  : lang === "pl"
+                  : lang === "en"
                   ? "Interakcja z modelem"
                   : "Interact with model"
               }

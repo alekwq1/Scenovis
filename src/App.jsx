@@ -13,8 +13,15 @@ import { Environment } from "@react-three/drei";
 
 const VIDEO_URL = "/Video.mp4";
 
+// Funkcja wykrywania języka przeglądarki (domyślnie "en")
+const getBrowserLang = () => {
+  if (typeof navigator === "undefined") return "en";
+  const lang = navigator.language || navigator.userLanguage || "en";
+  return lang.startsWith("pl") ? "pl" : "en";
+};
+
 const App = () => {
-  const [lang, setLang] = useState("pl");
+  const [lang, setLang] = useState(getBrowserLang());
   const [isMobile, setIsMobile] = useState(false);
   const [showFixedNav, setShowFixedNav] = useState(true);
 
