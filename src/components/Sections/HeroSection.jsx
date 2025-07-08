@@ -42,6 +42,7 @@ const HeroSection = ({ isMobile, lang, t }) => {
         background: "transparent",
       }}
     >
+      {/* --- RESPONSYWNE WIDEO TŁA --- */}
       <video
         autoPlay
         loop
@@ -50,44 +51,48 @@ const HeroSection = ({ isMobile, lang, t }) => {
         style={{
           position: "absolute",
           left: 0,
-          top: 0,
-          width: "100vw",
-          height: "100vh",
-          objectFit: "cover",
-          objectPosition: "center",
+          top: isMobile ? "5cm" : 0,
+          width: "100%",
+          height: "100%",
+          minWidth: "100vw",
+          minHeight: "100vh",
+          objectFit: isMobile ? "contain" : "cover",
+          objectPosition: isMobile ? "center top" : "center",
           zIndex: 0,
           opacity: 1,
           filter: "brightness(0.85)",
           pointerEvents: "none",
+          background: "#050e17",
+          transition: "top 0.3s",
         }}
         src={VIDEO_URL}
       />
 
-      {/* Tekst w dolnej części hero */}
+      {/* --- TEKST HERO --- */}
       <div
         style={{
           position: "absolute",
-          left: isMobile ? "5vw" : "7vw",
-          bottom: isMobile ? "10vw" : "7vw",
+          left: isMobile ? "4vw" : "7vw",
+          bottom: isMobile ? "12vw" : "7vw",
           zIndex: 2,
-          maxWidth: isMobile ? "95vw" : "900px",
+          maxWidth: isMobile ? "92vw" : "900px",
           color: "#fff",
           textAlign: "left",
-          padding: 0,
+          padding: isMobile ? "0 2vw" : 0,
         }}
       >
         <h1
           ref={headerRef}
           style={{
-            fontSize: isMobile ? "2.3rem" : "4rem",
+            fontSize: isMobile ? "1.7rem" : "4rem",
             fontWeight: 900,
             background: "linear-gradient(to right, #fff, #00e6ff 90%)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             margin: 0,
-            lineHeight: 1.08,
+            lineHeight: isMobile ? 1.14 : 1.08,
             textShadow: "0 2px 16px #0009",
-            letterSpacing: "-2px",
+            letterSpacing: isMobile ? "-1.1px" : "-2px",
           }}
         >
           {t.heroTitle.split("\n").map((line, i) => (
@@ -100,23 +105,23 @@ const HeroSection = ({ isMobile, lang, t }) => {
         <h2
           ref={subRef}
           style={{
-            fontSize: isMobile ? "1.1rem" : "1.7rem",
+            fontSize: isMobile ? "1.06rem" : "1.7rem",
             fontWeight: 400,
-            margin: "1.2rem 0 0 0",
+            margin: isMobile ? "0.95rem 0 0 0" : "1.2rem 0 0 0",
             color: "#fff",
             textShadow: "0 2px 16px #000c",
-            maxWidth: "550px",
-            lineHeight: 1.2,
+            maxWidth: isMobile ? "92vw" : "550px",
+            lineHeight: 1.22,
           }}
         >
           {t.heroSub}
         </h2>
-        <div style={{ marginTop: "2rem" }}>
+        <div style={{ marginTop: isMobile ? "1.2rem" : "2rem" }}>
           <button
             onClick={() => {
               const aboutSection = document.getElementById("about");
               if (aboutSection) {
-                const navbarOffset = 0; // dopasuj do własnego navbara!
+                const navbarOffset = 0; // Dopasuj do własnego navbara!
                 const top =
                   aboutSection.getBoundingClientRect().top +
                   window.scrollY -
@@ -125,13 +130,13 @@ const HeroSection = ({ isMobile, lang, t }) => {
               }
             }}
             style={{
-              fontSize: isMobile ? "1.05rem" : "1.2rem",
+              fontSize: isMobile ? "1.01rem" : "1.2rem",
               fontWeight: 700,
               background: "linear-gradient(to right, #00e6ff, #0072ff)",
               color: "#fff",
               border: "none",
               borderRadius: "999px",
-              padding: isMobile ? "0.7rem 2rem" : "1.1rem 2.7rem",
+              padding: isMobile ? "0.68rem 1.5rem" : "1.1rem 2.7rem",
               cursor: "pointer",
               boxShadow: "0 4px 30px #0072ff55",
               transition: "transform 0.1s",
