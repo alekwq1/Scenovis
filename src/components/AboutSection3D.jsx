@@ -33,7 +33,7 @@ const AboutSection3D = ({ lang, t }) => {
 
   const [selectedHotspot, setSelectedHotspot] = useState(DIGITAL_TWIN_INFO);
   const [infoPanelOpen, setInfoPanelOpen] = useState(true);
-  const [controlsEnabled, setControlsEnabled] = useState(false); // nowość!
+  const [controlsEnabled, setControlsEnabled] = useState(false);
   const orbitRef = useRef();
   const wrapperRef = useRef();
   const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
@@ -48,18 +48,19 @@ const AboutSection3D = ({ lang, t }) => {
   const cameraFov = isMobile ? 40 : 29;
   const modelScale = isMobile ? 1.65 : 1.5;
 
+  // Zmienna wysokość na mobilu
+  const modelBoxHeight = isMobile
+    ? controlsEnabled
+      ? "110vw" // duży model po aktywacji przycisku
+      : "75vw" // większy niż dotychczas nawet domyślnie
+    : 448;
+
   // --- Styles ---
   const modelBoxStyles = {
     flex: infoPanelOpen ? 1.5 : 2,
-    minWidth: isMobile ? 280 : 462,
-    maxWidth: isMobile ? 375 : 602,
-    // zwiększ wysokość na mobile przy aktywnej interakcji
-    height:
-      isMobile && controlsEnabled
-        ? 220 * 1.5 // 50% więcej podczas interakcji
-        : isMobile
-        ? 220
-        : 448,
+    minWidth: isMobile ? "90vw" : 462,
+    maxWidth: isMobile ? "98vw" : 602,
+    height: modelBoxHeight,
     background: "rgba(24,48,64,0.33)",
     borderRadius: 20,
     boxShadow: "0 0 24px #00e6ff22",
@@ -189,6 +190,23 @@ const AboutSection3D = ({ lang, t }) => {
         >
           {/* Box z 3D */}
           <div style={modelBoxStyles}>
+            {/* --- Przezroczysta warstwa blokująca dotyk na Canvas gdy controlsEnabled==false --- */}
+            {isMobile && !controlsEnabled && (
+              <div
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  height: "100%",
+                  zIndex: 9,
+                  // nie pozwala Canvas "łapać" scrolla
+                  background: "transparent",
+                  touchAction: "pan-y pan-x", // dla przewijania dotykiem
+                  pointerEvents: "auto",
+                }}
+              />
+            )}
             <Canvas
               camera={{
                 position: cameraPosition,
@@ -198,6 +216,8 @@ const AboutSection3D = ({ lang, t }) => {
                 width: "100%",
                 height: "100%",
                 background: "transparent",
+                touchAction: isMobile && controlsEnabled ? "auto" : "none",
+                pointerEvents: "auto",
               }}
             >
               <ambientLight intensity={0.9} />
