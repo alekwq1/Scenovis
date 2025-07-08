@@ -3,7 +3,6 @@ import * as THREE from "three";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Html, useGLTF } from "@react-three/drei";
 
-// --- Animacja kamery ---
 function animateCameraTo(orbitControls, position, target, duration = 1.0) {
   if (!orbitControls) return;
   const controls = orbitControls.object;
@@ -33,7 +32,7 @@ const AboutSection3D = ({ lang, t }) => {
 
   const [selectedHotspot, setSelectedHotspot] = useState(DIGITAL_TWIN_INFO);
   const [infoPanelOpen, setInfoPanelOpen] = useState(true);
-  const [controlsEnabled, setControlsEnabled] = useState(false);
+  const [controlsEnabled, setControlsEnabled] = useState(false); // Tryb interakcji
   const orbitRef = useRef();
   const wrapperRef = useRef();
   const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
@@ -41,34 +40,31 @@ const AboutSection3D = ({ lang, t }) => {
   useEffect(() => {
     setSelectedHotspot(t.digitalTwinInfo);
     setInfoPanelOpen(true);
-    setControlsEnabled(false); // Zawsze resetuj tryb po zmianie języka!
   }, [t, lang]);
 
-  // Kamera bliżej na mobile
   const cameraPosition = isMobile ? [28, 20, 18] : [50, 30, 25];
   const cameraFov = isMobile ? 40 : 29;
   const modelScale = isMobile ? 1.65 : 1.5;
 
-  // ---- Styl kontenera modelu (powiększa się na mobile przy interakcji) ----
-  const baseMobileHeight = 220;
+  // Wysokość boxa zależna od trybu interakcji
+  const modelBoxHeight =
+    isMobile && controlsEnabled ? 330 : isMobile ? 220 : 448;
+
   const modelBoxStyles = {
     flex: infoPanelOpen ? 1.5 : 2,
     minWidth: isMobile ? 280 : 462,
     maxWidth: isMobile ? 375 : 602,
-    height: isMobile
-      ? controlsEnabled
-        ? baseMobileHeight * 1.5 // 50% większe
-        : baseMobileHeight
-      : 448,
+    height: modelBoxHeight,
     background: "rgba(24,48,64,0.33)",
     borderRadius: 20,
     boxShadow: "0 0 24px #00e6ff22",
     overflow: "hidden",
     position: "relative",
     marginBottom: isMobile ? 10 : 0,
-    transition: "height 0.33s cubic-bezier(.7,.2,.2,1)",
+    transition:
+      "flex 0.3s, width 0.3s, max-width 0.3s, min-width 0.3s, height 0.4s cubic-bezier(.7,.3,.3,1.1)",
     pointerEvents: "auto",
-    touchAction: controlsEnabled ? "none" : "auto",
+    touchAction: controlsEnabled ? "none" : "auto", // dla całego boxa
   };
 
   const infoPanelStyles = {
@@ -101,7 +97,38 @@ const AboutSection3D = ({ lang, t }) => {
 
   const handleCloseInfo = () => setInfoPanelOpen(false);
 
-  // --- Nawigacja "scroll to #about" ---
+  // Naprawa scrolla na całym boxie na mobile:
+  // Gdy interakcja wyłączona, box nie przechwytuje dotyku, scroll działa naturalnie
+  // Gdy interakcja włączona, box i canvas łapią tylko gesty rotacji
+
+  // -- Blokada przewijania canvas gdy controlsEnabled==false --
+  useEffect(() => {
+    if (!isMobile) return;
+    const preventDefault = (e) => {
+      if (!controlsEnabled) {
+        // ale pozwól kliknąć hotspot, nie blokuj click/tap!
+        if (
+          e.target.tagName !== "BUTTON" &&
+          !e.target.closest(".hotspot-html-btn")
+        ) {
+          e.preventDefault();
+        }
+      }
+    };
+
+    const canvas = document.querySelector("#about-canvas");
+    if (canvas) {
+      canvas.addEventListener("touchmove", preventDefault, {
+        passive: false,
+      });
+    }
+    return () => {
+      if (canvas) {
+        canvas.removeEventListener("touchmove", preventDefault);
+      }
+    };
+  }, [controlsEnabled, isMobile]);
+
   useEffect(() => {
     const handler = (e) => {
       if (e.target.getAttribute("href") === "#about" && wrapperRef.current) {
@@ -122,12 +149,6 @@ const AboutSection3D = ({ lang, t }) => {
         .forEach((a) => a.removeEventListener("click", handler));
   }, []);
 
-  // --- Klucz: pozwól przewijanie zawsze, blokuj event tylko na interakcję! ---
-  // Dotyk na Canvas łapie tylko OrbitControls gdy controlsEnabled, inaczej scroll strony.
-  // touch-action CSS steruje tym jak Chrome/Safari obsługuje "swipe"!
-  // Canvas zawsze touchAction: "none", a overlay <div> łapie touchmove tylko jeśli !controlsEnabled.
-
-  // Na desktopie nie robimy overlaya!
   return (
     <section
       id="about"
@@ -194,9 +215,9 @@ const AboutSection3D = ({ lang, t }) => {
             minHeight: isMobile ? 215 : 420,
           }}
         >
-          {/* --- Box z 3D --- */}
+          {/* Box z 3D */}
           <div style={modelBoxStyles}>
-            {/* Nakładka, która pozwala scrollować po dotyku (blokuje TYLKO OrbitControls) */}
+            {/* Nakładka – blokuje dotyk gdy interakcja z modelem wyłączona */}
             {isMobile && !controlsEnabled && (
               <div
                 style={{
@@ -208,9 +229,8 @@ const AboutSection3D = ({ lang, t }) => {
                   zIndex: 10,
                   background: "transparent",
                   pointerEvents: "auto",
-                  touchAction: "auto", // Pozwala na scroll/swipe!
+                  touchAction: "auto", // absolutnie auto!
                 }}
-                // NIE blokuje eventów pointer/touch -> scroll działa
               />
             )}
             {/* Przycisk trybu */}
@@ -265,6 +285,7 @@ const AboutSection3D = ({ lang, t }) => {
               </button>
             )}
             <Canvas
+              id="about-canvas"
               camera={{
                 position: cameraPosition,
                 fov: cameraFov,
@@ -273,8 +294,7 @@ const AboutSection3D = ({ lang, t }) => {
                 width: "100%",
                 height: "100%",
                 background: "transparent",
-                touchAction: controlsEnabled ? "none" : "auto",
-                // touchAction: "none" sprawia, że Canvas łapie gesty tylko na interakcji
+                touchAction: controlsEnabled ? "none" : "auto", // dla R3F
               }}
             >
               <ambientLight intensity={0.9} />
@@ -291,7 +311,6 @@ const AboutSection3D = ({ lang, t }) => {
                 enablePan={controlsEnabled}
                 enableRotate={controlsEnabled}
                 enableZoom={controlsEnabled}
-                enabled={controlsEnabled}
                 mouseButtons={{
                   LEFT: THREE.MOUSE.ROTATE,
                   MIDDLE: THREE.MOUSE.PAN,
@@ -305,7 +324,7 @@ const AboutSection3D = ({ lang, t }) => {
               />
             </Canvas>
           </div>
-          {/* --- Panel informacyjny --- */}
+          {/* Panel informacyjny */}
           {infoPanelOpen && (
             <HotspotInfoPanel
               open={!!selectedHotspot}
@@ -366,6 +385,7 @@ function Hotspot({ data, onClick, isActive }) {
       <meshBasicMaterial transparent opacity={0} />
       <Html center zIndexRange={[100, 200]}>
         <button
+          className="hotspot-html-btn"
           onClick={(e) => {
             e.stopPropagation();
             onClick();
@@ -387,6 +407,8 @@ function Hotspot({ data, onClick, isActive }) {
             color: "#fff",
             fontWeight: 700,
             transition: "all .2s",
+            touchAction: "auto",
+            pointerEvents: "auto",
           }}
           title={data.label}
         >
