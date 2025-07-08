@@ -26,7 +26,7 @@ const HeroSection = ({ isMobile, lang, t }) => {
     }
   }, []);
 
-  // --- NA MOBILE tekst jest NAD wideo, na desktopie na wideo ---
+  // --- MOBILE: tekst na ciemnym, centralnie w pionie
   if (isMobile) {
     return (
       <section
@@ -46,32 +46,37 @@ const HeroSection = ({ isMobile, lang, t }) => {
           alignItems: "center",
         }}
       >
-        {/* Tekst na ciemnym tle */}
+        {/* Tekst hero */}
         <div
           style={{
             width: "100vw",
-            background: "rgba(10, 22, 33, 0.99)",
+            background: "rgba(10, 22, 33, 0.98)",
             zIndex: 2,
-            padding: "30px 7vw 24px 7vw",
+            padding: "36px 6vw 26px 6vw",
             color: "#fff",
             textAlign: "left",
             boxSizing: "border-box",
             borderBottomLeftRadius: 20,
             borderBottomRightRadius: 20,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-start", // left align, but block is centered
+            justifyContent: "center",
           }}
         >
           <h1
             ref={headerRef}
             style={{
-              fontSize: "1.52rem",
+              fontSize: "1.45rem",
               fontWeight: 900,
-              background: "linear-gradient(to right, #fff, #00e6ff 90%)",
+              background: "linear-gradient(to right, #f5f8fa, #37ecff 85%)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               margin: 0,
-              lineHeight: 1.11,
-              textShadow: "0 2px 16px #0009",
-              letterSpacing: "-1.1px",
+              lineHeight: 1.13,
+              textShadow: "0 1px 10px #0098bb33",
+              letterSpacing: "-0.7px",
+              marginBottom: "10px",
             }}
           >
             {t.heroTitle.split("\n").map((line, i) => (
@@ -86,16 +91,23 @@ const HeroSection = ({ isMobile, lang, t }) => {
             style={{
               fontSize: "1.01rem",
               fontWeight: 400,
-              margin: "1.1rem 0 0 0",
-              color: "#fff",
-              textShadow: "0 2px 16px #000c",
-              maxWidth: "96vw",
-              lineHeight: 1.22,
+              margin: "0 0 0.98em 0",
+              color: "#c7f6ff",
+              textShadow: "0 1px 8px #003e4a33",
+              maxWidth: "97vw",
+              lineHeight: 1.23,
             }}
           >
             {t.heroSub}
           </h2>
-          <div style={{ marginTop: "1.1rem" }}>
+          <div
+            style={{
+              marginTop: "0.8em",
+              width: "100%",
+              display: "flex",
+              justifyContent: "flex-start",
+            }}
+          >
             <button
               onClick={() => {
                 const aboutSection = document.getElementById("about");
@@ -109,13 +121,13 @@ const HeroSection = ({ isMobile, lang, t }) => {
                 }
               }}
               style={{
-                fontSize: "1.02rem",
+                fontSize: "1.01rem",
                 fontWeight: 700,
                 background: "linear-gradient(to right, #00e6ff, #0072ff)",
                 color: "#fff",
                 border: "none",
                 borderRadius: "999px",
-                padding: "0.7rem 1.45rem",
+                padding: "0.7rem 1.7rem",
                 cursor: "pointer",
                 boxShadow: "0 4px 30px #0072ff55",
                 transition: "transform 0.1s",
@@ -129,13 +141,13 @@ const HeroSection = ({ isMobile, lang, t }) => {
         <div
           style={{
             width: "100vw",
-            height: "48vw",
-            minHeight: 220,
-            maxHeight: 370,
+            height: "46vw",
+            minHeight: 200,
+            maxHeight: 360,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            background: "#000",
+            background: "#111",
           }}
         >
           <video
@@ -151,7 +163,7 @@ const HeroSection = ({ isMobile, lang, t }) => {
               zIndex: 1,
               filter: "brightness(0.88)",
               background: "#111",
-              borderRadius: 20,
+              borderRadius: 16,
               boxShadow: "0 8px 28px #111c",
             }}
             src={VIDEO_URL}
@@ -161,7 +173,7 @@ const HeroSection = ({ isMobile, lang, t }) => {
     );
   }
 
-  // --- DESKTOP: tekst na wideo ---
+  // --- DESKTOP: klasyka
   return (
     <section
       id="hero"
