@@ -3,7 +3,6 @@ import * as THREE from "three";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Html, useGLTF } from "@react-three/drei";
 
-// --- Animacja kamery ---
 function animateCameraTo(orbitControls, position, target, duration = 1.0) {
   if (!orbitControls) return;
   const controls = orbitControls.object;
@@ -27,62 +26,40 @@ function animateCameraTo(orbitControls, position, target, duration = 1.0) {
 
 const NEON_BLUE = "#00e6ff";
 
-const AboutSection3D = ({ lang, t, setLang }) => {
+const AboutSection3D = ({ lang, t }) => {
   const DIGITAL_TWIN_INFO = t.digitalTwinInfo;
   const HOTSPOTS = t.hotspots;
 
   const [selectedHotspot, setSelectedHotspot] = useState(DIGITAL_TWIN_INFO);
   const [infoPanelOpen, setInfoPanelOpen] = useState(true);
-  const [controlsEnabled, setControlsEnabled] = useState(false);
+  const [controlsEnabled, setControlsEnabled] = useState(false); // Tryb interakcji
   const orbitRef = useRef();
   const wrapperRef = useRef();
   const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
 
-  // --- Zablokuj przewijanie strony na mobile podczas interakcji z modelem ---
-  useEffect(() => {
-    if (isMobile) {
-      if (controlsEnabled) {
-        document.body.style.overflow = "hidden";
-        document.body.style.touchAction = "none";
-      } else {
-        document.body.style.overflow = "";
-        document.body.style.touchAction = "";
-      }
-      return () => {
-        document.body.style.overflow = "";
-        document.body.style.touchAction = "";
-      };
-    }
-  }, [controlsEnabled, isMobile]);
-
   useEffect(() => {
     setSelectedHotspot(t.digitalTwinInfo);
     setInfoPanelOpen(true);
-    setControlsEnabled(false);
   }, [t, lang]);
 
-  // Kamera bliżej na mobile
   const cameraPosition = isMobile ? [28, 20, 18] : [50, 30, 25];
   const cameraFov = isMobile ? 40 : 29;
   const modelScale = isMobile ? 1.65 : 1.5;
 
-  // Kontener na model – rośnie na mobile po aktywacji
   const modelBoxStyles = {
     flex: infoPanelOpen ? 1.5 : 2,
     minWidth: isMobile ? 280 : 462,
-    maxWidth: isMobile ? 550 : 602,
-    width: isMobile ? "95vw" : undefined,
-    height: isMobile ? (controlsEnabled ? "78vh" : "35vw") : 448,
+    maxWidth: isMobile ? 375 : 602,
+    height: isMobile ? 220 : 448,
     background: "rgba(24,48,64,0.33)",
     borderRadius: 20,
     boxShadow: "0 0 24px #00e6ff22",
     overflow: "hidden",
     position: "relative",
     marginBottom: isMobile ? 10 : 0,
-    marginTop: isMobile ? 8 : 0,
-    transition: "height 0.4s cubic-bezier(.7,.2,.2,1)",
-    touchAction: controlsEnabled ? "none" : "auto",
-    zIndex: controlsEnabled ? 200 : 2,
+    transition:
+      "flex 0.3s, width 0.3s, max-width 0.3s, min-width 0.3s, height 0.3s",
+    pointerEvents: "auto", // Ważne! Canvas nie łapie, jeśli jest zakryty overlayem.
   };
 
   const infoPanelStyles = {
@@ -115,7 +92,6 @@ const AboutSection3D = ({ lang, t, setLang }) => {
 
   const handleCloseInfo = () => setInfoPanelOpen(false);
 
-  // Obsługa nawigacji do sekcji About
   useEffect(() => {
     const handler = (e) => {
       if (e.target.getAttribute("href") === "#about" && wrapperRef.current) {
@@ -202,8 +178,76 @@ const AboutSection3D = ({ lang, t, setLang }) => {
             minHeight: isMobile ? 215 : 420,
           }}
         >
-          {/* --- Box z 3D --- */}
+          {/* Box z 3D */}
           <div style={modelBoxStyles}>
+            {/* Nakładka – blokuje dotyk gdy interakcja z modelem wyłączona */}
+            {isMobile && !controlsEnabled && (
+              <div
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  zIndex: 10,
+                  background: "transparent",
+                  pointerEvents: "auto",
+                  touchAction: "none", // Chrome/Safari fix
+                }}
+                // Blokuje WSZYSTKO co dotyczy Canvas pod spodem – scroll działa
+              />
+            )}
+            {/* Przycisk trybu */}
+            {isMobile && (
+              <button
+                style={{
+                  position: "absolute",
+                  right: 8,
+                  bottom: 8,
+                  background: controlsEnabled
+                    ? "linear-gradient(90deg, #0072ff 0%, #00e6ff 100%)"
+                    : "linear-gradient(90deg, #00e6ff 0%, #0072ff 100%)",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: 10,
+                  padding: "0.33em 1.1em",
+                  fontWeight: 700,
+                  fontSize: "0.92rem",
+                  letterSpacing: ".02em",
+                  boxShadow: controlsEnabled
+                    ? "0 0 10px #00e6ff44"
+                    : "0 1px 4px #0083a822",
+                  cursor: "pointer",
+                  zIndex: 22,
+                  opacity: 0.94,
+                  transition: "opacity 0.17s, box-shadow 0.2s",
+                  outline: "none",
+                  fontFamily: "inherit",
+                  pointerEvents: "auto",
+                }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setControlsEnabled((v) => !v);
+                }}
+                aria-label={
+                  controlsEnabled
+                    ? lang === "pl"
+                      ? "Zablokuj model"
+                      : "Lock model"
+                    : lang === "pl"
+                    ? "Interakcja z modelem"
+                    : "Interact with model"
+                }
+              >
+                {controlsEnabled
+                  ? lang === "pl"
+                    ? "Zablokuj model"
+                    : "Lock model"
+                  : lang === "pl"
+                  ? "Interakcja z modelem"
+                  : "Interact with model"}
+              </button>
+            )}
             <Canvas
               camera={{
                 position: cameraPosition,
@@ -213,9 +257,8 @@ const AboutSection3D = ({ lang, t, setLang }) => {
                 width: "100%",
                 height: "100%",
                 background: "transparent",
-                touchAction: controlsEnabled ? "none" : "auto",
+                touchAction: "none", // dla R3F
               }}
-              frameloop="demand"
             >
               <ambientLight intensity={0.9} />
               <directionalLight position={[2, 3, 4]} intensity={1.2} />
@@ -228,7 +271,6 @@ const AboutSection3D = ({ lang, t, setLang }) => {
               </group>
               <OrbitControls
                 ref={orbitRef}
-                enabled={controlsEnabled}
                 enablePan={controlsEnabled}
                 enableRotate={controlsEnabled}
                 enableZoom={controlsEnabled}
@@ -244,54 +286,8 @@ const AboutSection3D = ({ lang, t, setLang }) => {
                 dampingFactor={0.15}
               />
             </Canvas>
-            {/* Przycisk aktywacji kontroli 3D na mobile */}
-            {isMobile && (
-              <button
-                style={{
-                  position: "absolute",
-                  right: 8,
-                  bottom: 8,
-                  background: controlsEnabled
-                    ? "linear-gradient(90deg, #0072ff 0%, #00e6ff 100%)"
-                    : "linear-gradient(90deg, #00e6ff 0%, #0072ff 100%)",
-                  color: "#fff",
-                  border: "none",
-                  borderRadius: 14,
-                  padding: "0.7em 1.25em",
-                  fontWeight: 700,
-                  fontSize: "0.96rem",
-                  letterSpacing: ".03em",
-                  boxShadow: controlsEnabled
-                    ? "0 0 10px #00e6ff44"
-                    : "0 1px 4px #0083a822",
-                  cursor: "pointer",
-                  zIndex: 22,
-                  opacity: 0.92,
-                  transition: "opacity 0.17s, box-shadow 0.2s",
-                  outline: "none",
-                  userSelect: "none",
-                  touchAction: "none",
-                }}
-                onClick={() => setControlsEnabled((v) => !v)}
-                onTouchStart={(e) => e.stopPropagation()}
-                onMouseDown={(e) => e.stopPropagation()}
-                aria-label={
-                  controlsEnabled
-                    ? "Wyłącz interakcję"
-                    : "Włącz interakcję z modelem"
-                }
-              >
-                {controlsEnabled
-                  ? lang === "pl"
-                    ? "Wyłącz interakcję"
-                    : "Disable interaction"
-                  : lang === "pl"
-                  ? "Interakcja z modelem"
-                  : "Interact with model"}
-              </button>
-            )}
           </div>
-          {/* --- Panel informacyjny --- */}
+          {/* Panel informacyjny */}
           {infoPanelOpen && (
             <HotspotInfoPanel
               open={!!selectedHotspot}
@@ -304,29 +300,6 @@ const AboutSection3D = ({ lang, t, setLang }) => {
             />
           )}
         </div>
-        {/* Język przełącznik pod modelem na mobile */}
-        {isMobile && setLang && (
-          <div style={{ marginTop: 18, textAlign: "center" }}>
-            <button
-              style={{
-                fontWeight: 700,
-                background: "#00e6ff",
-                color: "#1b2a32",
-                border: "none",
-                fontSize: 17,
-                borderRadius: 8,
-                padding: "0.35em 1.3em",
-                cursor: "pointer",
-                boxShadow: "0 2px 10px #00e6ff33",
-                margin: "0 0.2em",
-                letterSpacing: ".06em",
-              }}
-              onClick={() => setLang(lang === "pl" ? "en" : "pl")}
-            >
-              {lang === "pl" ? "EN" : "PL"}
-            </button>
-          </div>
-        )}
       </div>
     </section>
   );
@@ -413,22 +386,6 @@ function HotspotInfoPanel({ open, hotspot, onClose, isMobile, lang, t }) {
   const translateStatus = (status) =>
     (t.statuses && t.statuses[status]) || status;
 
-  // Powiększ obrazek na desktopie
-  const imgStyles = {
-    maxWidth: isMobile ? "88%" : "180%",
-    maxHeight: isMobile ? 112 : 220,
-    width: "auto",
-    height: "auto",
-    objectFit: "contain",
-    background: "none",
-    borderRadius: 12,
-    boxShadow: "0 0 16px #00e6ff22",
-    pointerEvents: "none",
-    userSelect: "none",
-    display: "block",
-    margin: "0 auto",
-  };
-
   return (
     <div
       style={{
@@ -486,7 +443,23 @@ function HotspotInfoPanel({ open, hotspot, onClose, isMobile, lang, t }) {
             marginBottom: "12px",
           }}
         >
-          <img src={hotspot.image} alt={hotspot.label} style={imgStyles} />
+          <img
+            src={hotspot.image}
+            alt={hotspot.label}
+            style={{
+              maxWidth: "88%",
+              maxHeight: 112,
+              width: "auto",
+              height: "auto",
+              objectFit: "contain",
+              background: "none",
+              borderRadius: 12,
+              boxShadow: "0 0 16px #00e6ff22",
+              pointerEvents: "none",
+              userSelect: "none",
+              display: "block",
+            }}
+          />
         </div>
       )}
 
