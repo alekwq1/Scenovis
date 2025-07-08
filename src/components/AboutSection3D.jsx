@@ -32,7 +32,7 @@ const AboutSection3D = ({ lang, t }) => {
 
   const [selectedHotspot, setSelectedHotspot] = useState(DIGITAL_TWIN_INFO);
   const [infoPanelOpen, setInfoPanelOpen] = useState(true);
-  const [controlsEnabled, setControlsEnabled] = useState(false); // Tryb interakcji
+  const [controlsEnabled, setControlsEnabled] = useState(false);
   const orbitRef = useRef();
   const wrapperRef = useRef();
   const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
@@ -46,26 +46,14 @@ const AboutSection3D = ({ lang, t }) => {
   const cameraFov = isMobile ? 40 : 29;
   const modelScale = isMobile ? 1.65 : 1.5;
 
-  // Wysokość boxa zależna od trybu interakcji
-  const modelBoxHeight =
-    isMobile && controlsEnabled ? 330 : isMobile ? 220 : 448;
-
-  const modelBoxStyles = {
-    flex: infoPanelOpen ? 1.5 : 2,
-    minWidth: isMobile ? 280 : 462,
-    maxWidth: isMobile ? 375 : 602,
-    height: modelBoxHeight,
-    background: "rgba(24,48,64,0.33)",
-    borderRadius: 20,
-    boxShadow: "0 0 24px #00e6ff22",
-    overflow: "hidden",
-    position: "relative",
-    marginBottom: isMobile ? 10 : 0,
-    transition:
-      "flex 0.3s, width 0.3s, max-width 0.3s, min-width 0.3s, height 0.4s cubic-bezier(.7,.3,.3,1.1)",
-    pointerEvents: "auto",
-    touchAction: controlsEnabled ? "none" : "auto", // dla całego boxa
-  };
+  // <--- USTAWIENIA WYSOKOŚCI MODELU --->
+  const modelHeight = isMobile
+    ? controlsEnabled
+      ? 330
+      : 220
+    : controlsEnabled
+    ? 660
+    : 448;
 
   const infoPanelStyles = {
     position: "relative",
@@ -97,38 +85,7 @@ const AboutSection3D = ({ lang, t }) => {
 
   const handleCloseInfo = () => setInfoPanelOpen(false);
 
-  // Naprawa scrolla na całym boxie na mobile:
-  // Gdy interakcja wyłączona, box nie przechwytuje dotyku, scroll działa naturalnie
-  // Gdy interakcja włączona, box i canvas łapią tylko gesty rotacji
-
-  // -- Blokada przewijania canvas gdy controlsEnabled==false --
-  useEffect(() => {
-    if (!isMobile) return;
-    const preventDefault = (e) => {
-      if (!controlsEnabled) {
-        // ale pozwól kliknąć hotspot, nie blokuj click/tap!
-        if (
-          e.target.tagName !== "BUTTON" &&
-          !e.target.closest(".hotspot-html-btn")
-        ) {
-          e.preventDefault();
-        }
-      }
-    };
-
-    const canvas = document.querySelector("#about-canvas");
-    if (canvas) {
-      canvas.addEventListener("touchmove", preventDefault, {
-        passive: false,
-      });
-    }
-    return () => {
-      if (canvas) {
-        canvas.removeEventListener("touchmove", preventDefault);
-      }
-    };
-  }, [controlsEnabled, isMobile]);
-
+  // scroll anchor fix
   useEffect(() => {
     const handler = (e) => {
       if (e.target.getAttribute("href") === "#about" && wrapperRef.current) {
@@ -216,9 +173,25 @@ const AboutSection3D = ({ lang, t }) => {
           }}
         >
           {/* Box z 3D */}
-          <div style={modelBoxStyles}>
-            {/* Nakładka – blokuje dotyk gdy interakcja z modelem wyłączona */}
-            {isMobile && !controlsEnabled && (
+          <div
+            style={{
+              flex: infoPanelOpen ? 1.5 : 2,
+              minWidth: isMobile ? 280 : 462,
+              maxWidth: isMobile ? 375 : 602,
+              height: modelHeight,
+              background: "rgba(24,48,64,0.33)",
+              borderRadius: 20,
+              boxShadow: "0 0 24px #00e6ff22",
+              overflow: "hidden",
+              position: "relative",
+              marginBottom: isMobile ? 10 : 0,
+              transition:
+                "flex 0.3s, width 0.3s, max-width 0.3s, min-width 0.3s, height 0.3s cubic-bezier(.7,.3,.3,1.1)",
+              pointerEvents: "auto",
+            }}
+          >
+            {/* Nakładka blokująca dotyk, gdy controls wył. */}
+            {!controlsEnabled && (
               <div
                 style={{
                   position: "absolute",
@@ -229,63 +202,60 @@ const AboutSection3D = ({ lang, t }) => {
                   zIndex: 10,
                   background: "transparent",
                   pointerEvents: "auto",
-                  touchAction: "auto", // absolutnie auto!
+                  touchAction: "auto",
                 }}
               />
             )}
-            {/* Przycisk trybu */}
-            {isMobile && (
-              <button
-                style={{
-                  position: "absolute",
-                  right: 8,
-                  bottom: 8,
-                  background: controlsEnabled
-                    ? "linear-gradient(90deg, #0072ff 0%, #00e6ff 100%)"
-                    : "linear-gradient(90deg, #00e6ff 0%, #0072ff 100%)",
-                  color: "#fff",
-                  border: "none",
-                  borderRadius: 10,
-                  padding: "0.33em 1.1em",
-                  fontWeight: 700,
-                  fontSize: "0.92rem",
-                  letterSpacing: ".02em",
-                  boxShadow: controlsEnabled
-                    ? "0 0 10px #00e6ff44"
-                    : "0 1px 4px #0083a822",
-                  cursor: "pointer",
-                  zIndex: 22,
-                  opacity: 0.94,
-                  transition: "opacity 0.17s, box-shadow 0.2s",
-                  outline: "none",
-                  fontFamily: "inherit",
-                  pointerEvents: "auto",
-                }}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setControlsEnabled((v) => !v);
-                }}
-                aria-label={
-                  controlsEnabled
-                    ? lang === "pl"
-                      ? "Zablokuj model"
-                      : "Lock model"
-                    : lang === "pl"
-                    ? "Interakcja z modelem"
-                    : "Interact with model"
-                }
-              >
-                {controlsEnabled
+            {/* Przycisk interakcji */}
+            <button
+              style={{
+                position: "absolute",
+                right: 8,
+                bottom: 8,
+                background: controlsEnabled
+                  ? "linear-gradient(90deg, #0072ff 0%, #00e6ff 100%)"
+                  : "linear-gradient(90deg, #00e6ff 0%, #0072ff 100%)",
+                color: "#fff",
+                border: "none",
+                borderRadius: 10,
+                padding: "0.33em 1.1em",
+                fontWeight: 700,
+                fontSize: "0.92rem",
+                letterSpacing: ".02em",
+                boxShadow: controlsEnabled
+                  ? "0 0 10px #00e6ff44"
+                  : "0 1px 4px #0083a822",
+                cursor: "pointer",
+                zIndex: 22,
+                opacity: 0.94,
+                transition: "opacity 0.17s, box-shadow 0.2s",
+                outline: "none",
+                fontFamily: "inherit",
+                pointerEvents: "auto",
+              }}
+              onClick={(e) => {
+                e.stopPropagation();
+                setControlsEnabled((v) => !v);
+              }}
+              aria-label={
+                controlsEnabled
                   ? lang === "pl"
                     ? "Zablokuj model"
                     : "Lock model"
                   : lang === "pl"
                   ? "Interakcja z modelem"
-                  : "Interact with model"}
-              </button>
-            )}
+                  : "Interact with model"
+              }
+            >
+              {controlsEnabled
+                ? lang === "pl"
+                  ? "Zablokuj model"
+                  : "Lock model"
+                : lang === "pl"
+                ? "Interakcja z modelem"
+                : "Interact with model"}
+            </button>
             <Canvas
-              id="about-canvas"
               camera={{
                 position: cameraPosition,
                 fov: cameraFov,
@@ -294,7 +264,7 @@ const AboutSection3D = ({ lang, t }) => {
                 width: "100%",
                 height: "100%",
                 background: "transparent",
-                touchAction: controlsEnabled ? "none" : "auto", // dla R3F
+                touchAction: controlsEnabled ? "none" : "auto",
               }}
             >
               <ambientLight intensity={0.9} />
@@ -304,6 +274,7 @@ const AboutSection3D = ({ lang, t }) => {
                   hotspots={HOTSPOTS}
                   onHotspotClick={onHotspotClick}
                   selectedHotspot={infoPanelOpen ? selectedHotspot : null}
+                  controlsEnabled={controlsEnabled}
                 />
               </group>
               <OrbitControls
@@ -345,7 +316,12 @@ const AboutSection3D = ({ lang, t }) => {
 export default AboutSection3D;
 
 // --- Model 3D z hotspotami ---
-function AboutModelWithHotspots({ hotspots, onHotspotClick, selectedHotspot }) {
+function AboutModelWithHotspots({
+  hotspots,
+  onHotspotClick,
+  selectedHotspot,
+  controlsEnabled,
+}) {
   const { scene, animations } = useGLTF("/model.glb");
   const mixer = useRef();
 
@@ -372,21 +348,22 @@ function AboutModelWithHotspots({ hotspots, onHotspotClick, selectedHotspot }) {
           data={h}
           isActive={selectedHotspot?.id === h.id}
           onClick={() => onHotspotClick(h)}
+          controlsEnabled={controlsEnabled}
         />
       ))}
     </group>
   );
 }
 
-function Hotspot({ data, onClick, isActive }) {
+function Hotspot({ data, onClick, isActive, controlsEnabled }) {
   return (
     <mesh position={data.position}>
       <sphereGeometry args={[0.04, 18, 18]} />
       <meshBasicMaterial transparent opacity={0} />
       <Html center zIndexRange={[100, 200]}>
         <button
-          className="hotspot-html-btn"
           onClick={(e) => {
+            if (!controlsEnabled) return;
             e.stopPropagation();
             onClick();
           }}
@@ -399,7 +376,7 @@ function Hotspot({ data, onClick, isActive }) {
               : "radial-gradient(circle, #122a38, #00e6ff 70%)",
             border: isActive ? "3px solid #fff" : "2px solid #00e6ff",
             boxShadow: isActive ? "0 0 20px #00e6ff88" : "0 0 8px #00e6ff44",
-            cursor: "pointer",
+            cursor: controlsEnabled ? "pointer" : "default",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -407,8 +384,8 @@ function Hotspot({ data, onClick, isActive }) {
             color: "#fff",
             fontWeight: 700,
             transition: "all .2s",
-            touchAction: "auto",
-            pointerEvents: "auto",
+            touchAction: "none",
+            pointerEvents: controlsEnabled ? "auto" : "none",
           }}
           title={data.label}
         >
@@ -488,7 +465,7 @@ function HotspotInfoPanel({ open, hotspot, onClose, isMobile, lang, t }) {
             alt={hotspot.label}
             style={{
               maxWidth: "88%",
-              maxHeight: 112,
+              maxHeight: isMobile ? 112 : 220,
               width: "auto",
               height: "auto",
               objectFit: "contain",
