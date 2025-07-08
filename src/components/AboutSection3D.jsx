@@ -3,7 +3,7 @@ import * as THREE from "three";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Html, useGLTF } from "@react-three/drei";
 
-// Funkcja animacji kamery
+// Animacja kamery
 function animateCameraTo(orbitControls, position, target, duration = 1.0) {
   if (!orbitControls) return;
   const controls = orbitControls.object;
@@ -33,21 +33,27 @@ const AboutSection3D = ({ lang, t }) => {
 
   const [selectedHotspot, setSelectedHotspot] = useState(DIGITAL_TWIN_INFO);
   const [infoPanelOpen, setInfoPanelOpen] = useState(true);
+  const [controlsEnabled, setControlsEnabled] = useState(false); // nowość!
   const orbitRef = useRef();
   const wrapperRef = useRef();
   const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
 
-  // <--- DODAJ TEN useEffect! --->
   useEffect(() => {
     setSelectedHotspot(t.digitalTwinInfo);
     setInfoPanelOpen(true);
   }, [t, lang]);
 
+  // Kamera bliżej na mobile
+  const cameraPosition = isMobile ? [28, 20, 18] : [50, 30, 25];
+  const cameraFov = isMobile ? 40 : 29;
+  const modelScale = isMobile ? 1.65 : 1.5;
+
+  // --- Styles ---
   const modelBoxStyles = {
     flex: infoPanelOpen ? 1.5 : 2,
-    minWidth: isMobile ? 364 : 462,
-    maxWidth: isMobile ? 476 : 602,
-    height: isMobile ? 364 : 448,
+    minWidth: isMobile ? 280 : 462,
+    maxWidth: isMobile ? 375 : 602,
+    height: isMobile ? 220 : 448,
     background: "rgba(24,48,64,0.33)",
     borderRadius: 20,
     boxShadow: "0 0 24px #00e6ff22",
@@ -64,8 +70,8 @@ const AboutSection3D = ({ lang, t }) => {
     left: "auto",
     top: "auto",
     transform: "none",
-    maxWidth: isMobile ? 462 : 532,
-    minWidth: isMobile ? 301 : 448,
+    maxWidth: isMobile ? 340 : 532,
+    minWidth: isMobile ? 188 : 448,
     boxShadow: "0 0 38px #00e6ff66",
     borderRadius: 20,
     zIndex: 1000,
@@ -88,6 +94,7 @@ const AboutSection3D = ({ lang, t }) => {
 
   const handleCloseInfo = () => setInfoPanelOpen(false);
 
+  // Obsługa nawigacji do sekcji About
   useEffect(() => {
     const handler = (e) => {
       if (e.target.getAttribute("href") === "#about" && wrapperRef.current) {
@@ -133,27 +140,27 @@ const AboutSection3D = ({ lang, t }) => {
         style={{
           width: "100%",
           maxWidth: 1125,
-          minHeight: isMobile ? 560 : 640,
+          minHeight: isMobile ? 460 : 640,
           background: "rgba(8,20,32,0.89)",
           borderRadius: 28,
           boxShadow: "0 8px 46px #00e6ff22",
-          padding: isMobile ? "1.4rem 0.7rem" : "2.4rem 2.4rem 2.2rem 2.4rem",
+          padding: isMobile ? "1.1rem 0.3rem" : "2.4rem 2.4rem 2.2rem 2.4rem",
           position: "relative",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          marginTop: isMobile ? 12 : 18,
+          marginTop: isMobile ? 8 : 18,
         }}
       >
         <h1
           style={{
-            fontSize: isMobile ? "2.1rem" : "3.2rem",
+            fontSize: isMobile ? "1.25rem" : "3.2rem",
             color: NEON_BLUE,
             fontWeight: 900,
             textAlign: "center",
-            marginBottom: isMobile ? "0.9rem" : "1.1rem",
-            marginTop: isMobile ? "0.2rem" : "0.2rem",
+            marginBottom: isMobile ? "0.7rem" : "1.1rem",
+            marginTop: isMobile ? "0.1rem" : "0.2rem",
             letterSpacing: 2,
             textShadow: "0 0 32px #00e6ff77, 0 2px 6px #000b",
             lineHeight: 1.08,
@@ -166,20 +173,20 @@ const AboutSection3D = ({ lang, t }) => {
           style={{
             display: "flex",
             flexDirection: isMobile ? "column" : "row",
-            gap: isMobile ? 22 : 32,
+            gap: isMobile ? 10 : 32,
             width: "100%",
             alignItems: "center",
             justifyContent: "center",
             position: "relative",
-            minHeight: isMobile ? 370 : 420,
+            minHeight: isMobile ? 215 : 420,
           }}
         >
           {/* Box z 3D */}
           <div style={modelBoxStyles}>
             <Canvas
               camera={{
-                position: [50, 30, 25],
-                fov: isMobile ? 36 : 29,
+                position: cameraPosition,
+                fov: cameraFov,
               }}
               style={{
                 width: "100%",
@@ -189,7 +196,7 @@ const AboutSection3D = ({ lang, t }) => {
             >
               <ambientLight intensity={0.9} />
               <directionalLight position={[2, 3, 4]} intensity={1.2} />
-              <group scale={isMobile ? 1.2 : 1.5}>
+              <group scale={modelScale}>
                 <AboutModelWithHotspots
                   hotspots={HOTSPOTS}
                   onHotspotClick={onHotspotClick}
@@ -198,9 +205,9 @@ const AboutSection3D = ({ lang, t }) => {
               </group>
               <OrbitControls
                 ref={orbitRef}
-                enablePan={true}
-                enableRotate={true}
-                enableZoom={true}
+                enablePan={controlsEnabled}
+                enableRotate={controlsEnabled}
+                enableZoom={controlsEnabled}
                 mouseButtons={{
                   LEFT: THREE.MOUSE.ROTATE,
                   MIDDLE: THREE.MOUSE.PAN,
@@ -213,6 +220,44 @@ const AboutSection3D = ({ lang, t }) => {
                 dampingFactor={0.15}
               />
             </Canvas>
+            {/* Przycisk aktywacji kontroli 3D na mobile */}
+            {isMobile && (
+              <button
+                style={{
+                  position: "absolute",
+                  right: 8,
+                  bottom: 8,
+                  background: controlsEnabled
+                    ? "linear-gradient(90deg, #0072ff 0%, #00e6ff 100%)"
+                    : "linear-gradient(90deg, #00e6ff 0%, #0072ff 100%)",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: 14,
+                  padding: "0.55em 1.15em",
+                  fontWeight: 700,
+                  fontSize: "0.5rem",
+                  letterSpacing: ".04em",
+                  boxShadow: controlsEnabled
+                    ? "0 0 10px #00e6ff44"
+                    : "0 1px 4px #0083a822",
+                  cursor: "pointer",
+                  zIndex: 22,
+                  opacity: 0.86,
+                  transition: "opacity 0.17s, box-shadow 0.2s",
+                  outline: "none",
+                }}
+                onClick={() => setControlsEnabled((v) => !v)}
+                onTouchStart={(e) => e.stopPropagation()} // zapobiega "łapaniu" drag przez model
+                onMouseDown={(e) => e.stopPropagation()}
+                aria-label={
+                  controlsEnabled
+                    ? "Wyłącz obracanie 3D"
+                    : "Obracaj / powiększ model"
+                }
+              >
+                {controlsEnabled ? "Wyłącz obracanie" : "Obracaj model"}
+              </button>
+            )}
           </div>
           {/* Panel informacyjny */}
           {infoPanelOpen && (
@@ -317,16 +362,17 @@ function HotspotInfoPanel({ open, hotspot, onClose, isMobile, lang, t }) {
     <div
       style={{
         position: "relative",
-        maxWidth: isMobile ? 330 : 380,
-        minWidth: isMobile ? 215 : 320,
+        maxWidth: isMobile ? 320 : 380,
+        minWidth: isMobile ? 165 : 320,
         boxShadow: "0 0 38px #00e6ff66",
         borderRadius: 20,
         zIndex: 1000,
         marginLeft: isMobile ? 0 : 24,
-        marginTop: isMobile ? 14 : 0,
+        marginTop: isMobile ? 10 : 0,
         background: "rgba(10, 25, 40, 0.95)",
         border: "1px solid #00e6ff55",
-        padding: "20px",
+        padding: isMobile ? "11px" : "20px",
+        fontSize: isMobile ? "0.97rem" : "1.08rem",
       }}
     >
       <button
@@ -351,8 +397,8 @@ function HotspotInfoPanel({ open, hotspot, onClose, isMobile, lang, t }) {
         style={{
           color: "#00e6ff",
           marginTop: 0,
-          marginBottom: "15px",
-          fontSize: isMobile ? "1.3rem" : "1.5rem",
+          marginBottom: "13px",
+          fontSize: isMobile ? "1.08rem" : "1.5rem",
           textAlign: "center",
         }}
       >
@@ -366,7 +412,7 @@ function HotspotInfoPanel({ open, hotspot, onClose, isMobile, lang, t }) {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            marginBottom: "15px",
+            marginBottom: "12px",
           }}
         >
           <img
@@ -374,7 +420,7 @@ function HotspotInfoPanel({ open, hotspot, onClose, isMobile, lang, t }) {
             alt={hotspot.label}
             style={{
               maxWidth: "88%",
-              maxHeight: 188,
+              maxHeight: 112,
               width: "auto",
               height: "auto",
               objectFit: "contain",
@@ -394,18 +440,18 @@ function HotspotInfoPanel({ open, hotspot, onClose, isMobile, lang, t }) {
         style={{
           color: "#c0e0ff",
           lineHeight: 1.6,
-          fontSize: isMobile ? "0.93rem" : "1.08rem",
+          fontSize: isMobile ? "0.90rem" : "1.08rem",
         }}
       />
 
       {hotspot.extra && (
         <div
           style={{
-            marginTop: "15px",
-            padding: "10px",
-            background: "rgba(0, 50, 80, 0.3)",
+            marginTop: "10px",
+            padding: "8px",
+            background: "rgba(0, 50, 80, 0.22)",
             borderRadius: "8px",
-            fontSize: "0.97rem",
+            fontSize: isMobile ? "0.91rem" : "0.97rem",
           }}
         >
           <div>

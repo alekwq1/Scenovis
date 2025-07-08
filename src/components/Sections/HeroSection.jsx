@@ -9,12 +9,12 @@ const HeroSection = ({ isMobile, lang, t }) => {
   useEffect(() => {
     if (headerRef.current) {
       headerRef.current.style.opacity = 0;
-      headerRef.current.style.transform = "translateY(34px)";
+      headerRef.current.style.transform = "translateY(30px)";
       setTimeout(() => {
         headerRef.current.style.transition = "all 1s cubic-bezier(.5,.2,.4,1)";
         headerRef.current.style.opacity = 1;
         headerRef.current.style.transform = "translateY(0)";
-      }, 120);
+      }, 100);
     }
     if (subRef.current) {
       subRef.current.style.opacity = 0;
@@ -22,11 +22,11 @@ const HeroSection = ({ isMobile, lang, t }) => {
         subRef.current.style.transition =
           "opacity 1.1s cubic-bezier(.5,.2,.4,1)";
         subRef.current.style.opacity = 1;
-      }, 420);
+      }, 500);
     }
   }, []);
 
-  // --- MOBILE UX: blok tekstu lżejszy i zwarty, lepsza kompozycja
+  // --- MOBILE: tekst na ciemnym, przesunięty do góry, luźniej rozmieszczony
   if (isMobile) {
     return (
       <section
@@ -36,22 +36,23 @@ const HeroSection = ({ isMobile, lang, t }) => {
           minWidth: "100vw",
           maxWidth: "100vw",
           minHeight: "100vh",
+          background: "#0a1621",
           margin: 0,
           padding: 0,
           position: "relative",
           overflow: "hidden",
-          background: "#091725",
           display: "flex",
           flexDirection: "column",
+          alignItems: "center",
         }}
       >
-        {/* Tekst hero – wyśrodkowany pionowo */}
+        {/* Tekst hero */}
         <div
           style={{
             width: "100vw",
-            background:
-              "linear-gradient(180deg, #101d29ee 85%, #162837cc 100%)",
+            background: "rgba(10, 22, 33, 0.98)",
             zIndex: 2,
+            padding: "22px 6vw 50px 6vw", // mniej góra, luźniej dół
             color: "#fff",
             textAlign: "left",
             boxSizing: "border-box",
@@ -60,27 +61,25 @@ const HeroSection = ({ isMobile, lang, t }) => {
             display: "flex",
             flexDirection: "column",
             alignItems: "flex-start",
-            justifyContent: "center",
-            padding: "32px 7vw 18px 7vw",
-            boxShadow: "0 6px 32px #0a1422bb",
-            minHeight: 220,
+            justifyContent: "flex-start",
+            minHeight: 170,
+            marginTop: -50, // całość lekko do góry
           }}
         >
           <h1
             ref={headerRef}
             style={{
-              fontSize: "1.65rem",
-              fontWeight: 800,
-              background: "linear-gradient(to right, #eaffff, #37ecff 85%)",
+              fontSize: "1.47rem",
+              fontWeight: 900,
+              background: "linear-gradient(to right, #f5f8fa, #37ecff 85%)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               margin: 0,
-              lineHeight: 1.11,
-              textShadow: "0 1px 7px #0098bb33",
-              letterSpacing: "-0.3px",
-              marginBottom: "10px",
-              maxWidth: "90vw",
-              wordBreak: "break-word",
+              lineHeight: 1.13,
+              textShadow: "0 1px 10px #0098bb33",
+              letterSpacing: "-0.7px",
+              marginBottom: "9px",
+              paddingTop: 0, // mniej od góry
             }}
           >
             {t.heroTitle.split("\n").map((line, i) => (
@@ -93,58 +92,67 @@ const HeroSection = ({ isMobile, lang, t }) => {
           <h2
             ref={subRef}
             style={{
-              fontSize: "1.08rem",
+              fontSize: "1.02rem",
               fontWeight: 400,
               margin: "0 0 1.1em 0",
-              color: "#d7f7ff",
+              color: "#c7f6ff",
               textShadow: "0 1px 8px #003e4a33",
-              lineHeight: 1.22,
-              maxWidth: "93vw",
+              maxWidth: "97vw",
+              lineHeight: 1.23,
             }}
           >
             {t.heroSub}
           </h2>
-          <button
-            onClick={() => {
-              const aboutSection = document.getElementById("about");
-              if (aboutSection) {
-                const navbarOffset = 0;
-                const top =
-                  aboutSection.getBoundingClientRect().top +
-                  window.scrollY -
-                  navbarOffset;
-                window.scrollTo({ top, behavior: "smooth" });
-              }
-            }}
+          <div
             style={{
-              fontSize: "1.07rem",
-              fontWeight: 700,
-              background: "linear-gradient(to right, #00e6ff, #0072ff)",
-              color: "#fff",
-              border: "none",
-              borderRadius: "999px",
-              padding: "0.68rem 1.5rem",
-              cursor: "pointer",
-              boxShadow: "0 4px 22px #0072ff44",
-              transition: "transform 0.1s",
-              margin: "0.1em 0 0.2em 0",
-              alignSelf: "flex-start",
+              marginTop: "0.55em",
+              marginBottom: "0.8em", // więcej miejsca pod buttonem
+              width: "100%",
+              display: "flex",
+              justifyContent: "flex-start",
             }}
           >
-            {t.exploreBtn}
-          </button>
+            <button
+              onClick={() => {
+                const aboutSection = document.getElementById("about");
+                if (aboutSection) {
+                  const navbarOffset = 0;
+                  const top =
+                    aboutSection.getBoundingClientRect().top +
+                    window.scrollY -
+                    navbarOffset;
+                  window.scrollTo({ top, behavior: "smooth" });
+                }
+              }}
+              style={{
+                fontSize: "1.05rem",
+                fontWeight: 700,
+                background: "linear-gradient(to right, #00e6ff, #0072ff)",
+                color: "#fff",
+                border: "none",
+                borderRadius: "999px",
+                padding: "0.7rem 1.7rem",
+                cursor: "pointer",
+                boxShadow: "0 4px 30px #0072ff55",
+                transition: "transform 0.1s",
+              }}
+            >
+              {t.exploreBtn}
+            </button>
+          </div>
         </div>
         {/* Wideo pod tekstem */}
         <div
           style={{
             width: "100vw",
-            height: "48vw",
-            minHeight: 190,
-            maxHeight: 320,
+            height: "46vw",
+            minHeight: 200,
+            maxHeight: 360,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             background: "#111",
+            paddingTop: 8, // delikatny odstęp między tekstem a video
           }}
         >
           <video
@@ -161,7 +169,7 @@ const HeroSection = ({ isMobile, lang, t }) => {
               filter: "brightness(0.88)",
               background: "#111",
               borderRadius: 16,
-              boxShadow: "0 8px 24px #111a",
+              boxShadow: "0 8px 28px #111c",
             }}
             src={VIDEO_URL}
           />
