@@ -17,7 +17,7 @@ body::-webkit-scrollbar {
   background: transparent;
 }
 
-/* Ukryj każdy scrollbar w całej aplikacji */
+/* Ukryj scrollbary w całej aplikacji */
 html,
 body,
 main,
@@ -38,7 +38,7 @@ main::-webkit-scrollbar,
   display: none !important;
 }
 
-/* Przezroczyste tła globalnie */
+/* Przezroczyste tła */
 html,
 body,
 #root,
@@ -63,7 +63,7 @@ main > section#hero {
   background: transparent;
 }
 
-/* POZOSTAŁE SEKCJE: tylko padding, brak min-height i transform */
+/* POZOSTAŁE SEKCJE */
 main > section:not(#hero) {
   width: 100vw;
   max-width: 1100px;
@@ -88,7 +88,7 @@ main > section:not(#hero) {
   }
 }
 
-/* ZAWARTOŚĆ o ładnym boksie: tło, radius, cień – do użycia np. dla AboutSection3D */
+/* ABOUT BOX */
 .about-content {
   width: 100%;
   max-width: 900px;
@@ -103,7 +103,7 @@ main > section:not(#hero) {
   align-items: center;
   justify-content: center;
   scroll-margin-top: 90px;
-  margin-top: 18px; /* delikatny oddech od góry */
+  margin-top: 18px;
 }
 
 @media (max-width: 600px) {
@@ -115,7 +115,7 @@ main > section:not(#hero) {
   }
 }
 
-/* Boks na model i panel info – responsywnie obok siebie lub pod sobą */
+/* 3D model + panel info responsywnie */
 .about-3d-model-box {
   display: flex;
   flex-direction: row;
@@ -134,7 +134,7 @@ main > section:not(#hero) {
   }
 }
 
-/* Panel 3D – możesz nadpisać style bezpośrednio w JSX, ale tu daję na CSS */
+/* Panel 3D */
 .about-3d-model-box > div:first-child {
   flex: 1.5;
   min-width: 260px;
@@ -155,7 +155,7 @@ main > section:not(#hero) {
   }
 }
 
-/* Przykładowy styl dla panelu informacyjnego (HotspotInfoPanel) */
+/* InfoPanel */
 .hotspot-info-panel {
   position: relative;
   max-width: 380px;
@@ -174,7 +174,7 @@ main > section:not(#hero) {
   }
 }
 
-/* 3D Hotspot Button – możesz wyciągnąć do CSS jeśli chcesz! */
+/* Hotspot Button */
 .hotspot-btn {
   width: 40px;
   height: 40px;
@@ -215,6 +215,4 @@ main > section:not(#hero) {
   transition: opacity 0.45s cubic-bezier(0.5, 0, 0.5, 1);
 }
 
-/* Itd... (reszta stylów nawigacji możesz zostawić inline jeśli masz dużo JS logic) */
-
-/* Możesz dodać własne media queries pod swoje potrzeby! */
+/* Dodaj własne media queries pod swoje potrzeby! */

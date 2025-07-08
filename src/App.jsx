@@ -143,6 +143,7 @@ const App = () => {
           lang={lang}
           setLang={setLang}
           t={translations[lang]}
+          isMobile={isMobile}
         />
         <SectionProgressBar />
 

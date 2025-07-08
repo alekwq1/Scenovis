@@ -9,7 +9,7 @@ const navLinks = [
 const LOGO_SRC = "/logo-scenovis.png";
 const NAVBAR_HEIGHT = 70;
 
-// --- NOWA FUNKCJA: Scroll sekcji tuż pod navbar ---
+// --- Scroll sekcji tuż pod navbar ---
 function scrollSectionToTop(id) {
   const el = document.getElementById(id);
   if (!el) return;
@@ -23,7 +23,7 @@ function scrollSectionToTop(id) {
   });
 }
 
-const NavigationBar = ({ showFixedNav = true, lang, setLang, t }) => {
+const NavigationBar = ({ showFixedNav = true, lang, setLang, t, isMobile }) => {
   const handleNavClick = (e, id) => {
     e.preventDefault();
     scrollSectionToTop(id);
@@ -42,7 +42,7 @@ const NavigationBar = ({ showFixedNav = true, lang, setLang, t }) => {
         width: "100vw",
         height: NAVBAR_HEIGHT,
         boxSizing: "border-box",
-        padding: "0 2rem",
+        padding: isMobile ? "0 1rem" : "0 2rem",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
@@ -57,10 +57,10 @@ const NavigationBar = ({ showFixedNav = true, lang, setLang, t }) => {
       <div
         style={{
           position: "absolute",
-          left: "2rem",
+          left: isMobile ? "1rem" : "2rem",
           display: "flex",
           alignItems: "center",
-          gap: "0.9rem",
+          gap: "0.7rem",
           pointerEvents: "auto",
         }}
       >
@@ -89,67 +89,73 @@ const NavigationBar = ({ showFixedNav = true, lang, setLang, t }) => {
             draggable={false}
           />
         </div>
-        <div
-          style={{
-            fontSize: "1.4rem",
-            fontWeight: 700,
-            color: "white",
-            letterSpacing: "1px",
-          }}
-        >
-          SCENOVIS
-        </div>
-      </div>
-      {/* Menu pośrodku */}
-      <div
-        style={{
-          display: "flex",
-          gap: "1.5rem",
-          background: "rgba(16, 21, 34, 0.82)",
-          borderRadius: "16px",
-          boxShadow: "0 2px 24px 0 rgba(0,230,255,0.06)",
-          padding: "0.4rem 1.9rem",
-          fontSize: "1.08rem",
-          fontWeight: 500,
-          alignItems: "center",
-          pointerEvents: "auto",
-          backdropFilter: "blur(6px)",
-        }}
-      >
-        {navLinks.map((link) => (
-          <a
-            key={link.id}
-            href={`#${link.id}`}
+        {!isMobile && (
+          <div
             style={{
-              color: "rgba(255,255,255,0.93)",
-              textDecoration: "none",
-              borderRadius: "7px",
-              padding: "0.5rem 1rem",
-              transition: "background 0.2s, color 0.2s",
-              fontWeight: 500,
-              letterSpacing: "0.02em",
-            }}
-            onClick={(e) => handleNavClick(e, link.id)}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = "#00e6ff33";
-              e.currentTarget.style.color = "#00e6ff";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = "transparent";
-              e.currentTarget.style.color = "rgba(255,255,255,0.93)";
+              fontSize: "1.4rem",
+              fontWeight: 700,
+              color: "white",
+              letterSpacing: "1px",
             }}
           >
-            {link.label[lang]}
-          </a>
-        ))}
+            SCENOVIS
+          </div>
+        )}
       </div>
-      {/* Contact Us + Język po prawej */}
+
+      {/* Menu pośrodku – tylko na desktopie */}
+      {!isMobile && (
+        <div
+          style={{
+            display: "flex",
+            gap: "1.5rem",
+            background: "rgba(16, 21, 34, 0.82)",
+            borderRadius: "16px",
+            boxShadow: "0 2px 24px 0 rgba(0,230,255,0.06)",
+            padding: "0.4rem 1.9rem",
+            fontSize: "1.08rem",
+            fontWeight: 500,
+            alignItems: "center",
+            pointerEvents: "auto",
+            backdropFilter: "blur(6px)",
+          }}
+        >
+          {navLinks.map((link) => (
+            <a
+              key={link.id}
+              href={`#${link.id}`}
+              style={{
+                color: "rgba(255,255,255,0.93)",
+                textDecoration: "none",
+                borderRadius: "7px",
+                padding: "0.5rem 1rem",
+                transition: "background 0.2s, color 0.2s",
+                fontWeight: 500,
+                letterSpacing: "0.02em",
+              }}
+              onClick={(e) => handleNavClick(e, link.id)}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = "#00e6ff33";
+                e.currentTarget.style.color = "#00e6ff";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = "transparent";
+                e.currentTarget.style.color = "rgba(255,255,255,0.93)";
+              }}
+            >
+              {link.label[lang]}
+            </a>
+          ))}
+        </div>
+      )}
+
+      {/* Contact + język – po prawej */}
       <div
         style={{
           position: "absolute",
-          right: "2rem",
+          right: isMobile ? "1rem" : "2rem",
           display: "flex",
-          gap: "1rem",
+          gap: isMobile ? "0.5rem" : "1rem",
           pointerEvents: "auto",
         }}
       >
@@ -163,7 +169,7 @@ const NavigationBar = ({ showFixedNav = true, lang, setLang, t }) => {
             border: "none",
             fontSize: 18,
             cursor: "pointer",
-            marginRight: 8,
+            marginRight: 0,
             padding: "0.3rem 0.7rem",
             borderRadius: 8,
             outline: "none",
@@ -180,8 +186,8 @@ const NavigationBar = ({ showFixedNav = true, lang, setLang, t }) => {
             background: "#232a33",
             color: "#fff",
             border: "none",
-            padding: "0.5rem 1.4rem",
-            fontSize: "1rem",
+            padding: isMobile ? "0.43rem 1rem" : "0.5rem 1.4rem",
+            fontSize: isMobile ? "0.98rem" : "1rem",
             borderRadius: "32px",
             fontWeight: 600,
             boxShadow: "0 2px 12px 0 #00e6ff20",
@@ -193,19 +199,9 @@ const NavigationBar = ({ showFixedNav = true, lang, setLang, t }) => {
             gap: "0.5rem",
           }}
           onClick={handleContactClick}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.background = "#00e6ff";
-            e.currentTarget.style.color = "#050e17";
-            e.currentTarget.style.boxShadow = "0 2px 20px 0 #00e6ff50";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.background = "#232a33";
-            e.currentTarget.style.color = "#fff";
-            e.currentTarget.style.boxShadow = "0 2px 12px 0 #00e6ff20";
-          }}
         >
           {t.contactUs || "Contact Us"}
-          <span style={{ fontSize: "1.15em", marginLeft: "3px" }}>↗</span>
+          <span style={{ fontSize: "1.13em", marginLeft: "3px" }}>↗</span>
         </a>
       </div>
     </div>
