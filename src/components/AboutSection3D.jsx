@@ -3,7 +3,7 @@ import * as THREE from "three";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Html, useGLTF } from "@react-three/drei";
 
-// Animacja kamery (bez zmian)
+// Animacja kamery
 function animateCameraTo(orbitControls, position, target, duration = 1.0) {
   if (!orbitControls) return;
   const controls = orbitControls.object;
@@ -33,7 +33,7 @@ const AboutSection3D = ({ lang, t }) => {
 
   const [selectedHotspot, setSelectedHotspot] = useState(DIGITAL_TWIN_INFO);
   const [infoPanelOpen, setInfoPanelOpen] = useState(true);
-  const [controlsEnabled, setControlsEnabled] = useState(false); // domyślnie interakcja OFF!
+  const [controlsEnabled, setControlsEnabled] = useState(false); // Tryb interakcji
   const orbitRef = useRef();
   const wrapperRef = useRef();
   const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
@@ -41,28 +41,29 @@ const AboutSection3D = ({ lang, t }) => {
   useEffect(() => {
     setSelectedHotspot(t.digitalTwinInfo);
     setInfoPanelOpen(true);
-    setControlsEnabled(false); // reset interakcji po zmianie języka
   }, [t, lang]);
 
   // Kamera bliżej na mobile
-  const cameraPosition = isMobile ? [22, 12, 14] : [50, 30, 25];
-  const cameraFov = isMobile ? 44 : 29;
-  const modelScale = isMobile ? 1.88 : 1.5;
+  const cameraPosition = isMobile ? [28, 20, 18] : [50, 30, 25];
+  const cameraFov = isMobile ? 40 : 29;
+  const modelScale = isMobile ? 1.65 : 1.5;
 
   // --- Styles ---
   const modelBoxStyles = {
     flex: infoPanelOpen ? 1.5 : 2,
-    minWidth: isMobile ? 230 : 462,
-    maxWidth: isMobile ? 320 : 602,
-    height: isMobile ? 170 : 448,
+    minWidth: isMobile ? 280 : 462,
+    maxWidth: isMobile ? 375 : 602,
+    height: isMobile ? 220 : 448,
     background: "rgba(24,48,64,0.33)",
     borderRadius: 20,
     boxShadow: "0 0 24px #00e6ff22",
     overflow: "hidden",
     position: "relative",
-    marginBottom: isMobile ? 8 : 0,
+    marginBottom: isMobile ? 10 : 0,
     transition:
       "flex 0.3s, width 0.3s, max-width 0.3s, min-width 0.3s, height 0.3s",
+    // Najważniejsze: blokuj pointer-events na mobile jeśli controls wył.
+    pointerEvents: isMobile && !controlsEnabled ? "none" : "auto",
   };
 
   const infoPanelStyles = {
@@ -71,13 +72,13 @@ const AboutSection3D = ({ lang, t }) => {
     left: "auto",
     top: "auto",
     transform: "none",
-    maxWidth: isMobile ? 300 : 532,
-    minWidth: isMobile ? 135 : 448,
+    maxWidth: isMobile ? 340 : 532,
+    minWidth: isMobile ? 188 : 448,
     boxShadow: "0 0 38px #00e6ff66",
     borderRadius: 20,
     zIndex: 1000,
     marginLeft: isMobile ? 0 : 24,
-    marginTop: isMobile ? 8 : 0,
+    marginTop: isMobile ? 14 : 0,
     transition: "max-width 0.3s, min-width 0.3s",
   };
 
@@ -129,8 +130,8 @@ const AboutSection3D = ({ lang, t }) => {
         alignItems: "center",
         justifyContent: "center",
         transform: "translateY(6vh)",
-        paddingTop: isMobile ? 65 : 0,
-        paddingBottom: isMobile ? 16 : 0,
+        paddingTop: isMobile ? 80 : 0,
+        paddingBottom: isMobile ? 24 : 0,
         position: "relative",
         boxSizing: "border-box",
         zIndex: 2,
@@ -141,30 +142,30 @@ const AboutSection3D = ({ lang, t }) => {
         style={{
           width: "100%",
           maxWidth: 1125,
-          minHeight: isMobile ? 320 : 640,
+          minHeight: isMobile ? 460 : 640,
           background: "rgba(8,20,32,0.89)",
           borderRadius: 28,
           boxShadow: "0 8px 46px #00e6ff22",
-          padding: isMobile ? "0.7rem 0.1rem" : "2.4rem 2.4rem 2.2rem 2.4rem",
+          padding: isMobile ? "1.1rem 0.3rem" : "2.4rem 2.4rem 2.2rem 2.4rem",
           position: "relative",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          marginTop: isMobile ? 5 : 18,
+          marginTop: isMobile ? 8 : 18,
         }}
       >
         <h1
           style={{
-            fontSize: isMobile ? "1.08rem" : "3.2rem",
+            fontSize: isMobile ? "1.25rem" : "3.2rem",
             color: NEON_BLUE,
             fontWeight: 900,
             textAlign: "center",
-            marginBottom: isMobile ? "0.35rem" : "1.1rem",
+            marginBottom: isMobile ? "0.7rem" : "1.1rem",
             marginTop: isMobile ? "0.1rem" : "0.2rem",
             letterSpacing: 2,
             textShadow: "0 0 32px #00e6ff77, 0 2px 6px #000b",
-            lineHeight: 1.09,
+            lineHeight: 1.08,
           }}
         >
           {t.about3dTitle}
@@ -174,16 +175,67 @@ const AboutSection3D = ({ lang, t }) => {
           style={{
             display: "flex",
             flexDirection: isMobile ? "column" : "row",
-            gap: isMobile ? 6 : 32,
+            gap: isMobile ? 10 : 32,
             width: "100%",
             alignItems: "center",
             justifyContent: "center",
             position: "relative",
-            minHeight: isMobile ? 130 : 420,
+            minHeight: isMobile ? 215 : 420,
           }}
         >
           {/* Box z 3D */}
           <div style={modelBoxStyles}>
+            {/* Przycisk zawsze pointerEvents:auto, nawet jeśli całość zablokowana */}
+            {isMobile && (
+              <button
+                style={{
+                  position: "absolute",
+                  right: 8,
+                  bottom: 8,
+                  background: controlsEnabled
+                    ? "linear-gradient(90deg, #0072ff 0%, #00e6ff 100%)"
+                    : "linear-gradient(90deg, #00e6ff 0%, #0072ff 100%)",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: 10,
+                  padding: "0.33em 1.1em",
+                  fontWeight: 700,
+                  fontSize: "0.92rem",
+                  letterSpacing: ".02em",
+                  boxShadow: controlsEnabled
+                    ? "0 0 10px #00e6ff44"
+                    : "0 1px 4px #0083a822",
+                  cursor: "pointer",
+                  zIndex: 22,
+                  opacity: 0.94,
+                  transition: "opacity 0.17s, box-shadow 0.2s",
+                  outline: "none",
+                  fontFamily: "inherit",
+                  pointerEvents: "auto", // <- NAJWAŻNIEJSZE!
+                }}
+                onClick={(e) => {
+                  e.stopPropagation(); // nie przechwytuj do canvasu!
+                  setControlsEnabled((v) => !v);
+                }}
+                aria-label={
+                  controlsEnabled
+                    ? lang === "pl"
+                      ? "Zablokuj model"
+                      : "Lock model"
+                    : lang === "pl"
+                    ? "Interakcja z modelem"
+                    : "Interact with model"
+                }
+              >
+                {controlsEnabled
+                  ? lang === "pl"
+                    ? "Zablokuj model"
+                    : "Lock model"
+                  : lang === "pl"
+                  ? "Interakcja z modelem"
+                  : "Interact with model"}
+              </button>
+            )}
             <Canvas
               camera={{
                 position: cameraPosition,
@@ -221,55 +273,6 @@ const AboutSection3D = ({ lang, t }) => {
                 dampingFactor={0.15}
               />
             </Canvas>
-            {/* Przycisk aktywacji interakcji 3D na mobile */}
-            {isMobile && (
-              <button
-                style={{
-                  position: "absolute",
-                  right: 6,
-                  bottom: 6,
-                  background: controlsEnabled
-                    ? "linear-gradient(90deg, #0072ff 0%, #00e6ff 100%)"
-                    : "linear-gradient(90deg, #00e6ff 0%, #0072ff 100%)",
-                  color: "#fff",
-                  border: "none",
-                  borderRadius: 10,
-                  padding: "0.28em 0.95em",
-                  fontWeight: 700,
-                  fontSize: "0.50rem",
-                  letterSpacing: ".02em",
-                  boxShadow: controlsEnabled
-                    ? "0 0 10px #00e6ff44"
-                    : "0 1px 4px #0083a822",
-                  cursor: "pointer",
-                  zIndex: 22,
-                  opacity: 0.93,
-                  transition: "opacity 0.17s, box-shadow 0.2s",
-                  outline: "none",
-                  fontFamily: "inherit",
-                }}
-                onClick={() => setControlsEnabled((v) => !v)}
-                onTouchStart={(e) => e.stopPropagation()}
-                onMouseDown={(e) => e.stopPropagation()}
-                aria-label={
-                  controlsEnabled
-                    ? lang === "pl"
-                      ? "Wyłącz interakcję"
-                      : "Disable interaction"
-                    : lang === "pl"
-                    ? "Interakcja z modelem"
-                    : "Enable interaction"
-                }
-              >
-                {controlsEnabled
-                  ? lang === "pl"
-                    ? "Zablokuj model"
-                    : "Lock model"
-                  : lang === "pl"
-                  ? "Interakcja z modelem"
-                  : "Interact with model"}
-              </button>
-            )}
           </div>
           {/* Panel informacyjny */}
           {infoPanelOpen && (
@@ -337,22 +340,22 @@ function Hotspot({ data, onClick, isActive }) {
             onClick();
           }}
           style={{
-            width: 34,
-            height: 34,
+            width: 40,
+            height: 40,
             borderRadius: "50%",
             background: isActive
               ? "radial-gradient(circle, #0ffcff, #00e6ff)"
               : "radial-gradient(circle, #122a38, #00e6ff 70%)",
-            border: isActive ? "2.2px solid #fff" : "1.7px solid #00e6ff",
-            boxShadow: isActive ? "0 0 12px #00e6ff88" : "0 0 6px #00e6ff44",
+            border: isActive ? "3px solid #fff" : "2px solid #00e6ff",
+            boxShadow: isActive ? "0 0 20px #00e6ff88" : "0 0 8px #00e6ff44",
             cursor: "pointer",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            fontSize: 20,
+            fontSize: 24,
             color: "#fff",
             fontWeight: 700,
-            transition: "all .18s",
+            transition: "all .2s",
           }}
           title={data.label}
         >
@@ -374,17 +377,17 @@ function HotspotInfoPanel({ open, hotspot, onClose, isMobile, lang, t }) {
     <div
       style={{
         position: "relative",
-        maxWidth: isMobile ? 255 : 380,
-        minWidth: isMobile ? 120 : 320,
+        maxWidth: isMobile ? 320 : 380,
+        minWidth: isMobile ? 165 : 320,
         boxShadow: "0 0 38px #00e6ff66",
         borderRadius: 20,
         zIndex: 1000,
         marginLeft: isMobile ? 0 : 24,
-        marginTop: isMobile ? 6 : 0,
+        marginTop: isMobile ? 10 : 0,
         background: "rgba(10, 25, 40, 0.95)",
         border: "1px solid #00e6ff55",
-        padding: isMobile ? "9px" : "20px",
-        fontSize: isMobile ? "0.90rem" : "1.08rem",
+        padding: isMobile ? "11px" : "20px",
+        fontSize: isMobile ? "0.97rem" : "1.08rem",
       }}
     >
       <button
@@ -409,8 +412,8 @@ function HotspotInfoPanel({ open, hotspot, onClose, isMobile, lang, t }) {
         style={{
           color: "#00e6ff",
           marginTop: 0,
-          marginBottom: "9px",
-          fontSize: isMobile ? "1.02rem" : "1.5rem",
+          marginBottom: "13px",
+          fontSize: isMobile ? "1.08rem" : "1.5rem",
           textAlign: "center",
         }}
       >
@@ -424,7 +427,7 @@ function HotspotInfoPanel({ open, hotspot, onClose, isMobile, lang, t }) {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            marginBottom: "8px",
+            marginBottom: "12px",
           }}
         >
           <img
@@ -432,13 +435,13 @@ function HotspotInfoPanel({ open, hotspot, onClose, isMobile, lang, t }) {
             alt={hotspot.label}
             style={{
               maxWidth: "88%",
-              maxHeight: 72,
+              maxHeight: 112,
               width: "auto",
               height: "auto",
               objectFit: "contain",
               background: "none",
               borderRadius: 12,
-              boxShadow: "0 0 10px #00e6ff22",
+              boxShadow: "0 0 16px #00e6ff22",
               pointerEvents: "none",
               userSelect: "none",
               display: "block",
@@ -452,18 +455,18 @@ function HotspotInfoPanel({ open, hotspot, onClose, isMobile, lang, t }) {
         style={{
           color: "#c0e0ff",
           lineHeight: 1.6,
-          fontSize: isMobile ? "0.87rem" : "1.08rem",
+          fontSize: isMobile ? "0.90rem" : "1.08rem",
         }}
       />
 
       {hotspot.extra && (
         <div
           style={{
-            marginTop: "8px",
-            padding: "7px",
-            background: "rgba(0, 50, 80, 0.18)",
+            marginTop: "10px",
+            padding: "8px",
+            background: "rgba(0, 50, 80, 0.22)",
             borderRadius: "8px",
-            fontSize: isMobile ? "0.87rem" : "0.97rem",
+            fontSize: isMobile ? "0.91rem" : "0.97rem",
           }}
         >
           <div>
