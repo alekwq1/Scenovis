@@ -35,7 +35,18 @@ const AboutSection3D = ({ lang, t }) => {
   const [controlsEnabled, setControlsEnabled] = useState(false);
   const orbitRef = useRef();
   const wrapperRef = useRef();
-  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+  const [isMobile, setIsMobile] = useState(() =>
+    typeof window !== "undefined" ? window.innerWidth < 768 : false
+  );
+
+  // Dynamic mobile detection (orientation/resize!)
+  useEffect(() => {
+    function handleResize() {
+      setIsMobile(window.innerWidth < 768);
+    }
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     setSelectedHotspot(t.digitalTwinInfo);
@@ -46,7 +57,7 @@ const AboutSection3D = ({ lang, t }) => {
   const cameraFov = isMobile ? 40 : 29;
   const modelScale = isMobile ? 1.65 : 1.5;
 
-  // <--- USTAWIENIA WYSOKOŚCI MODELU --->
+  // --- Dynamic HEIGHT for 3D box ---
   const modelHeight = isMobile
     ? controlsEnabled
       ? 330
@@ -105,6 +116,19 @@ const AboutSection3D = ({ lang, t }) => {
         .querySelectorAll('a[href="#about"]')
         .forEach((a) => a.removeEventListener("click", handler));
   }, []);
+
+  // DEBUG mobile/desktop/height
+  useEffect(() => {
+    // eslint-disable-next-line
+    console.log(
+      "isMobile:",
+      isMobile,
+      "controlsEnabled:",
+      controlsEnabled,
+      "modelHeight:",
+      modelHeight
+    );
+  }, [isMobile, controlsEnabled, modelHeight]);
 
   return (
     <section
@@ -174,6 +198,7 @@ const AboutSection3D = ({ lang, t }) => {
         >
           {/* Box z 3D */}
           <div
+            key={isMobile + "-" + controlsEnabled} // WYMUSZA REMOUNT
             style={{
               flex: infoPanelOpen ? 1.5 : 2,
               minWidth: isMobile ? 280 : 462,
@@ -190,7 +215,7 @@ const AboutSection3D = ({ lang, t }) => {
               pointerEvents: "auto",
             }}
           >
-            {/* Nakładka blokująca dotyk, gdy controls wył. */}
+            {/* Nakładka blokująca interakcję */}
             {!controlsEnabled && (
               <div
                 style={{
