@@ -134,12 +134,12 @@ main > section:not(#hero) {
   }
 }
 
-/* Panel 3D */
+/* Panel 3D - TYLKO REACT USTAWIA HEIGHT! */
 .about-3d-model-box > div:first-child {
   flex: 1.5;
   min-width: 260px;
   max-width: 430px;
-  height: 320px;
+  /* height: 320px;  <-- USUNIĘTO! */
   background: rgba(24, 48, 64, 0.33);
   border-radius: 20px;
   box-shadow: 0 0 24px #00e6ff22;
@@ -150,7 +150,7 @@ main > section:not(#hero) {
   .about-3d-model-box > div:first-child {
     min-width: 210px;
     max-width: 340px;
-    height: 220px;
+
     margin-bottom: 10px;
   }
 }

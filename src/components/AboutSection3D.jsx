@@ -33,19 +33,18 @@ const AboutSection3D = ({ lang, t }) => {
   const [selectedHotspot, setSelectedHotspot] = useState(DIGITAL_TWIN_INFO);
   const [infoPanelOpen, setInfoPanelOpen] = useState(true);
   const [controlsEnabled, setControlsEnabled] = useState(false);
+
   const orbitRef = useRef();
   const wrapperRef = useRef();
-  const [isMobile, setIsMobile] = useState(() =>
+
+  // Responsive mobile check
+  const [isMobile, setIsMobile] = useState(
     typeof window !== "undefined" ? window.innerWidth < 768 : false
   );
-
-  // Dynamic mobile detection (orientation/resize!)
   useEffect(() => {
-    function handleResize() {
-      setIsMobile(window.innerWidth < 768);
-    }
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    const handler = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", handler);
+    return () => window.removeEventListener("resize", handler);
   }, []);
 
   useEffect(() => {
@@ -53,50 +52,16 @@ const AboutSection3D = ({ lang, t }) => {
     setInfoPanelOpen(true);
   }, [t, lang]);
 
-  const cameraPosition = isMobile ? [28, 20, 18] : [50, 30, 25];
-  const cameraFov = isMobile ? 40 : 29;
-  const modelScale = isMobile ? 1.65 : 1.5;
-
-  // --- Dynamic HEIGHT for 3D box ---
+  // Height only (no minHeight) for smooth transition!
   const modelHeight = isMobile
     ? controlsEnabled
       ? 330
-      : 220
+      : 420
     : controlsEnabled
     ? 660
     : 448;
 
-  const infoPanelStyles = {
-    position: "relative",
-    right: "auto",
-    left: "auto",
-    top: "auto",
-    transform: "none",
-    maxWidth: isMobile ? 340 : 532,
-    minWidth: isMobile ? 188 : 448,
-    boxShadow: "0 0 38px #00e6ff66",
-    borderRadius: 20,
-    zIndex: 1000,
-    marginLeft: isMobile ? 0 : 24,
-    marginTop: isMobile ? 14 : 0,
-    transition: "max-width 0.3s, min-width 0.3s",
-  };
-
-  const onHotspotClick = (hotspot) => {
-    setSelectedHotspot(hotspot);
-    setInfoPanelOpen(true);
-    if (orbitRef.current && hotspot.camera) {
-      animateCameraTo(
-        orbitRef.current,
-        hotspot.camera.position,
-        hotspot.camera.target
-      );
-    }
-  };
-
-  const handleCloseInfo = () => setInfoPanelOpen(false);
-
-  // scroll anchor fix
+  // Scroll to section fix
   useEffect(() => {
     const handler = (e) => {
       if (e.target.getAttribute("href") === "#about" && wrapperRef.current) {
@@ -117,19 +82,21 @@ const AboutSection3D = ({ lang, t }) => {
         .forEach((a) => a.removeEventListener("click", handler));
   }, []);
 
-  // DEBUG mobile/desktop/height
-  useEffect(() => {
-    // eslint-disable-next-line
-    console.log(
-      "isMobile:",
-      isMobile,
-      "controlsEnabled:",
-      controlsEnabled,
-      "modelHeight:",
-      modelHeight
-    );
-  }, [isMobile, controlsEnabled, modelHeight]);
+  const onHotspotClick = (hotspot) => {
+    setSelectedHotspot(hotspot);
+    setInfoPanelOpen(true);
+    if (orbitRef.current && hotspot.camera) {
+      animateCameraTo(
+        orbitRef.current,
+        hotspot.camera.position,
+        hotspot.camera.target
+      );
+    }
+  };
 
+  const handleCloseInfo = () => setInfoPanelOpen(false);
+
+  // --- Main Render ---
   return (
     <section
       id="about"
@@ -198,32 +165,29 @@ const AboutSection3D = ({ lang, t }) => {
         >
           {/* Box z 3D */}
           <div
-            key={isMobile + "-" + controlsEnabled} // WYMUSZA REMOUNT
             style={{
               flex: infoPanelOpen ? 1.5 : 2,
               minWidth: isMobile ? 280 : 462,
               maxWidth: isMobile ? 375 : 602,
-              height: modelHeight,
+              height: `${modelHeight}px`,
+
               background: "rgba(24,48,64,0.33)",
               borderRadius: 20,
               boxShadow: "0 0 24px #00e6ff22",
               overflow: "hidden",
               position: "relative",
               marginBottom: isMobile ? 10 : 0,
-              transition:
-                "flex 0.3s, width 0.3s, max-width 0.3s, min-width 0.3s, height 0.3s cubic-bezier(.7,.3,.3,1.1)",
+              transition: "height 0.32s cubic-bezier(.65,.09,.54,.99)",
               pointerEvents: "auto",
+              display: "block",
             }}
           >
-            {/* Nakładka blokująca interakcję */}
+            {/* Overlay disables interaction */}
             {!controlsEnabled && (
               <div
                 style={{
                   position: "absolute",
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
+                  inset: 0,
                   zIndex: 10,
                   background: "transparent",
                   pointerEvents: "auto",
@@ -282,19 +246,20 @@ const AboutSection3D = ({ lang, t }) => {
             </button>
             <Canvas
               camera={{
-                position: cameraPosition,
-                fov: cameraFov,
+                position: isMobile ? [28, 20, 18] : [50, 30, 25],
+                fov: isMobile ? 40 : 29,
               }}
               style={{
                 width: "100%",
                 height: "100%",
                 background: "transparent",
-                touchAction: controlsEnabled ? "none" : "auto",
+                touchAction: "none",
+                display: "block",
               }}
             >
               <ambientLight intensity={0.9} />
               <directionalLight position={[2, 3, 4]} intensity={1.2} />
-              <group scale={modelScale}>
+              <group scale={isMobile ? 1.65 : 1.5}>
                 <AboutModelWithHotspots
                   hotspots={HOTSPOTS}
                   onHotspotClick={onHotspotClick}
@@ -327,7 +292,6 @@ const AboutSection3D = ({ lang, t }) => {
               hotspot={selectedHotspot}
               onClose={handleCloseInfo}
               isMobile={isMobile}
-              style={infoPanelStyles}
               lang={lang}
               t={t}
             />

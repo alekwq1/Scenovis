@@ -199,7 +199,7 @@ const ServicesSection = ({ isMobile, t }) => {
                 {/* Desc + Order Button */}
                 <div
                   style={{
-                    maxHeight: expanded ? (isMobile ? 360 : 240) : 0,
+                    maxHeight: expanded ? 2000 : 0, // DUŻA wartość, zero = ukryj
                     opacity: expanded ? 1 : 0,
                     padding: expanded
                       ? isMobile
@@ -207,7 +207,7 @@ const ServicesSection = ({ isMobile, t }) => {
                         : "0.9rem 2rem 1.6rem 2.3rem"
                       : "0 2rem",
                     transition:
-                      "all .33s cubic-bezier(.64,1.3,.58,1.02), opacity .28s",
+                      "max-height .45s cubic-bezier(.64,1.3,.58,1.02), opacity .33s",
                     color: "#b2f6fa",
                     fontSize: isMobile ? 14.7 : 15.6,
                     lineHeight: 1.65,
@@ -217,9 +217,8 @@ const ServicesSection = ({ isMobile, t }) => {
                     borderTop: expanded
                       ? "1px solid #00e6ff22"
                       : "1px solid transparent",
-                    overflow: "auto",
+                    overflow: "hidden", // TYLKO hidden!
                     minHeight: expanded ? 70 : 0,
-                    display: expanded ? "block" : "none",
                   }}
                 >
                   <div
