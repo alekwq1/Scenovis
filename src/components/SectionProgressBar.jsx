@@ -10,7 +10,7 @@ const SECTIONS = [
 ];
 
 // Musi być taki sam jak w NavigationBar!
-const NAVBAR_HEIGHT = 70 - 80; // 70px navbar + 12px odstępu
+const NAVBAR_HEIGHT = 70 - 20; // 70px navbar + 12px odstępu
 
 // Uniwersalna funkcja scrollująca sekcję pod navbar
 function scrollSectionToTop(id) {

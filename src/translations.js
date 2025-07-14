@@ -123,11 +123,12 @@ const translations = {
     footerBlog: "Blog",
     footerContact: "Kontakt",
     footerCopy:
-      "© 2023 Scenovis Digital Solutions. Wszelkie prawa zastrzeżone. Transformujemy przemysł dzięki technologii digital twin.",
+      "© 2025 Scenovis Digital Solutions. Wszelkie prawa zastrzeżone. Transformujemy przemysł dzięki technologii digital twin.",
 
     servicesSectionTitle: "Usługi Digital Twin & BIM",
     services: [
       {
+        icon: "📐",
         title: "Modelowanie 3D na podstawie dokumentacji 2D",
         desc: "Modele 3D na podstawie rysunków DWG/PDF lub skanów chmury punktów.<br /><span style='color:#2ef9e8;font-weight:700'>Szacowana cena od 2 zł/m²</span>",
         video: "/services/visualization.mp4",
@@ -135,6 +136,7 @@ const translations = {
         cta: "Zamów wycenę",
       },
       {
+        icon: "🕶️",
         title: "Wizualizacja i spacery 3D (Expo, VR/AR)",
         desc: "Prezentacje 3D do targów, na stronę lub do metaversum. Interaktywny spacer online lub w VR/AR. Skanowanie istniejących budynków z szybkim dostępem w chmurze.<br /><span style='color:#2ef9e8;font-weight:700'>Szacowana cena od 8 zł/m²</span>",
         video: "/services/walkthrough.mp4",
@@ -142,6 +144,7 @@ const translations = {
         cta: "Zamów wizualizację",
       },
       {
+        icon: "🏢",
         title: "Facility Management & Lean Digital Twin",
         desc: "Cyfrowy bliźniak istniejącego obiektu z analizą Lean.<br />Monitoring postępów, awarii, alarmów.<br />Wirtualne zarządzanie obiektem, raporty i powiadomienia.<br /><span style='color:#2ef9e8;font-weight:700'>Szacowana cena od 4 zł/m²</span>",
         video: "/services/fm_dtw.mp4",
@@ -149,6 +152,7 @@ const translations = {
         cta: "Zamów Digital Twin FM",
       },
       {
+        icon: "🏗️",
         title: "Cyfrowy Bliźniak Budowy + Analiza Power BI",
         desc: "Digital twin inwestycji w trakcie budowy.<br />Analiza postępu prac, integracja z Power BI, analiza kosztów Lean.<br />Interaktywny raport i widok 3D postępu online.<br /><span style='color:#2ef9e8;font-weight:700'>Szacowana cena od 2 zł/m²</span>",
         video: "/services/construction_twin.mp4",
@@ -156,6 +160,7 @@ const translations = {
         cta: "Zamów Digital Twin Budowy",
       },
       {
+        icon: "📝",
         title: "Opracowanie standardów EIR, BEP, wdrożenie",
         desc: "Kompleksowe opracowanie i wdrożenie standardów EIR, BEP oraz procesów cyfrowych.<br /><span style='color:#2ef9e8;font-weight:700'>Szacowana cena od 3 500 zł (projekt)</span>",
         video: "/services/bim_4d5d.mp4",
@@ -163,6 +168,7 @@ const translations = {
         cta: "Zamów wdrożenie, EIR/BEP",
       },
       {
+        icon: "🎓",
         title: "Szkolenia z modelowania, zarządzania CDE/BIM",
         desc: "Szkolenia online i stacjonarne z modelowania 3D, BIM, zarządzania CDE.<br />Wdrożenie platform do zarządzania dokumentacją. Personalizowane warsztaty dla zespołów.<br /><span style='color:#2ef9e8;font-weight:700'>Szacowana cena od 950 zł (szkolenie)</span>",
         video: "/services/training.mp4",
@@ -170,6 +176,7 @@ const translations = {
         cta: "Zamów szkolenie",
       },
       {
+        icon: "💰",
         title: "Kosztorysowanie oraz BIM 4D/5D",
         desc: "Przygotowanie kosztorysów na podstawie modeli BIM (4D/5D), analiza kosztów i harmonogramów, integracja z Power BI lub Excel.<br /><span style='color:#2ef9e8;font-weight:700'>Szacowana cena od 2 zł/m²</span>",
         video: "/services/costing.mp4",
@@ -177,6 +184,7 @@ const translations = {
         cta: "Zamów kosztorysowanie/BIM 4D/5D",
       },
       {
+        icon: "📊",
         title: "Porównanie postępu prac na budowie PZPB, BHP",
         desc: `
           <b>Monitorowanie i porównanie postępy prac na budowie</b> – cyklicznie, przez dedykowaną stronę internetową PZPB budowy.<br>
@@ -322,11 +330,12 @@ const translations = {
     footerBlog: "Blog",
     footerContact: "Contact",
     footerCopy:
-      "© 2023 Scenovis Digital Solutions. All rights reserved. Transforming industries through digital twin technology.",
+      "© 2025 Scenovis Digital Solutions. All rights reserved. Transforming industries through digital twin technology.",
 
     servicesSectionTitle: "Digital Twin & BIM Services",
     services: [
       {
+        icon: "📐",
         title: "3D Modeling from 2D Documentation",
         desc: "3D models based on DWG/PDF drawings or point cloud scans.<br /><span style='color:#2ef9e8;font-weight:700'>Estimated price from 0,5 USD/m²</span>",
         video: "/services/visualization.mp4",
@@ -335,6 +344,7 @@ const translations = {
         cta: "Order 3D Model",
       },
       {
+        icon: "🕶️",
         title: "Visualization & 3D Tours (Expo, VR/AR, Digital Models)",
         desc: "3D presentations for trade shows, websites, or the metaverse. Interactive tours online or in VR/AR. Scanning of existing buildings with fast cloud access.<br /><span style='color:#2ef9e8;font-weight:700'>Estimated price from 2 USD/m²</span>",
         video: "/services/walkthrough.mp4",
@@ -342,6 +352,7 @@ const translations = {
         cta: "Order Visualization",
       },
       {
+        icon: "🏢",
         title: "Facility Management & Lean Digital Twin",
         desc: "Digital twin of an existing facility with Lean analysis.<br />Progress, failure, and alarm monitoring.<br />Virtual facility management, reports, and notifications.<br /><span style='color:#2ef9e8;font-weight:700'>Estimated price from 1 USD/m²</span>",
         video: "/services/fm_dtw.mp4",
@@ -349,6 +360,7 @@ const translations = {
         cta: "Order FM Digital Twin",
       },
       {
+        icon: "🏗️",
         title: "Construction Digital Twin + Power BI Analysis",
         desc: "Digital twin for construction projects.<br />Progress analysis, Power BI integration, Lean cost analysis.<br />Interactive reporting and 3D online progress view.<br /><span style='color:#2ef9e8;font-weight:700'>Estimated price from 0,5 USD/m²</span>",
         video: "/services/construction_twin.mp4",
@@ -356,6 +368,7 @@ const translations = {
         cta: "Order Construction Digital Twin",
       },
       {
+        icon: "📝",
         title: "EIR/BEP Standards Development & Implementation",
         desc: "Comprehensive development and implementation of EIR, BEP, and digital processes.<br /><span style='color:#2ef9e8;font-weight:700'>Estimated price from 900 USD (project)</span>",
         img: "/services/bim_4d5d.png",
@@ -363,6 +376,7 @@ const translations = {
         cta: "Order EIR/BEP Implementation",
       },
       {
+        icon: "🎓",
         title: "3D/BIM Modeling & CDE Management Training",
         desc: "Online and onsite training in 3D modeling, BIM, and CDE management.<br />Implementation of document management platforms. Personalized workshops for teams.<br /><span style='color:#2ef9e8;font-weight:700'>Estimated price from 250 USD (training)</span>",
         video: "/services/training.mp4",
@@ -370,6 +384,7 @@ const translations = {
         cta: "Order Training",
       },
       {
+        icon: "💰",
         title: "Cost Estimation & BIM 4D/5D",
         desc: "Preparation of cost estimates based on BIM models (4D/5D), cost and schedule analysis, integration with Power BI or Excel.<br /><span style='color:#2ef9e8;font-weight:700'>Estimated price from 0,5 USD/m²</span>",
         video: "/services/costing.mp4",
@@ -377,6 +392,7 @@ const translations = {
         cta: "Order Costing/BIM 4D/5D",
       },
       {
+        icon: "📊",
         title: "Construction Progress Comparison (SDP, HSE)",
         desc: `
           <b>Monitor and compare construction progress</b> cyclically through a dedicated SDP project website.<br>

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 
-// Pełne zasoby video + opcjonalny krótki opis PL/EN w t
 const resources = [
   {
     name: "TWINZO 3D Digital Twin",
@@ -40,24 +39,24 @@ const VideoResourcesSection = ({ isMobile, lang, t }) => {
       style={{
         position: "fixed",
         inset: 0,
-        background: "rgba(6,12,22,0.85)",
+        background: "rgba(12,20,30,0.87)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
         zIndex: 99999,
         animation: "fadein .23s",
+        fontFamily: "Roboto, Arial, sans-serif",
       }}
       onClick={onClose}
     >
       <div
         style={{
-          background: "rgba(18,38,48,1)",
-          borderRadius: "18px",
-          padding: isMobile ? 0 : 16,
-          boxShadow: "0 0 60px #00e6ff55",
-          maxWidth: isMobile ? "94vw" : "740px",
+          background: "var(--bg, #19212a)",
+          borderRadius: "16px",
+          padding: isMobile ? 0 : 14,
+          maxWidth: isMobile ? "97vw" : "680px",
           width: "100%",
-          maxHeight: isMobile ? "62vh" : "67vh",
+          maxHeight: isMobile ? "62vh" : "68vh",
           position: "relative",
           display: "flex",
           flexDirection: "column",
@@ -72,47 +71,48 @@ const VideoResourcesSection = ({ isMobile, lang, t }) => {
             position: "absolute",
             right: 10,
             top: 10,
-            background: "rgba(0,230,255,0.09)",
+            background: "rgba(92,198,236,0.13)",
             border: "none",
-            borderRadius: 10,
-            color: "#00e6ff",
-            fontWeight: 800,
-            fontSize: 23,
-            width: 36,
-            height: 36,
+            borderRadius: 8,
+            color: "var(--accent, #5cc6ec)",
+            fontWeight: 700,
+            fontSize: 22,
+            width: 34,
+            height: 34,
             cursor: "pointer",
             zIndex: 1,
-            transition: "background 0.15s",
+            fontFamily: "Roboto, Arial, sans-serif",
+            transition: "background 0.14s",
           }}
           onClick={onClose}
         >
           ×
         </button>
         <iframe
-          width={isMobile ? "90vw" : "670"}
-          height={isMobile ? "200" : "378"}
+          width={isMobile ? "92vw" : "620"}
+          height={isMobile ? "200" : "350"}
           src={video}
           title={name}
           frameBorder="0"
           allow="autoplay; encrypted-media"
           allowFullScreen
           style={{
-            borderRadius: 14,
-            marginTop: isMobile ? 36 : 16,
+            borderRadius: 12,
+            marginTop: isMobile ? 36 : 14,
             background: "#000",
-            boxShadow: "0 0 30px #00e6ff22",
             width: "100%",
             height: isMobile ? "38vh" : "340px",
-            maxWidth: isMobile ? "100%" : "700px",
+            maxWidth: isMobile ? "100%" : "640px",
           }}
         ></iframe>
         <div
           style={{
-            color: "#00e6ff",
-            fontWeight: 700,
-            fontSize: isMobile ? "1.13rem" : "1.33rem",
+            color: "var(--accent, #5cc6ec)",
+            fontWeight: 600,
+            fontSize: isMobile ? "1.08rem" : "1.2rem",
             margin: "14px 0 2px",
             textAlign: "center",
+            fontFamily: "Roboto, Arial, sans-serif",
           }}
         >
           {name}
@@ -120,28 +120,33 @@ const VideoResourcesSection = ({ isMobile, lang, t }) => {
       </div>
       <style>{`
         @keyframes fadein { from {opacity:0} to {opacity:1} }
-        @keyframes modalin { from {transform:scale(.87);opacity:0} to {transform:scale(1);opacity:1} }
+        @keyframes modalin { from {transform:scale(.92);opacity:0} to {transform:scale(1);opacity:1} }
       `}</style>
     </div>
   );
 
   return (
-    <section id="resources" style={{ marginBottom: "0rem" }}>
+    <section id="resources" style={{ marginBottom: "1.5rem" }}>
       <h1
         style={{
-          fontSize: isMobile ? "2.2rem" : "2.7rem",
+          fontSize: isMobile ? "1.7rem" : "2.18rem",
           marginBottom: "1.2rem",
-          color: "#00e6ff",
+          color: "var(--accent, #5cc6ec)",
+          fontWeight: 600,
+          fontFamily: "Roboto, Arial, sans-serif",
+          letterSpacing: ".02em",
         }}
       >
         {t?.resourcesTitle || "Digital Twins in Action"}
       </h1>
       <p
         style={{
-          fontSize: "1.08rem",
-          marginBottom: "2rem",
-          opacity: 0.88,
+          fontSize: "1.05rem",
+          marginBottom: "2.2rem",
+          opacity: 0.92,
           maxWidth: "800px",
+          color: "var(--text, #e2e8ef)",
+          fontFamily: "Roboto, Arial, sans-serif",
         }}
       >
         {t?.resourcesDesc ||
@@ -151,7 +156,8 @@ const VideoResourcesSection = ({ isMobile, lang, t }) => {
         style={{
           display: "grid",
           gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
-          gap: "1.5rem",
+          gap: "1.3rem",
+          fontFamily: "Roboto, Arial, sans-serif",
         }}
       >
         {resources.map((item, i) => (
@@ -160,48 +166,39 @@ const VideoResourcesSection = ({ isMobile, lang, t }) => {
             style={{
               display: "flex",
               alignItems: "center",
-              padding: "1.2rem",
+              padding: "1.18rem",
               border:
                 opened === i
-                  ? "2px solid #00e6ff"
-                  : "1px solid rgba(255,255,255,0.13)",
-              borderRadius: "14px",
-              transition: "all 0.3s cubic-bezier(.55,1.3,.44,.9)",
+                  ? "2px solid var(--accent, #5cc6ec)"
+                  : "1px solid rgba(255,255,255,0.10)",
+              borderRadius: "12px",
+              transition: "border 0.2s, background 0.17s, box-shadow 0.22s",
               textDecoration: "none",
-              color: "#e0f7ff",
+              color: "var(--text, #e2e8ef)",
               background:
-                opened === i
-                  ? "linear-gradient(110deg, #03111c 60%, #043c51 120%)"
-                  : "rgba(255,255,255,0.03)",
-              gap: "1.25rem",
+                opened === i ? "var(--bg, #1b232e)" : "rgba(255,255,255,0.02)",
+              gap: "1.18rem",
               position: "relative",
               cursor: "pointer",
-              boxShadow:
-                opened === i ? "0 0 28px #00e6ff88" : "0 1px 6px #00e6ff17",
-              minHeight: 110,
               outline: "none",
+              fontFamily: "Roboto, Arial, sans-serif",
             }}
             tabIndex={0}
             onClick={() => setOpened(i)}
             onKeyDown={(e) =>
               (e.key === "Enter" || e.key === " ") && setOpened(i)
             }
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.transform = "scale(1.035)")
-            }
-            onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
           >
             <div
               style={{
-                width: isMobile ? 90 : 120,
-                height: isMobile ? 64 : 76,
-                background: "#011b29",
-                borderRadius: "10px",
+                width: isMobile ? 80 : 110,
+                height: isMobile ? 60 : 70,
+                background: "#101925",
+                borderRadius: "9px",
                 overflow: "hidden",
                 flexShrink: 0,
-                boxShadow: "0 2px 16px #00e6ff33",
-                border: opened === i ? "2px solid #00e6ff" : "none",
-                transition: "border 0.2s",
+                border:
+                  opened === i ? "2px solid var(--accent, #5cc6ec)" : "none",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -216,54 +213,58 @@ const VideoResourcesSection = ({ isMobile, lang, t }) => {
                   height: "100%",
                   objectFit: "cover",
                   display: "block",
-                  borderRadius: "10px",
+                  borderRadius: "9px",
                   opacity: 0.98,
                 }}
               />
+              {/* Play icon */}
               <svg
                 style={{
                   position: "absolute",
                   bottom: 8,
                   right: 9,
-                  width: 29,
-                  height: 29,
-                  filter: "drop-shadow(0 2px 7px #00e6ff55)",
-                  opacity: 0.88,
+                  width: 25,
+                  height: 25,
+                  opacity: 0.82,
                 }}
                 viewBox="0 0 26 26"
               >
                 <circle
                   cx="13"
                   cy="13"
-                  r="12.3"
-                  fill="#002831"
-                  stroke="#00e6ff"
-                  strokeWidth="1.4"
+                  r="12"
+                  fill="#132a35"
+                  stroke="var(--accent, #5cc6ec)"
+                  strokeWidth="1.2"
                 />
-                <polygon points="10.5,8.2 18,13 10.5,17.8" fill="#00e6ff" />
+                <polygon
+                  points="10.5,8.2 18,13 10.5,17.8"
+                  fill="var(--accent, #5cc6ec)"
+                />
               </svg>
             </div>
             <div style={{ flex: 1 }}>
               <div
                 style={{
-                  fontSize: "1.14rem",
+                  fontSize: "1.12rem",
                   fontWeight: 600,
-                  color: "#b3fdff",
-                  marginBottom: 5,
+                  color: "var(--accent, #5cc6ec)",
+                  marginBottom: 4,
+                  fontFamily: "Roboto, Arial, sans-serif",
                 }}
               >
                 {item.name}
               </div>
               <div
                 style={{
-                  color: "#8defff",
+                  color: "#bfeeff",
                   fontSize: ".98rem",
-                  fontWeight: 500,
-                  opacity: 0.92,
-                  minHeight: 19,
+                  fontWeight: 400,
+                  opacity: 0.91,
+                  minHeight: 17,
+                  fontFamily: "Roboto, Arial, sans-serif",
                 }}
               >
-                {/* Krótki opis z tłumaczeń */}
                 {t?.resourcesShort?.[item.key] || ""}
               </div>
             </div>

@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { createPortal } from "react-dom";
 
-// const MY_PHOTO = "/aleks.png";
-
+// Sekcja CTA – minimalistyczny styl, większe zdjęcie i delikatny efekt hover
 const CTASection = ({ isMobile, lang, t }) => {
   const [modal, setModal] = useState(null); // null | 'demo' | 'photo'
   const [sent, setSent] = useState(false);
@@ -28,29 +27,31 @@ const CTASection = ({ isMobile, lang, t }) => {
         marginTop: "2.5rem",
         position: "relative",
         zIndex: 1,
+        fontFamily: "Roboto, Arial, sans-serif",
       }}
     >
       <h1
         style={{
-          fontSize: isMobile ? "2.3rem" : "3.2rem",
-          marginBottom: "1.1rem",
-          background: "linear-gradient(90deg, #ffffff, #00e6ff 95%)",
-          WebkitBackgroundClip: "text",
-          WebkitTextFillColor: "transparent",
-          textShadow: "0 2px 32px #00e6ff55",
+          fontSize: isMobile ? "2.1rem" : "2.7rem",
+          marginBottom: "1.05rem",
+          color: "var(--accent, #5cc6ec)",
+          fontWeight: 700,
+          letterSpacing: "0.01em",
+          fontFamily: "Roboto, Arial, sans-serif",
         }}
       >
         {t.ctaTitle}
       </h1>
       <p
         style={{
-          fontSize: "1.17rem",
+          fontSize: "1.12rem",
           marginBottom: "2.0rem",
-          opacity: 0.88,
+          opacity: 0.91,
           maxWidth: "610px",
           marginLeft: "auto",
           marginRight: "auto",
-          color: "#8eeeff",
+          color: "var(--text, #e2e8ef)",
+          fontFamily: "Roboto, Arial, sans-serif",
         }}
       >
         {t.ctaDesc}
@@ -58,16 +59,15 @@ const CTASection = ({ isMobile, lang, t }) => {
 
       {/* FOTO + PODPIS */}
       <div
+        className="cta-photo-simple"
         style={{
-          width: isMobile ? 150 : 200,
+          width: isMobile ? 190 : 250, // WIĘKSZY rozmiar
           margin: "0 auto",
-          marginTop: "1.1rem",
+          marginTop: "1.4rem",
           position: "relative",
           borderRadius: "50%",
-          animation:
-            "appearPhoto 1.05s cubic-bezier(.41,1.38,.45,.98) 0.25s forwards",
+          transition: "box-shadow 0.26s cubic-bezier(.41,1.38,.45,.98)",
         }}
-        className="cta-photo-simple"
       >
         <img
           src={t.ctaPhoto || "/aleks.png"}
@@ -78,60 +78,49 @@ const CTASection = ({ isMobile, lang, t }) => {
             width: "100%",
             display: "block",
             borderRadius: "50%",
-            background: "#011b29",
+            background: "#101925",
             objectFit: "cover",
-            boxShadow: "0 2px 18px #00e6ff55",
+            boxShadow: "0 2px 16px #5cc6ec33",
             zIndex: 2,
             position: "relative",
-            transition:
-              "transform .35s cubic-bezier(.53,1.4,.44,1.1), box-shadow .44s cubic-bezier(.54,1.2,.45,1.09), filter .32s",
             cursor: "pointer",
+            transition:
+              "transform .31s cubic-bezier(.53,1.3,.44,1.1), box-shadow .35s cubic-bezier(.54,1.2,.45,1.09), filter .33s",
           }}
           onClick={() => setModal("photo")}
-          title={t.ctaPhotoTitle || "Click for unique angle"}
+          title={t.ctaPhotoTitle || "Kliknij by powiększyć"}
         />
         <div
           style={{
-            marginTop: 19,
+            marginTop: 21,
             textAlign: "center",
-            color: "#8eeeff",
+            color: "#bfeeff",
             fontWeight: 600,
-            fontSize: 18,
-            letterSpacing: ".02em",
-            textShadow: "0 2px 16px #00e6ff77",
+            fontSize: 19,
+            letterSpacing: ".01em",
+            fontFamily: "Roboto, Arial, sans-serif",
           }}
         >
           Aliaksei Malyshka
           <div
             style={{
-              color: "#00ffba",
-              fontSize: 14,
+              color: "var(--accent, #5cc6ec)",
+              fontSize: 15,
               marginTop: 2,
               fontWeight: 500,
               opacity: 0.98,
               letterSpacing: ".01em",
+              fontFamily: "Roboto, Arial, sans-serif",
             }}
           >
             {t.ctaRole || "Digital Twin Leader"}
           </div>
         </div>
         <style>{`
-          @keyframes appearPhoto {
-            0% { opacity: 0; transform: translateY(80px) scale(.85);}
-            80% { opacity: 1; transform: translateY(-7px) scale(1.03);}
-            100% { opacity: 1; transform: translateY(0) scale(1);}
-          }
           .cta-photo-simple:hover .cta-photo-img {
-            transform: scale(1.07) rotate(-1deg);
-            filter: brightness(1.09) contrast(1.11) saturate(1.12);
-            box-shadow:
-              0 0 33px 9px #00e6ff99,
-              0 0 66px 15px #00ffd855;
-            animation: neonPulse 1.1s infinite cubic-bezier(.57,1.2,.56,1.09);
-          }
-          @keyframes neonPulse {
-            0%,100% { box-shadow: 0 0 33px 9px #00e6ff99, 0 0 66px 15px #00ffd855; }
-            50%     { box-shadow: 0 0 45px 15px #00fff999, 0 0 90px 24px #00ffd888; }
+            transform: scale(1.042) rotate(-1.5deg);
+            filter: brightness(1.05) contrast(1.07) saturate(1.04);
+            box-shadow: 0 0 0 0 #5cc6ec00, 0 0 40px 0 #5cc6ec33;
           }
         `}</style>
       </div>
@@ -146,18 +135,18 @@ const CTASection = ({ isMobile, lang, t }) => {
       >
         <button
           style={{
-            background: "#00e6ff",
-            color: "#050e17",
+            background: "var(--accent, #5cc6ec)",
+            color: "#0b1c27",
             border: "none",
-            padding: "1.1rem 2.5rem",
-            fontSize: "1.16rem",
+            padding: "1.08rem 2.2rem",
+            fontSize: "1.12rem",
             fontWeight: 700,
             cursor: "pointer",
             borderRadius: "60px",
-            transition: "all 0.2s cubic-bezier(.55,1.3,.44,.9)",
-            boxShadow: "0 2px 18px #00e6ff33",
-            letterSpacing: "0.11em",
+            transition: "background 0.15s, color 0.13s",
+            letterSpacing: "0.07em",
             outline: "none",
+            fontFamily: "Roboto, Arial, sans-serif",
           }}
           onClick={() => setModal("demo")}
         >
@@ -175,54 +164,56 @@ const CTASection = ({ isMobile, lang, t }) => {
               left: 0,
               width: "100vw",
               height: "100vh",
-              background: "rgba(10,20,34,0.87)",
+              background: "rgba(16,22,36,0.87)",
               zIndex: 9999,
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              animation: "fadeIn .25s",
+              animation: "fadeIn .21s",
+              fontFamily: "Roboto, Arial, sans-serif",
             }}
             onClick={() => setModal(null)}
           >
             <div
               style={{
-                background: "#0b1c27",
-                borderRadius: 24,
-                boxShadow: "0 6px 48px #00e6ff42",
-                minWidth: 300,
-                maxWidth: 500,
+                background: "#151b23",
+                borderRadius: 20,
+                boxShadow: "0 6px 30px #5cc6ec33",
+                minWidth: 240,
+                maxWidth: 470,
                 width: "90vw",
-                padding: "2.1rem 1.3rem 2.1rem",
+                padding: "1.7rem 1.2rem 1.7rem",
                 position: "relative",
-                color: "#fff",
+                color: "#e2e8ef",
                 textAlign: "left",
-                border: "2px solid #00e6ff",
-                animation: "slideInModal .5s cubic-bezier(.85,-0.05,.22,1.04)",
-                fontSize: 18,
-                lineHeight: 1.67,
+                border: "2px solid var(--accent, #5cc6ec)",
+                animation: "slideInModal .36s",
+                fontSize: 17,
+                lineHeight: 1.6,
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
-                maxHeight: "90vh", // NOWA LINIA!
-                overflowY: "auto", // NOWA LINIA!
+                maxHeight: "90vh",
+                overflowY: "auto",
+                fontFamily: "Roboto, Arial, sans-serif",
               }}
               onClick={(e) => e.stopPropagation()}
             >
               <button
                 style={{
                   position: "absolute",
-                  top: 13,
-                  right: 16,
-                  background: "#00e6ff",
-                  color: "#0b1c27",
+                  top: 10,
+                  right: 14,
+                  background: "var(--accent, #5cc6ec)",
+                  color: "#151b23",
                   border: "none",
                   borderRadius: "50%",
-                  width: 35,
-                  height: 35,
-                  fontSize: 21,
+                  width: 33,
+                  height: 33,
+                  fontSize: 18,
                   fontWeight: 800,
                   cursor: "pointer",
-                  boxShadow: "0 1px 8px #00e6ff88",
+                  boxShadow: "0 1px 8px #5cc6ec22",
                 }}
                 onClick={() => setModal(null)}
                 aria-label="Close"
@@ -231,24 +222,24 @@ const CTASection = ({ isMobile, lang, t }) => {
               </button>
               <div
                 style={{
-                  color: "#00e6ff",
-                  fontWeight: 800,
-                  fontSize: 22,
-                  marginBottom: "0rem",
-                  textShadow: "0 2px 16px #00e6ff77",
+                  color: "var(--accent, #5cc6ec)",
+                  fontWeight: 700,
+                  fontSize: 18,
+                  marginBottom: "0.8rem",
                   textAlign: "center",
                   width: "100%",
+                  fontFamily: "Roboto, Arial, sans-serif",
                 }}
               >
                 {t.ctaModalTitle}
               </div>
               <div
                 style={{
-                  background: "rgba(15,29,40,0.88)",
-                  borderRadius: 16,
-                  padding: "1.1rem 1.3rem",
+                  background: "#19212a",
+                  borderRadius: 14,
+                  padding: "0.9rem 1.1rem",
                   maxWidth: 410,
-                  boxShadow: "0 4px 28px #00e6ff19",
+                  boxShadow: "0 4px 20px #5cc6ec0c",
                   margin: "0 auto",
                 }}
               >
@@ -273,8 +264,8 @@ const CTASection = ({ isMobile, lang, t }) => {
             <style>{`
               @keyframes fadeIn { 0% { opacity:0 } 100% { opacity:1 } }
               @keyframes slideInModal {
-                0% { opacity:0; transform:scale(.9) translateY(70px);}
-                80% { opacity:1; transform:scale(1.02) translateY(-6px);}
+                0% { opacity:0; transform:scale(.93) translateY(60px);}
+                80% { opacity:1; transform:scale(1.01) translateY(-5px);}
                 100% { opacity:1; transform:scale(1) translateY(0);}
               }
             `}</style>
@@ -292,47 +283,49 @@ const CTASection = ({ isMobile, lang, t }) => {
               left: 0,
               width: "100vw",
               height: "100vh",
-              background: "rgba(10,20,34,0.88)",
+              background: "rgba(16,22,36,0.90)",
               zIndex: 9999,
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              animation: "fadeIn .27s",
+              animation: "fadeIn .23s",
+              fontFamily: "Roboto, Arial, sans-serif",
             }}
             onClick={() => setModal(null)}
           >
             <div
               style={{
-                background: "#0b1c27",
-                borderRadius: 22,
-                boxShadow: "0 6px 48px #00e6ff42",
-                minWidth: 300,
-                maxWidth: 420,
+                background: "#151b23",
+                borderRadius: 18,
+                boxShadow: "0 6px 32px #5cc6ec23",
+                minWidth: 260,
+                maxWidth: 410,
                 width: "92vw",
-                padding: "2.2rem 1.2rem 1.6rem",
+                padding: "1.7rem 1.1rem 1.2rem",
                 position: "relative",
-                color: "#fff",
+                color: "#e2e8ef",
                 textAlign: "left",
-                border: "2px solid #00e6ff",
-                animation: "slideInModal .5s cubic-bezier(.85,-0.05,.22,1.04)",
+                border: "2px solid var(--accent, #5cc6ec)",
+                animation: "slideInModal .36s",
+                fontFamily: "Roboto, Arial, sans-serif",
               }}
               onClick={(e) => e.stopPropagation()}
             >
               <button
                 style={{
                   position: "absolute",
-                  top: 16,
-                  right: 16,
-                  background: "#00e6ff",
-                  color: "#0b1c27",
+                  top: 12,
+                  right: 14,
+                  background: "var(--accent, #5cc6ec)",
+                  color: "#151b23",
                   border: "none",
                   borderRadius: "50%",
-                  width: 35,
-                  height: 35,
-                  fontSize: 21,
+                  width: 33,
+                  height: 33,
+                  fontSize: 18,
                   fontWeight: 800,
                   cursor: "pointer",
-                  boxShadow: "0 1px 8px #00e6ff88",
+                  boxShadow: "0 1px 8px #5cc6ec22",
                 }}
                 onClick={() => setModal(null)}
                 aria-label="Close"
@@ -341,11 +334,12 @@ const CTASection = ({ isMobile, lang, t }) => {
               </button>
               <h2
                 style={{
-                  color: "#00e6ff",
-                  fontSize: "1.26rem",
-                  marginBottom: "1.2rem",
+                  color: "var(--accent, #5cc6ec)",
+                  fontSize: "1.12rem",
+                  marginBottom: "1.05rem",
                   textAlign: "center",
-                  fontWeight: 800,
+                  fontWeight: 700,
+                  fontFamily: "Roboto, Arial, sans-serif",
                 }}
               >
                 {t.ctaDemoTitle}
@@ -355,8 +349,8 @@ const CTASection = ({ isMobile, lang, t }) => {
                   style={{
                     color: "#00ffba",
                     textAlign: "center",
-                    fontSize: 17,
-                    padding: "1.2rem 0",
+                    fontSize: 16,
+                    padding: "1.1rem 0",
                   }}
                 >
                   {t.ctaDemoThanks}
@@ -369,9 +363,8 @@ const CTASection = ({ isMobile, lang, t }) => {
                   onSubmit={handleSubmit}
                   style={{ margin: 0 }}
                 >
-                  {/* HIDDEN FIELD - required for Netlify */}
                   <input type="hidden" name="form-name" value="demo" />
-                  <div style={{ marginBottom: 16 }}>
+                  <div style={{ marginBottom: 14 }}>
                     <label htmlFor="name" style={{ fontWeight: 600 }}>
                       {t.ctaFormName}
                     </label>
@@ -383,7 +376,7 @@ const CTASection = ({ isMobile, lang, t }) => {
                       placeholder={t.ctaFormNamePh}
                     />
                   </div>
-                  <div style={{ marginBottom: 16 }}>
+                  <div style={{ marginBottom: 14 }}>
                     <label htmlFor="email" style={{ fontWeight: 600 }}>
                       {t.ctaFormEmail}
                     </label>
@@ -396,7 +389,7 @@ const CTASection = ({ isMobile, lang, t }) => {
                       placeholder={t.ctaFormEmailPh}
                     />
                   </div>
-                  <div style={{ marginBottom: 18 }}>
+                  <div style={{ marginBottom: 16 }}>
                     <label htmlFor="msg" style={{ fontWeight: 600 }}>
                       {t.ctaFormMsg}
                     </label>
@@ -417,16 +410,17 @@ const CTASection = ({ isMobile, lang, t }) => {
                     type="submit"
                     style={{
                       width: "100%",
-                      padding: "0.93rem 0",
-                      borderRadius: 28,
+                      padding: "0.92rem 0",
+                      borderRadius: 22,
                       fontWeight: 700,
-                      fontSize: "1.08rem",
-                      background: "#00e6ff",
+                      fontSize: "1.05rem",
+                      background: "var(--accent, #5cc6ec)",
                       color: "#032d3f",
                       border: "none",
-                      boxShadow: "0 1px 8px #00e6ff55",
+                      boxShadow: "0 1px 8px #5cc6ec15",
                       cursor: "pointer",
                       marginTop: 10,
+                      fontFamily: "Roboto, Arial, sans-serif",
                     }}
                   >
                     {t.ctaSendBtn}
@@ -434,12 +428,14 @@ const CTASection = ({ isMobile, lang, t }) => {
                   <div
                     style={{
                       textAlign: "center",
-                      marginTop: 8,
-                      color: "#8eeeff",
-                      fontSize: 14,
+                      marginTop: 7,
+                      color: "#bfeeff",
+                      fontSize: 13,
+                      opacity: 0.75,
+                      fontFamily: "Roboto, Arial, sans-serif",
                     }}
                   >
-                    <span style={{ opacity: 0.7 }}>{t.ctaFormNote}</span>
+                    {t.ctaFormNote}
                   </div>
                 </form>
               )}
@@ -447,8 +443,8 @@ const CTASection = ({ isMobile, lang, t }) => {
             <style>{`
               @keyframes fadeIn { 0% { opacity:0 } 100% { opacity:1 } }
               @keyframes slideInModal {
-                0% { opacity:0; transform:scale(.9) translateY(70px);}
-                80% { opacity:1; transform:scale(1.02) translateY(-6px);}
+                0% { opacity:0; transform:scale(.92) translateY(60px);}
+                80% { opacity:1; transform:scale(1.01) translateY(-5px);}
                 100% { opacity:1; transform:scale(1) translateY(0);}
               }
             `}</style>
@@ -462,25 +458,27 @@ const CTASection = ({ isMobile, lang, t }) => {
 // Blok sekcji modalowej
 function SectionBlock({ title, desc }) {
   return (
-    <div style={{ marginBottom: 24 }}>
+    <div style={{ marginBottom: 20 }}>
       <div
         style={{
-          color: "#00e6ff",
+          color: "var(--accent, #5cc6ec)",
           fontWeight: 700,
-          fontSize: 17.5,
+          fontSize: 16.5,
           marginBottom: 4,
           letterSpacing: 0.01,
+          fontFamily: "Roboto, Arial, sans-serif",
         }}
       >
         {title}
       </div>
       <div
         style={{
-          color: "#e7fdff",
-          fontSize: 16,
-          lineHeight: 1.63,
+          color: "#e2e8ef",
+          fontSize: 15,
+          lineHeight: 1.6,
           opacity: 0.97,
           fontWeight: 500,
+          fontFamily: "Roboto, Arial, sans-serif",
         }}
       >
         {desc}
@@ -491,17 +489,18 @@ function SectionBlock({ title, desc }) {
 
 const inputStyle = {
   width: "100%",
-  marginTop: 6,
-  borderRadius: 12,
-  padding: "0.8rem 1.1rem",
-  fontSize: 15.5,
-  border: "1.8px solid #00e6ff",
+  marginTop: 5,
+  borderRadius: 10,
+  padding: "0.77rem 1.06rem",
+  fontSize: 15,
+  border: "1.5px solid var(--accent, #5cc6ec)",
   background: "#172735",
-  color: "#fff",
+  color: "#e2e8ef",
   marginBottom: 0,
   outline: "none",
   boxSizing: "border-box",
   fontWeight: 500,
+  fontFamily: "Roboto, Arial, sans-serif",
 };
 
 export default CTASection;

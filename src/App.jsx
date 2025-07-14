@@ -11,8 +11,6 @@ import translations from "./translations";
 import { Canvas } from "@react-three/fiber";
 import { Environment } from "@react-three/drei";
 
-const VIDEO_URL = "/Video.mp4";
-
 // Funkcja wykrywania języka przeglądarki (domyślnie "en")
 const getBrowserLang = () => {
   if (typeof navigator === "undefined") return "en";
@@ -25,15 +23,13 @@ const App = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [showFixedNav, setShowFixedNav] = useState(true);
 
-  // Prosty loader z logo – znika po ok. 2 sekundach (możesz wydłużyć/skracać)
+  // Loader z logo
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Loader minimum 1.3s, max 3s (zależnie jak szybko zrenderuje się strona)
-    const minTimeout = setTimeout(() => setLoading(false), 1800);
-    // Jakby coś się stało – fallback na 5s
-    const maxTimeout = setTimeout(() => setLoading(false), 5000);
-
+    // Loader min. 1.1s, max 4s
+    const minTimeout = setTimeout(() => setLoading(false), 1300);
+    const maxTimeout = setTimeout(() => setLoading(false), 4000);
     return () => {
       clearTimeout(minTimeout);
       clearTimeout(maxTimeout);
@@ -53,6 +49,14 @@ const App = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Ustawienie czcionki globalnie dla body (jeśli nie masz w CSS)
+  useEffect(() => {
+    document.body.style.fontFamily = "Roboto, Arial, sans-serif";
+    document.body.style.background = "#050e17";
+    document.body.style.margin = 0;
+    document.body.style.overflowX = "hidden";
+  }, []);
+
   return (
     <>
       {loading && (
@@ -66,8 +70,9 @@ const App = () => {
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            transition: "opacity 0.7s",
+            transition: "opacity 0.66s",
             opacity: loading ? 1 : 0,
+            fontFamily: "Roboto, Arial, sans-serif",
           }}
         >
           {/* Logo ze świecącą animacją */}
@@ -76,55 +81,60 @@ const App = () => {
               src="/scenovis-logo.png"
               alt="Scenovis Logo"
               style={{
-                width: 220,
+                width: isMobile ? 140 : 200,
                 height: "auto",
-                filter: "drop-shadow(0 0 16px #08ffe666)",
-                animation: "logo-pulse 1.6s infinite alternate",
+                filter: "drop-shadow(0 0 18px #5cc6ec88)",
+                animation: "logo-pulse 1.7s infinite alternate",
                 zIndex: 2,
                 position: "relative",
+                transition: "width 0.2s",
               }}
             />
-            {/* Glow za logiem */}
+            {/* Glow */}
             <div
               style={{
                 position: "absolute",
-                top: "50%",
+                top: "52%",
                 left: "50%",
                 transform: "translate(-50%,-50%)",
-                width: 320,
-                height: 120,
-                background: "rgba(0,198,255,0.26)",
-                borderRadius: 50,
-                filter: "blur(38px)",
+                width: isMobile ? 150 : 260,
+                height: isMobile ? 60 : 110,
+                background: "rgba(92,198,236,0.17)",
+                borderRadius: 40,
+                filter: "blur(36px)",
                 zIndex: 1,
-                animation: "glow-pulse 2.1s infinite alternate",
+                animation: "glow-pulse 2.3s infinite alternate",
                 pointerEvents: "none",
               }}
             ></div>
           </div>
           <div
             style={{
-              marginTop: 44,
-              fontSize: "1.6rem",
-              fontWeight: 700,
-              color: "#08ffe6",
-              textShadow: "0 0 10px #08ffe633",
-              letterSpacing: "1.5px",
-              fontFamily: "inherit",
+              marginTop: 34,
+              fontSize: isMobile ? "1.1rem" : "1.5rem",
+              fontWeight: 600,
+              color: "#5cc6ec",
+              textShadow: "0 0 10px #5cc6ec33",
+              letterSpacing: "1.1px",
+              fontFamily: "Roboto, Arial, sans-serif",
+              opacity: 0.96,
+              userSelect: "none",
             }}
           >
-            Loading...
+            Ładowanie...
           </div>
-          {/* Fancy spinner na dole */}
+          {/* Spinner */}
           <div
             style={{
-              marginTop: 36,
-              width: 56,
-              height: 56,
-              border: "6px solid #1a3e53",
-              borderTop: "6px solid #08ffe6",
+              marginTop: 28,
+              width: isMobile ? 38 : 52,
+              height: isMobile ? 38 : 52,
+              border: "4.5px solid #112a37",
+              borderTop: "4.5px solid #5cc6ec",
               borderRadius: "50%",
-              animation: "spin 1.2s linear infinite",
+              animation: "spin 1.1s linear infinite",
+              boxShadow: "0 0 18px #5cc6ec22",
+              opacity: 0.85,
             }}
           ></div>
           <style>{`
@@ -133,18 +143,25 @@ const App = () => {
               100% { transform: rotate(360deg);}
             }
             @keyframes logo-pulse {
-              0% { filter: drop-shadow(0 0 6px #08ffe622);}
-              100% { filter: drop-shadow(0 0 36px #08ffe699);}
+              0% { filter: drop-shadow(0 0 8px #5cc6ec44);}
+              100% { filter: drop-shadow(0 0 36px #5cc6ecdd);}
             }
             @keyframes glow-pulse {
-              0% { opacity: 0.25;}
-              100% { opacity: 0.6;}
+              0% { opacity: 0.17;}
+              100% { opacity: 0.38;}
             }
           `}</style>
         </div>
       )}
 
-      <div style={{ opacity: loading ? 0 : 1, transition: "opacity 0.8s" }}>
+      <div
+        style={{
+          opacity: loading ? 0 : 1,
+          transition: "opacity 0.72s cubic-bezier(.45,1.4,.49,1)",
+          fontFamily: "Roboto, Arial, sans-serif",
+          background: "#050e17",
+        }}
+      >
         <NavigationBar
           showFixedNav={showFixedNav}
           lang={lang}
@@ -153,7 +170,7 @@ const App = () => {
           isMobile={isMobile}
         />
         <SectionProgressBar />
-
+        {/* Tło 3D */}
         <Canvas
           orthographic
           camera={{ zoom: isMobile ? 60 : 80 }}
@@ -162,7 +179,11 @@ const App = () => {
             antialias: true,
             powerPreference: "high-performance",
           }}
-          dpr={Math.min(window.devicePixelRatio, 2)}
+          dpr={
+            typeof window !== "undefined"
+              ? Math.min(window.devicePixelRatio, 2)
+              : 1
+          }
           style={{
             position: "fixed",
             top: 0,
@@ -174,17 +195,16 @@ const App = () => {
           }}
         >
           <color attach="background" args={["#050e17"]} />
-          <ambientLight intensity={0.2} />
+          <ambientLight intensity={0.22} />
           <spotLight
-            position={[10, 10, 10]}
-            angle={0.15}
-            penumbra={1}
-            intensity={1}
+            position={[12, 9, 8]}
+            angle={0.22}
+            penumbra={0.8}
+            intensity={0.8}
             castShadow
           />
           <Environment preset="city" />
         </Canvas>
-
         <main
           style={{
             position: "relative",
@@ -193,6 +213,7 @@ const App = () => {
             width: "100vw",
             display: "flex",
             flexDirection: "column",
+            fontFamily: "Roboto, Arial, sans-serif",
           }}
         >
           <HeroSection isMobile={isMobile} lang={lang} t={translations[lang]} />

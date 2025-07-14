@@ -3,6 +3,15 @@ import * as THREE from "three";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Html, useGLTF } from "@react-three/drei";
 
+// PULSE – minimalistyczny (możesz wyłączyć jeśli chcesz)
+const PULSE_ANIMATION = `
+@keyframes pulse-interact-btn {
+  0% { box-shadow: 0 0 0 0 var(--accent); transform: scale(1);}
+  60% { box-shadow: 0 0 4px 2px var(--accent); transform: scale(1.02);}
+  100% { box-shadow: 0 0 0 0 var(--accent); transform: scale(1);}
+}
+`;
+
 function animateCameraTo(orbitControls, position, target, duration = 1.0) {
   if (!orbitControls) return;
   const controls = orbitControls.object;
@@ -24,16 +33,6 @@ function animateCameraTo(orbitControls, position, target, duration = 1.0) {
   requestAnimationFrame(animate);
 }
 
-const NEON_BLUE = "#00e6ff";
-
-const PULSE_ANIMATION = `
-@keyframes pulse-interact-btn {
-  0% { box-shadow: 0 0 0 0 #00e6ff77, 0 0 10px #00e6ff44; transform: scale(1);}
-  60% { box-shadow: 0 0 24px 13px #00e6ff00, 0 0 14px #00e6ffbb; transform: scale(1.09);}
-  100% { box-shadow: 0 0 0 0 #00e6ff00, 0 0 10px #00e6ff44; transform: scale(1);}
-}
-`;
-
 const AboutSection3D = ({ lang, t }) => {
   const DIGITAL_TWIN_INFO = t.digitalTwinInfo;
   const HOTSPOTS = t.hotspots;
@@ -45,7 +44,6 @@ const AboutSection3D = ({ lang, t }) => {
   const orbitRef = useRef();
   const wrapperRef = useRef();
 
-  // Responsive mobile check
   const [isMobile, setIsMobile] = useState(
     typeof window !== "undefined" ? window.innerWidth < 768 : false
   );
@@ -60,16 +58,14 @@ const AboutSection3D = ({ lang, t }) => {
     setInfoPanelOpen(true);
   }, [t, lang]);
 
-  // Height only (no minHeight) for smooth transition!
   const modelHeight = isMobile
     ? controlsEnabled
       ? 330
       : 420
     : controlsEnabled
-    ? 660
-    : 448;
+    ? 600
+    : 480;
 
-  // Scroll to section fix
   useEffect(() => {
     const handler = (e) => {
       if (e.target.getAttribute("href") === "#about" && wrapperRef.current) {
@@ -125,7 +121,6 @@ const AboutSection3D = ({ lang, t }) => {
         zIndex: 2,
       }}
     >
-      {/* Pulsujący styl w <style> tylko raz */}
       <style>{PULSE_ANIMATION}</style>
       <div
         className="about-content"
@@ -133,9 +128,9 @@ const AboutSection3D = ({ lang, t }) => {
           width: "100%",
           maxWidth: 1125,
           minHeight: isMobile ? 460 : 640,
-          background: "rgba(8,20,32,0.89)",
+          background: "var(--bg)",
           borderRadius: 28,
-          boxShadow: "0 8px 46px #00e6ff22",
+          boxShadow: "0 8px 46px rgba(92,198,236,0.08)",
           padding: isMobile ? "1.1rem 0.3rem" : "2.4rem 2.4rem 2.2rem 2.4rem",
           position: "relative",
           display: "flex",
@@ -148,13 +143,12 @@ const AboutSection3D = ({ lang, t }) => {
         <h1
           style={{
             fontSize: isMobile ? "1.25rem" : "3.2rem",
-            color: NEON_BLUE,
+            color: "var(--accent)",
             fontWeight: 900,
             textAlign: "center",
             marginBottom: isMobile ? "0.7rem" : "1.1rem",
             marginTop: isMobile ? "0.1rem" : "0.2rem",
             letterSpacing: 2,
-            textShadow: "0 0 32px #00e6ff77, 0 2px 6px #000b",
             lineHeight: 1.08,
           }}
         >
@@ -180,9 +174,9 @@ const AboutSection3D = ({ lang, t }) => {
               minWidth: isMobile ? 280 : 462,
               maxWidth: isMobile ? 375 : 602,
               height: `${modelHeight}px`,
-              background: "rgba(24,48,64,0.33)",
+              background: "#19212a",
               borderRadius: 20,
-              boxShadow: "0 0 24px #00e6ff22",
+              boxShadow: "0 0 24px rgba(92,198,236,0.08)",
               overflow: "hidden",
               position: "relative",
               marginBottom: isMobile ? 10 : 0,
@@ -204,37 +198,31 @@ const AboutSection3D = ({ lang, t }) => {
                 }}
               />
             )}
-            {/* Przycisk interakcji – tu animacja */}
+            {/* Przycisk interakcji */}
             <button
+              className="interact-btn"
               style={{
                 position: "absolute",
-                right: 8,
-                bottom: 8,
-                background: controlsEnabled
-                  ? "linear-gradient(90deg, #0072ff 0%, #00e6ff 100%)"
-                  : "linear-gradient(90deg, #00e6ff 0%, #0072ff 100%)",
-                color: "#fff",
-                border: "none",
-                borderRadius: 10,
-                padding: "0.33em 1.1em",
-                fontWeight: 700,
-                fontSize: "0.92rem",
-                letterSpacing: ".02em",
-                boxShadow: controlsEnabled
-                  ? "0 0 10px #00e6ff44"
-                  : "0 1px 4px #0083a822",
+                right: 10,
+                bottom: 10,
+                background: "#1a2531",
+                color: "var(--accent)",
+                border: "1.5px solid var(--accent)",
+                borderRadius: 9,
+                padding: "0.32em 1em",
+                fontWeight: 600,
+                fontSize: "0.98rem",
+                letterSpacing: ".01em",
+                boxShadow: "0 1px 5px rgba(92,198,236,0.07)",
                 cursor: "pointer",
-                zIndex: 22,
-                opacity: 0.94,
-                transition: "opacity 0.17s, box-shadow 0.2s",
+                zIndex: 10,
+                opacity: 0.93,
+                transition:
+                  "background 0.13s, box-shadow 0.19s, color 0.14s, border 0.13s",
                 outline: "none",
-                fontFamily: "inherit",
-                pointerEvents: "auto",
-                // ANIMACJA PULSOWANIA, tylko jeśli NIE aktywny!
                 animation: !controlsEnabled
-                  ? "pulse-interact-btn 1.25s infinite"
+                  ? "pulse-interact-btn 1.4s infinite"
                   : "none",
-                willChange: "transform, box-shadow",
               }}
               onClick={(e) => {
                 e.stopPropagation();
@@ -245,7 +233,7 @@ const AboutSection3D = ({ lang, t }) => {
                   ? lang === "pl"
                     ? "Zablokuj model"
                     : "Lock model"
-                  : lang === "en"
+                  : lang === "pl"
                   ? "Interakcja z modelem"
                   : "Interact with model"
               }
@@ -358,6 +346,7 @@ function AboutModelWithHotspots({
   );
 }
 
+// --- HOTSPOT BUTTON ---
 function Hotspot({ data, onClick, isActive, controlsEnabled }) {
   return (
     <mesh position={data.position}>
@@ -365,31 +354,34 @@ function Hotspot({ data, onClick, isActive, controlsEnabled }) {
       <meshBasicMaterial transparent opacity={0} />
       <Html center zIndexRange={[100, 200]}>
         <button
+          className="hotspot-btn"
+          style={{
+            width: 40,
+            height: 40,
+            borderRadius: "50%",
+            background: isActive ? "#233142" : "#1a2531",
+            border: isActive
+              ? "2.2px solid var(--accent)"
+              : "1.5px solid var(--accent)",
+            boxShadow: isActive
+              ? "0 2px 12px rgba(92,198,236,0.17)"
+              : "0 1px 6px rgba(92,198,236,0.10)",
+            color: isActive ? "var(--text)" : "var(--accent)",
+            fontWeight: 700,
+            fontSize: 24,
+            cursor: controlsEnabled ? "pointer" : "default",
+            opacity: controlsEnabled ? 0.96 : 0.55,
+            pointerEvents: controlsEnabled ? "auto" : "none",
+            transition:
+              "background 0.14s, box-shadow 0.18s, border 0.13s, color 0.13s",
+            outline: "none",
+          }}
           onClick={(e) => {
             if (!controlsEnabled) return;
             e.stopPropagation();
             onClick();
           }}
-          style={{
-            width: 40,
-            height: 40,
-            borderRadius: "50%",
-            background: isActive
-              ? "radial-gradient(circle, #0ffcff, #00e6ff)"
-              : "radial-gradient(circle, #122a38, #00e6ff 70%)",
-            border: isActive ? "3px solid #fff" : "2px solid #00e6ff",
-            boxShadow: isActive ? "0 0 20px #00e6ff88" : "0 0 8px #00e6ff44",
-            cursor: controlsEnabled ? "pointer" : "default",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: 24,
-            color: "#fff",
-            fontWeight: 700,
-            transition: "all .2s",
-            touchAction: "none",
-            pointerEvents: controlsEnabled ? "auto" : "none",
-          }}
+          disabled={!controlsEnabled}
           title={data.label}
         >
           +
@@ -398,6 +390,8 @@ function Hotspot({ data, onClick, isActive, controlsEnabled }) {
     </mesh>
   );
 }
+
+// ...reszta AboutSection3D bez zmian
 
 // --- Panel informacyjny ---
 function HotspotInfoPanel({ open, hotspot, onClose, isMobile, lang, t }) {
@@ -408,33 +402,38 @@ function HotspotInfoPanel({ open, hotspot, onClose, isMobile, lang, t }) {
 
   return (
     <div
+      className="hotspot-info-panel"
       style={{
         position: "relative",
         maxWidth: isMobile ? 320 : 380,
         minWidth: isMobile ? 165 : 320,
-        boxShadow: "0 0 38px #00e6ff66",
-        borderRadius: 20,
+        boxShadow: "0 2px 14px 0 rgba(92,198,236,0.09)", // subtelny cień pastelowy
+        borderRadius: 18,
         zIndex: 1000,
         marginLeft: isMobile ? 0 : 24,
         marginTop: isMobile ? 10 : 0,
-        background: "rgba(10, 25, 40, 0.95)",
-        border: "1px solid #00e6ff55",
+        background: "var(--bg, #212834)",
+        border: "1.3px solid var(--accent, #5cc6ec)",
         padding: isMobile ? "11px" : "20px",
         fontSize: isMobile ? "0.97rem" : "1.08rem",
+        color: "var(--text, #e2e8ef)",
+        fontFamily: "Roboto, Arial, sans-serif",
+        transition: "box-shadow .18s, border .13s, background .13s",
       }}
     >
       <button
         onClick={onClose}
         style={{
           position: "absolute",
-          top: "10px",
-          right: "10px",
+          top: 10,
+          right: 10,
           background: "transparent",
           border: "none",
-          color: "#00e6ff",
+          color: "var(--accent, #5cc6ec)",
           fontSize: "1.2rem",
           cursor: "pointer",
           zIndex: 10,
+          fontFamily: "Roboto, Arial, sans-serif",
         }}
         title={lang === "pl" ? "Zamknij panel" : "Close panel"}
       >
@@ -443,11 +442,13 @@ function HotspotInfoPanel({ open, hotspot, onClose, isMobile, lang, t }) {
 
       <h3
         style={{
-          color: "#00e6ff",
+          color: "var(--accent, #5cc6ec)",
           marginTop: 0,
           marginBottom: "13px",
           fontSize: isMobile ? "1.08rem" : "1.5rem",
           textAlign: "center",
+          fontWeight: 700,
+          fontFamily: "Roboto, Arial, sans-serif",
         }}
       >
         {hotspot.label}
@@ -467,14 +468,14 @@ function HotspotInfoPanel({ open, hotspot, onClose, isMobile, lang, t }) {
             src={hotspot.image}
             alt={hotspot.label}
             style={{
-              maxWidth: "88%",
-              maxHeight: isMobile ? 112 : 220,
+              maxWidth: "86%",
+              maxHeight: isMobile ? 112 : 200,
               width: "auto",
               height: "auto",
               objectFit: "contain",
-              background: "none",
+              background: "#19212a",
               borderRadius: 12,
-              boxShadow: "0 0 16px #00e6ff22",
+              boxShadow: "0 2px 10px 0 rgba(92,198,236,0.07)", // bardzo delikatny cień!
               pointerEvents: "none",
               userSelect: "none",
               display: "block",
@@ -486,9 +487,11 @@ function HotspotInfoPanel({ open, hotspot, onClose, isMobile, lang, t }) {
       <div
         dangerouslySetInnerHTML={{ __html: hotspot.desc }}
         style={{
-          color: "#c0e0ff",
-          lineHeight: 1.6,
-          fontSize: isMobile ? "0.90rem" : "1.08rem",
+          color: "var(--text, #e2e8ef)",
+          lineHeight: 1.56,
+          fontSize: isMobile ? "0.93rem" : "1.05rem",
+          fontFamily: "Roboto, Arial, sans-serif",
+          marginBottom: "0.8rem",
         }}
       />
 
@@ -497,21 +500,35 @@ function HotspotInfoPanel({ open, hotspot, onClose, isMobile, lang, t }) {
           style={{
             marginTop: "10px",
             padding: "8px",
-            background: "rgba(0, 50, 80, 0.22)",
-            borderRadius: "8px",
+            background: "rgba(92,198,236,0.05)", // jasny, pastelowy, bardzo dyskretny
+            borderRadius: "7px",
             fontSize: isMobile ? "0.91rem" : "0.97rem",
+            fontFamily: "Roboto, Arial, sans-serif",
           }}
         >
           <div>
-            <strong>{t.statusLabel}:</strong>{" "}
+            <strong
+              style={{ color: "var(--accent, #5cc6ec)", fontWeight: 600 }}
+            >
+              {t.statusLabel}:
+            </strong>{" "}
             {translateStatus(hotspot.extra.status)}
           </div>
           <div>
-            <strong>{t.lastInspectionLabel}:</strong>{" "}
+            <strong
+              style={{ color: "var(--accent, #5cc6ec)", fontWeight: 600 }}
+            >
+              {t.lastInspectionLabel}:
+            </strong>{" "}
             {hotspot.extra.lastInspection}
           </div>
           <div>
-            <strong>{t.parametersLabel}:</strong> {hotspot.extra.kpi}
+            <strong
+              style={{ color: "var(--accent, #5cc6ec)", fontWeight: 600 }}
+            >
+              {t.parametersLabel}:
+            </strong>{" "}
+            {hotspot.extra.kpi}
           </div>
         </div>
       )}

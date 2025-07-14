@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 
-const NEON = "#00e6ff";
-const BG_CARD = "rgba(10, 22, 30, 0.99)";
-
+// Usługi: przekazuj w t.services z polem icon (emoji lub JSX/SVG)
 const ServicesSection = ({ isMobile, t }) => {
   const [active, setActive] = useState(0);
 
@@ -19,6 +17,8 @@ const ServicesSection = ({ isMobile, t }) => {
         alignItems: "flex-start",
         minHeight: isMobile ? 340 : 470,
         position: "relative",
+        fontFamily: "Roboto, Arial, sans-serif",
+        color: "var(--text, #e2e8ef)",
       }}
     >
       {/* LEWA KOLUMNA: OBRAZ/WIDEO (desktop) */}
@@ -30,9 +30,8 @@ const ServicesSection = ({ isMobile, t }) => {
             height: 550,
             minHeight: 270,
             width: "100%",
-            background: "#101925",
+            background: "var(--bg, #151b23)",
             borderRadius: 20,
-            boxShadow: `0 6px 36px 0 ${NEON}14`,
             overflow: "hidden",
             display: "flex",
             alignItems: "center",
@@ -59,8 +58,7 @@ const ServicesSection = ({ isMobile, t }) => {
                     top: 0,
                     left: 0,
                     zIndex: 2,
-                    transition: "opacity 0.44s cubic-bezier(.5,1.5,.5,1.05)",
-                    boxShadow: "0 0 24px #00e6ff55",
+                    background: "var(--bg, #151b23)",
                     pointerEvents: "none",
                     userSelect: "none",
                   }}
@@ -81,12 +79,11 @@ const ServicesSection = ({ isMobile, t }) => {
                   top: 0,
                   left: 0,
                   opacity: 1,
-                  transition: "opacity 0.44s cubic-bezier(.5,1.5,.5,1.05)",
                   zIndex: 2,
-                  filter: "drop-shadow(0 0 24px #00e6ff55)",
                   borderRadius: 20,
                   pointerEvents: "none",
                   userSelect: "none",
+                  background: "var(--bg, #151b23)",
                 }}
                 draggable={false}
               />
@@ -100,10 +97,10 @@ const ServicesSection = ({ isMobile, t }) => {
           style={{
             fontSize: isMobile ? "1.45rem" : "2.15rem",
             marginBottom: "2.8rem",
-            color: NEON,
-            textShadow: "0 0 12px #00e6ff30",
+            color: "var(--accent, #5cc6ec)",
             letterSpacing: 1.2,
-            fontWeight: 800,
+            fontWeight: 700,
+            fontFamily: "Roboto, Arial, sans-serif",
           }}
         >
           {t.servicesSectionTitle}
@@ -117,77 +114,99 @@ const ServicesSection = ({ isMobile, t }) => {
                 style={{
                   marginBottom: isMobile ? "2.2rem" : "2.5rem",
                   borderRadius: 15,
-                  background: BG_CARD,
+                  background: "var(--bg, #151b23)",
                   border: expanded
-                    ? `2px solid ${NEON}`
-                    : `2px solid rgba(0,230,255,0.09)`,
-                  boxShadow: expanded
-                    ? `0 3px 18px 0 #00e6ff22`
-                    : "0 1px 7px #00e6ff0b",
-                  transition: "box-shadow .16s, border .18s, background .18s",
+                    ? "2px solid var(--accent, #5cc6ec)"
+                    : "2px solid rgba(92,198,236,0.08)",
+                  transition: "border .18s, background .18s",
                   overflow: "hidden",
                   cursor: "pointer",
                   position: "relative",
                   minHeight: expanded ? (isMobile ? 140 : 140) : 64,
                   display: "flex",
                   flexDirection: "column",
+                  fontFamily: "Roboto, Arial, sans-serif",
                 }}
                 onMouseEnter={() => setActive(idx)}
                 onClick={() => setActive(idx)}
               >
-                {/* Title + Button */}
+                {/* Title + Icon + Button */}
                 <div
                   style={{
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "space-between",
                     padding: isMobile ? "1rem 1.1rem" : "1.2rem 2rem",
-                    background: expanded
-                      ? "linear-gradient(90deg,#101925 75%,#00e6ff0a 100%)"
-                      : "transparent",
+                    background: expanded ? "var(--bg, #151b23)" : "transparent",
                   }}
                 >
-                  <h3
+                  <div
                     style={{
-                      fontSize: isMobile ? "1rem" : "1.17rem",
-                      color: expanded ? NEON : "#fff",
-                      fontWeight: expanded ? 800 : 600,
-                      letterSpacing: ".1px",
-                      margin: 0,
-                      transition: "color .18s",
-                      filter: expanded
-                        ? "drop-shadow(0 1px 9px #00e6ff33)"
-                        : "none",
-                      whiteSpace: "nowrap",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      maxWidth: isMobile ? "70vw" : "34vw",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "0.87rem",
+                      minWidth: 0,
                     }}
                   >
-                    {srv.title}
-                  </h3>
+                    {/* Ikona */}
+                    <span
+                      style={{
+                        fontSize: isMobile ? 25 : 28,
+                        minWidth: 28,
+                        minHeight: 28,
+                        opacity: expanded ? 1 : 0.8,
+                        transition: "opacity 0.19s",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      {srv.icon}
+                    </span>
+                    {/* Tytuł */}
+                    <h3
+                      style={{
+                        fontSize: isMobile ? "1rem" : "1.17rem",
+                        color: expanded
+                          ? "var(--accent, #5cc6ec)"
+                          : "var(--text, #e2e8ef)",
+                        fontWeight: expanded ? 700 : 500,
+                        letterSpacing: ".1px",
+                        margin: 0,
+                        transition: "color .18s",
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        maxWidth: isMobile ? "55vw" : "29vw",
+                        fontFamily: "Roboto, Arial, sans-serif",
+                        display: "inline-block",
+                      }}
+                    >
+                      {srv.title}
+                    </h3>
+                  </div>
                   <button
                     style={{
                       width: 34,
                       height: 34,
                       border: "none",
                       background: expanded
-                        ? "radial-gradient(circle,#00e6ff 60%,#11ffff 100%)"
-                        : "radial-gradient(circle,#263e4d 70%,#101925 100%)",
+                        ? "var(--accent, #5cc6ec)"
+                        : "var(--bg, #151b23)",
                       borderRadius: "50%",
-                      color: expanded ? "#101925" : "#00e6ff",
+                      color: expanded
+                        ? "var(--bg, #151b23)"
+                        : "var(--accent, #5cc6ec)",
                       fontSize: 20,
-                      fontWeight: 800,
-                      boxShadow: expanded
-                        ? "0 1px 12px #00e6ff4b"
-                        : "0 1px 7px #00e6ff08",
+                      fontWeight: 700,
                       cursor: "pointer",
                       outline: "none",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      transition: "background .2s, color .18s, box-shadow .15s",
+                      transition: "background .2s, color .18s",
                       marginLeft: 8,
+                      fontFamily: "Roboto, Arial, sans-serif",
                     }}
                     aria-label={
                       expanded ? "Ukryj szczegóły" : "Pokaż szczegóły"
@@ -199,7 +218,7 @@ const ServicesSection = ({ isMobile, t }) => {
                 {/* Desc + Order Button */}
                 <div
                   style={{
-                    maxHeight: expanded ? 2000 : 0, // DUŻA wartość, zero = ukryj
+                    maxHeight: expanded ? 2000 : 0,
                     opacity: expanded ? 1 : 0,
                     padding: expanded
                       ? isMobile
@@ -208,40 +227,46 @@ const ServicesSection = ({ isMobile, t }) => {
                       : "0 2rem",
                     transition:
                       "max-height .45s cubic-bezier(.64,1.3,.58,1.02), opacity .33s",
-                    color: "#b2f6fa",
+                    color: "var(--text, #e2e8ef)",
                     fontSize: isMobile ? 14.7 : 15.6,
                     lineHeight: 1.65,
-                    background: expanded
-                      ? "linear-gradient(90deg,#101925 60%,#00e6ff0a 100%)"
-                      : "none",
+                    background: expanded ? "var(--bg, #151b23)" : "none",
                     borderTop: expanded
-                      ? "1px solid #00e6ff22"
+                      ? "1px solid var(--accent, #5cc6ec18)"
                       : "1px solid transparent",
-                    overflow: "hidden", // TYLKO hidden!
+                    overflow: "hidden",
                     minHeight: expanded ? 70 : 0,
+                    fontFamily: "Roboto, Arial, sans-serif",
                   }}
                 >
-                  <div
-                    style={{ marginBottom: 16 }}
-                    dangerouslySetInnerHTML={{ __html: srv.desc }}
-                  />
+                  <div style={{ marginBottom: 16 }}>
+                    {/* Możesz tu dodać bardziej szczegółowy opis lub listę cech */}
+                    {srv.desc && (
+                      <div
+                        dangerouslySetInnerHTML={{ __html: srv.desc }}
+                        style={{
+                          display: "block",
+                        }}
+                      />
+                    )}
+                  </div>
                   <a
                     href={srv.link}
                     style={{
-                      background: NEON,
-                      color: "#05121a",
+                      background: "var(--accent, #5cc6ec)",
+                      color: "var(--bg, #151b23)",
                       borderRadius: 8,
-                      fontWeight: 900,
+                      fontWeight: 700,
                       padding: isMobile ? "0.7rem 1.2rem" : "0.9rem 1.8rem",
                       fontSize: isMobile ? 15 : 16.7,
                       textDecoration: "none",
-                      boxShadow: "0 2px 16px #00e6ff1d",
                       transition: "background .16s",
                       display: "inline-block",
                       letterSpacing: 0.3,
                       border: "none",
                       outline: "none",
                       cursor: "pointer",
+                      fontFamily: "Roboto, Arial, sans-serif",
                     }}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -254,9 +279,8 @@ const ServicesSection = ({ isMobile, t }) => {
                       style={{
                         width: "100%",
                         margin: "1.2rem 0 0 0",
-                        background: "#101925",
+                        background: "var(--bg, #151b23)",
                         borderRadius: 16,
-                        boxShadow: `0 6px 36px 0 ${NEON}14`,
                         minHeight: 140,
                         display: "flex",
                         alignItems: "center",
@@ -295,7 +319,6 @@ const ServicesSection = ({ isMobile, t }) => {
                             borderRadius: 16,
                             background: "#000",
                             maxHeight: 210,
-                            filter: "drop-shadow(0 0 18px #00e6ff44)",
                             pointerEvents: "none",
                             userSelect: "none",
                           }}
