@@ -83,7 +83,7 @@ const App = () => {
               textShadow: "0 0 12px #08ffe622",
             }}
           >
-            Ładowanie...
+            Loading...
           </span>
           <div
             style={{
