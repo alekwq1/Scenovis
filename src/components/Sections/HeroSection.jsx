@@ -1,6 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
 
-// Zdjęcia (podmień na własne URL-e!)
 const IMAGES = [
   "/images/hero1.jpg",
   "/images/hero2.jpg",
@@ -8,29 +7,38 @@ const IMAGES = [
   "/images/hero4.jpg",
   "/images/hero5.jpg",
 ];
-const HERO_IMAGES = [
-  "/hero1.jpg",
-  "/hero2.jpg",
-  "/hero3.jpg",
-  "/hero4.jpg",
-  "/hero5.jpg",
-];
 
-const SLIDE_TIME = 5400;
+const SLIDE_TIME = 5200;
 
 const HeroSection = ({ isMobile, lang, t }) => {
   const [slide, setSlide] = useState(0);
+  const [loaded, setLoaded] = useState([true, false, false, false, false]);
   const [anim, setAnim] = useState(true);
   const [textIn, setTextIn] = useState(false);
 
   // Fade + slide-up tekstu (profesjonalnie)
   useEffect(() => {
     setTextIn(false);
-    const timeout = setTimeout(() => setTextIn(true), 400);
+    const timeout = setTimeout(() => setTextIn(true), 330);
     return () => clearTimeout(timeout);
   }, [slide]);
 
-  // Slider automatyczny
+  // Lazy load all slides (after mount)
+  useEffect(() => {
+    IMAGES.forEach((src, i) => {
+      if (i === 0) return;
+      const img = new window.Image();
+      img.onload = () =>
+        setLoaded((l) => {
+          const n = [...l];
+          n[i] = true;
+          return n;
+        });
+      img.src = src;
+    });
+  }, []);
+
+  // Slider automatyczny (działa płynnie nawet jeśli nie wszystkie zdjęcia się wczytały)
   useEffect(() => {
     setAnim(true);
     const timeout = setTimeout(() => {
@@ -84,32 +92,34 @@ const HeroSection = ({ isMobile, lang, t }) => {
             justifyContent: "center",
           }}
         >
-          {IMAGES.map((src, i) => (
-            <img
-              key={i}
-              src={src}
-              alt={`Hero Slide ${i + 1}`}
-              style={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                width: "100vw",
-                height: "100%",
-                objectFit: "cover",
-                opacity: slide === i && anim ? 1 : 0,
-                transition:
-                  "opacity 1.08s cubic-bezier(.6,.2,.3,1), transform 1.18s cubic-bezier(.56,.02,.31,.98)",
-                transform:
-                  slide === i && anim
-                    ? "scale(1)"
-                    : "scale(1.037) translateY(12px)",
-                zIndex: slide === i ? 2 : 1,
-                filter: slide === i ? "brightness(0.86)" : "blur(1.2px)",
-                fontFamily: "Roboto, Arial, sans-serif",
-              }}
-              draggable={false}
-            />
-          ))}
+          {IMAGES.map((src, i) =>
+            loaded[i] ? (
+              <img
+                key={i}
+                src={src}
+                alt={`Hero Slide ${i + 1}`}
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: "100vw",
+                  height: "100%",
+                  objectFit: "cover",
+                  opacity: slide === i && anim ? 1 : 0,
+                  transition:
+                    "opacity 1.08s cubic-bezier(.6,.2,.3,1), transform 1.18s cubic-bezier(.56,.02,.31,.98)",
+                  transform:
+                    slide === i && anim
+                      ? "scale(1)"
+                      : "scale(1.037) translateY(12px)",
+                  zIndex: slide === i ? 2 : 1,
+                  filter: slide === i ? "brightness(0.86)" : "blur(1.2px)",
+                  fontFamily: "Roboto, Arial, sans-serif",
+                }}
+                draggable={false}
+              />
+            ) : null
+          )}
           {/* Overlay */}
           <div
             style={{
@@ -295,32 +305,34 @@ const HeroSection = ({ isMobile, lang, t }) => {
           overflow: "hidden",
         }}
       >
-        {IMAGES.map((src, i) => (
-          <img
-            key={i}
-            src={src}
-            alt={`Hero Slide ${i + 1}`}
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: "100vw",
-              height: "100vh",
-              objectFit: "cover",
-              opacity: slide === i && anim ? 1 : 0,
-              transition:
-                "opacity 1.13s cubic-bezier(.62,0,.34,1), transform 1.19s cubic-bezier(.62,.09,.44,1)",
-              transform:
-                slide === i && anim
-                  ? "scale(1)"
-                  : "scale(1.04) translateY(15px)",
-              zIndex: slide === i ? 2 : 1,
-              filter: slide === i ? "brightness(0.83)" : "blur(1.1px)",
-              fontFamily: "Roboto, Arial, sans-serif",
-            }}
-            draggable={false}
-          />
-        ))}
+        {IMAGES.map((src, i) =>
+          loaded[i] ? (
+            <img
+              key={i}
+              src={src}
+              alt={`Hero Slide ${i + 1}`}
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100vw",
+                height: "100vh",
+                objectFit: "cover",
+                opacity: slide === i && anim ? 1 : 0,
+                transition:
+                  "opacity 1.13s cubic-bezier(.62,0,.34,1), transform 1.19s cubic-bezier(.62,.09,.44,1)",
+                transform:
+                  slide === i && anim
+                    ? "scale(1)"
+                    : "scale(1.04) translateY(15px)",
+                zIndex: slide === i ? 2 : 1,
+                filter: slide === i ? "brightness(0.83)" : "blur(1.1px)",
+                fontFamily: "Roboto, Arial, sans-serif",
+              }}
+              draggable={false}
+            />
+          ) : null
+        )}
         {/* Overlay */}
         <div
           style={{
