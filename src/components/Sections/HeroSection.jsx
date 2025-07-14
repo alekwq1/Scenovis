@@ -8,6 +8,13 @@ const IMAGES = [
   "/images/hero4.jpg",
   "/images/hero5.jpg",
 ];
+const HERO_IMAGES = [
+  "/hero1.jpg",
+  "/hero2.jpg",
+  "/hero3.jpg",
+  "/hero4.jpg",
+  "/hero5.jpg",
+];
 
 const SLIDE_TIME = 5400;
 
